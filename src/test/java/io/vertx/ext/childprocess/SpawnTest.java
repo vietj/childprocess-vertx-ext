@@ -2,6 +2,7 @@ package io.vertx.ext.childprocess;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
@@ -126,14 +127,27 @@ public class SpawnTest {
   @Test
   public void testCwd(TestContext context) {
     Async async = context.async();
-    AtomicInteger status = new AtomicInteger();
     String cwd = new File(new File("target"), "test-classes").getAbsolutePath();
     ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "PrintCwd"), new ProcessOptions().setCwd(cwd), process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
-        context.assertEquals(0, status.getAndIncrement());
+        context.assertEquals(0, code);
         context.assertEquals(cwd, new File(out.toString()).getAbsolutePath());
+        async.complete();
+      });
+    });
+  }
+
+  @Test
+  public void testEnv(TestContext context) {
+    Async async = context.async();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv"), new ProcessOptions().setEnv(new JsonObject().put("foo", "foo_value")), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, code);
+        context.assertEquals("foo_value", out.toString());
         async.complete();
       });
     });

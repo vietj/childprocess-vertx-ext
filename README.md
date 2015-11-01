@@ -20,7 +20,6 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 
 ## Todo
 
-- test env
 - test context are corrects
 - implement and test ProcessReadStream#endHandler
 - documentation
