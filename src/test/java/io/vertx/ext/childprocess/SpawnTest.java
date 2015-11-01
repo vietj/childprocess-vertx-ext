@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -117,6 +118,22 @@ public class SpawnTest {
       process.exitHandler(code -> {
         context.assertEquals("hello", out.toString());
         context.assertEquals(0, status.getAndIncrement());
+        async.complete();
+      });
+    });
+  }
+
+  @Test
+  public void testCwd(TestContext context) {
+    Async async = context.async();
+    AtomicInteger status = new AtomicInteger();
+    String cwd = new File(new File("target"), "test-classes").getAbsolutePath();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "PrintCwd"), new ProcessOptions().setCwd(cwd), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, status.getAndIncrement());
+        context.assertEquals(cwd, new File(out.toString()).getAbsolutePath());
         async.complete();
       });
     });

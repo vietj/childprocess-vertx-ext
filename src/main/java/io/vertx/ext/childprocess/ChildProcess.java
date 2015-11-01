@@ -27,7 +27,7 @@ public interface ChildProcess {
 
   static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<ChildProcess> handler) {
     NuProcessBuilder builder;
-    if (options.getEnv() != null) {
+    if (options.getEnv() == null) {
       builder = new NuProcessBuilder(commands);
     } else {
       Map<String, String> env = new HashMap<>();

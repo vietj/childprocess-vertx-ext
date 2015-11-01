@@ -29,15 +29,17 @@ public class ProcessOptions {
     return env;
   }
 
-  public void setEnv(JsonObject env) {
+  public ProcessOptions setEnv(JsonObject env) {
     this.env = env;
+    return this;
   }
 
   public String getCwd() {
     return cwd;
   }
 
-  public void setCwd(String cwd) {
+  public ProcessOptions setCwd(String cwd) {
     this.cwd = cwd;
+    return this;
   }
 }
