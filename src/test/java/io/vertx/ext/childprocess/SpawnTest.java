@@ -37,6 +37,17 @@ public class SpawnTest {
   }
 
   @Test
+  public void testExitCode(TestContext context) {
+    Async async = context.async();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "ExitCode"), process -> {
+      process.exitHandler(code -> {
+        context.assertEquals(25, code);
+        async.complete();
+      });
+    });
+  }
+
+  @Test
   public void testStdin(TestContext context) {
     Async async = context.async();
     AtomicInteger status = new AtomicInteger();
