@@ -176,7 +176,6 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
 
   @Override
   public synchronized boolean onStdinReady(ByteBuffer byteBuffer) {
-    int len = 0;
     Buffer buffer;
     while (byteBuffer.remaining() > 0 && (buffer = stdinPending.poll()) != null) {
       byte[] bytes;
@@ -187,9 +186,8 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
         stdinPending.addFirst(buffer.slice(byteBuffer.remaining(), buffer.length()));
       }
       byteBuffer.put(bytes); // See to do directly with Netty ByteBuf
-      len += bytes.length;
+      stdinSize -= bytes.length;
     }
-    stdinSize -= len;
     byteBuffer.flip();
     context.runOnContext(v -> checkDrained());
     if (stdinSize > 0) {
