@@ -1,0 +1,4 @@
+{
+  "jmxEnabled": true,
+  "jmxDomain": "test-jmx-domain"
+}
