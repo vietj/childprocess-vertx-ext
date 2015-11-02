@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
@@ -64,15 +66,24 @@ public class SpawnTest {
 
   @Test
   public void testStdout(TestContext context) {
+    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStdout", "the_echoed_value"), ChildProcess::stdout);
+  }
+
+  @Test
+  public void testStderr(TestContext context) {
+    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStderr", "the_echoed_value"), ChildProcess::stderr);
+  }
+
+  private void testStream(TestContext context, List<String> cmd, Function<ChildProcess, ProcessReadStream> streamExtractor) {
     Async async = context.async();
     AtomicInteger status = new AtomicInteger();
-    ChildProcess.spawn(vertx, Arrays.asList("/bin/echo", "the_echoed_value"), process -> {
-      ProcessReadStream stdout = process.stdout();
-      stdout.handler(buf -> {
+    ChildProcess.spawn(vertx, cmd, process -> {
+      ProcessReadStream stream = streamExtractor.apply(process);
+      stream.handler(buf -> {
         context.assertEquals(0, status.getAndIncrement());
-        context.assertEquals("the_echoed_value\n", buf.toString());
+        context.assertEquals("the_echoed_value", buf.toString());
       });
-      stdout.endHandler(d -> {
+      stream.endHandler(d -> {
         context.assertEquals(1, status.getAndIncrement());
       });
       process.exitHandler(code -> {
