@@ -1,5 +1,6 @@
 package io.vertx.ext.childprocess;
 
+import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
@@ -95,35 +96,39 @@ public class SpawnTest {
 
 
   @Test
-  public void testDrainStdin(TestContext context) throws IOException {
+  public void testDrainStdin(TestContext testContext) throws IOException {
     Path tmp = Files.createTempFile("test", ".shared");
     tmp.toFile().deleteOnExit();
-    Async async = context.async();
+    Async async = testContext.async();
     AtomicInteger status = new AtomicInteger();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", /*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", "io.vertx.ext.childprocess.Main", tmp.toFile().getAbsolutePath()), process -> {
-      ProcessWriteStream stdin = process.stdin();
-      stdin.setWriteQueueMaxSize(8000);
-      process.exitHandler(code -> {
-        context.assertEquals(1, status.getAndIncrement());
-        context.assertEquals(0, code);
-        async.complete();
-      });
-      int size = 0;
-      while (!stdin.writeQueueFull()) {
-        Buffer buf = Buffer.buffer("hello");
-        stdin.write(buf);
-        size += buf.length();
-      }
-      context.assertTrue(size > 8000);
-      try {
-        Files.write(tmp, new byte[1]);
-      } catch (IOException e) {
-        context.fail(e);
-        return;
-      }
-      stdin.drainHandler(v -> {
-        context.assertEquals(0, status.getAndIncrement());
-        stdin.write(Buffer.buffer(new byte[]{4})); // EOF
+    Context context = vertx.getOrCreateContext();
+    context.runOnContext(v -> {
+      ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", /*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", "io.vertx.ext.childprocess.Main", tmp.toFile().getAbsolutePath()), process -> {
+        ProcessWriteStream stdin = process.stdin();
+        stdin.setWriteQueueMaxSize(8000);
+        process.exitHandler(code -> {
+          testContext.assertEquals(1, status.getAndIncrement());
+          testContext.assertEquals(0, code);
+          async.complete();
+        });
+        int size = 0;
+        while (!stdin.writeQueueFull()) {
+          Buffer buf = Buffer.buffer("hello");
+          stdin.write(buf);
+          size += buf.length();
+        }
+        testContext.assertTrue(size > 8000);
+        try {
+          Files.write(tmp, new byte[1]);
+        } catch (IOException e) {
+          testContext.fail(e);
+          return;
+        }
+        stdin.drainHandler(v2 -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(0, status.getAndIncrement());
+          stdin.write(Buffer.buffer(new byte[]{4})); // EOF
+        });
       });
     });
   }
