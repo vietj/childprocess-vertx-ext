@@ -40,12 +40,16 @@ public class SpawnTest {
   }
 
   @Test
-  public void testExitCode(TestContext context) {
-    Async async = context.async();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "ExitCode"), process -> {
-      process.exitHandler(code -> {
-        context.assertEquals(25, code);
-        async.complete();
+  public void testExitCode(TestContext testContext) {
+    Async async = testContext.async();
+    Context context = vertx.getOrCreateContext();
+    context.runOnContext(v -> {
+      ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "ExitCode"), process -> {
+        process.exitHandler(code -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(25, code);
+          async.complete();
+        });
       });
     });
   }
@@ -75,21 +79,26 @@ public class SpawnTest {
     testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStderr", "the_echoed_value"), ChildProcess::stderr);
   }
 
-  private void testStream(TestContext context, List<String> cmd, Function<ChildProcess, ProcessReadStream> streamExtractor) {
-    Async async = context.async();
+  private void testStream(TestContext testContext, List<String> cmd, Function<ChildProcess, ProcessReadStream> streamExtractor) {
+    Async async = testContext.async();
     AtomicInteger status = new AtomicInteger();
-    ChildProcess.spawn(vertx, cmd, process -> {
-      ProcessReadStream stream = streamExtractor.apply(process);
-      stream.handler(buf -> {
-        context.assertEquals(0, status.getAndIncrement());
-        context.assertEquals("the_echoed_value", buf.toString());
-      });
-      stream.endHandler(d -> {
-        context.assertEquals(1, status.getAndIncrement());
-      });
-      process.exitHandler(code -> {
-        context.assertEquals(2, status.getAndIncrement());
-        async.complete();
+    Context context = vertx.getOrCreateContext();
+    context.runOnContext(v -> {
+      ChildProcess.spawn(vertx, cmd, process -> {
+        ProcessReadStream stream = streamExtractor.apply(process);
+        stream.handler(buf -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(0, status.getAndIncrement());
+          testContext.assertEquals("the_echoed_value", buf.toString());
+        });
+        stream.endHandler(d -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(1, status.getAndIncrement());
+        });
+        process.exitHandler(code -> {
+          testContext.assertEquals(2, status.getAndIncrement());
+          async.complete();
+        });
       });
     });
   }
