@@ -21,3 +21,5 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 ## Todo
 
 - documentation
+- test destroy
+- test isRunning
