@@ -1,4 +1,4 @@
-# Chils Process for Vert.x
+# Child Process for Vert.x
 
 Spawn child process from Vert.x:
 
