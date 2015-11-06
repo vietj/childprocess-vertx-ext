@@ -188,4 +188,22 @@ public class SpawnTest {
       });
     });
   }
+
+  @Test
+  public void testStdoutLongSequence(TestContext context) {
+    Async async = context.async();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "StdoutLongSequence"), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, code);
+        StringBuilder expected = new StringBuilder();
+        for (int i = 0;i < 100000;i++) {
+          expected.append(i);
+        }
+        context.assertEquals(expected.toString(), out.toString());
+        async.complete();
+      });
+    });
+  }
 }
