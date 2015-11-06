@@ -29,6 +29,7 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
   private final Handler<ChildProcess> handler;
   private Handler<Integer> exitHandler;
   private NuProcess process;
+  private boolean wantWrite;
 
   public ChildProcessImpl(Context context, Handler<ChildProcess> handler) {
     this.context = context;
@@ -78,7 +79,8 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
       stdinSize += buffer.length();
       hasPending = stdinSize > 0;
     }
-    if (process != null && hasPending) {
+    if (process != null && hasPending && !wantWrite) {
+      wantWrite = true;
       process.wantWrite();
     }
     return this;
@@ -193,6 +195,7 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
     if (stdinSize > 0) {
       return true;
     } else {
+      wantWrite = false;
       if (stdinStatus == CLOSING) {
         stdinStatus = CLOSED;
         process.closeStdin(false);
