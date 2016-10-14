@@ -36,6 +36,20 @@ var ProcessWriteStream = function(j_val) {
   /**
 
    @public
+   @param t {Buffer} 
+   */
+  this.end = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_processWriteStream["end()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
+      j_processWriteStream["end(io.vertx.core.buffer.Buffer)"](__args[0]._jdel);
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
 
    @return {boolean}
    */

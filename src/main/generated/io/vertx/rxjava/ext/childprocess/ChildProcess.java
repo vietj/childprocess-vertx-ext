@@ -17,7 +17,6 @@
 package io.vertx.rxjava.ext.childprocess;
 
 import java.util.Map;
-import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.ext.childprocess.ProcessOptions;
 import java.util.List;
@@ -25,7 +24,6 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.Handler;
 
 /**
- * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.ChildProcess original} non RX-ified interface using Vert.x codegen.
@@ -44,23 +42,23 @@ public class ChildProcess {
   }
 
   public static void spawn(Vertx vertx, List<String> commands, Handler<ChildProcess> handler) { 
-    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx) vertx.getDelegate(), commands, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
+    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
       public void handle(io.vertx.ext.childprocess.ChildProcess event) {
-        handler.handle(new ChildProcess(event));
+        handler.handle(ChildProcess.newInstance(event));
       }
     });
   }
 
   public static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<ChildProcess> handler) { 
-    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx) vertx.getDelegate(), commands, options, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
+    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, options, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
       public void handle(io.vertx.ext.childprocess.ChildProcess event) {
-        handler.handle(new ChildProcess(event));
+        handler.handle(ChildProcess.newInstance(event));
       }
     });
   }
 
   public ChildProcess exitHandler(Handler<Integer> handler) { 
-    this.delegate.exitHandler(handler);
+    delegate.exitHandler(handler);
     return this;
   }
 
@@ -68,7 +66,7 @@ public class ChildProcess {
     if (cached_0 != null) {
       return cached_0;
     }
-    ProcessWriteStream ret= ProcessWriteStream.newInstance(this.delegate.stdin());
+    ProcessWriteStream ret = ProcessWriteStream.newInstance(delegate.stdin());
     cached_0 = ret;
     return ret;
   }
@@ -77,7 +75,7 @@ public class ChildProcess {
     if (cached_1 != null) {
       return cached_1;
     }
-    ProcessReadStream ret= ProcessReadStream.newInstance(this.delegate.stdout());
+    ProcessReadStream ret = ProcessReadStream.newInstance(delegate.stdout());
     cached_1 = ret;
     return ret;
   }
@@ -86,17 +84,17 @@ public class ChildProcess {
     if (cached_2 != null) {
       return cached_2;
     }
-    ProcessReadStream ret= ProcessReadStream.newInstance(this.delegate.stderr());
+    ProcessReadStream ret = ProcessReadStream.newInstance(delegate.stderr());
     cached_2 = ret;
     return ret;
   }
 
   public void destroy(boolean force) { 
-    this.delegate.destroy(force);
+    delegate.destroy(force);
   }
 
   public boolean isRunning() { 
-    boolean ret = this.delegate.isRunning();
+    boolean ret = delegate.isRunning();
     return ret;
   }
 

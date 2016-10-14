@@ -23,5 +23,10 @@ public interface ProcessWriteStream extends WriteStream<Buffer> {
   @Override
   ProcessWriteStream drainHandler(Handler<Void> handler);
 
+  @Override
+  default void end() {
+    close();
+  }
+
   void close();
 }

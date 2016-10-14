@@ -17,14 +17,12 @@
 package io.vertx.rxjava.ext.childprocess;
 
 import java.util.Map;
-import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.core.streams.ReadStream;
 import io.vertx.core.Handler;
 
 /**
- * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.ProcessReadStream original} non RX-ified interface using Vert.x codegen.
@@ -54,31 +52,31 @@ public class ProcessReadStream implements ReadStream<Buffer> {
   }
 
   public ProcessReadStream exceptionHandler(Handler<Throwable> handler) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.core.streams.StreamBase) delegate).exceptionHandler(handler);
+    ((io.vertx.core.streams.StreamBase) delegate).exceptionHandler(handler);
     return this;
   }
 
   public ProcessReadStream handler(Handler<Buffer> handler) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.core.streams.ReadStream) delegate).handler(new Handler<io.vertx.core.buffer.Buffer>() {
+    ((io.vertx.core.streams.ReadStream) delegate).handler(new Handler<io.vertx.core.buffer.Buffer>() {
       public void handle(io.vertx.core.buffer.Buffer event) {
-        handler.handle(new Buffer(event));
+        handler.handle(Buffer.newInstance(event));
       }
     });
     return this;
   }
 
   public ProcessReadStream pause() { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.core.streams.ReadStream) delegate).pause();
+    ((io.vertx.core.streams.ReadStream) delegate).pause();
     return this;
   }
 
   public ProcessReadStream resume() { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.core.streams.ReadStream) delegate).resume();
+    ((io.vertx.core.streams.ReadStream) delegate).resume();
     return this;
   }
 
   public ProcessReadStream endHandler(Handler<Void> handler) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.core.streams.ReadStream) delegate).endHandler(handler);
+    ((io.vertx.core.streams.ReadStream) delegate).endHandler(handler);
     return this;
   }
 

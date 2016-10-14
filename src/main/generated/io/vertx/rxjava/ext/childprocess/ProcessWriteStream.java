@@ -17,14 +17,12 @@
 package io.vertx.rxjava.ext.childprocess;
 
 import java.util.Map;
-import io.vertx.lang.rxjava.InternalHelper;
 import rx.Observable;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.core.streams.WriteStream;
 import io.vertx.core.Handler;
 
 /**
- * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.ProcessWriteStream original} non RX-ified interface using Vert.x codegen.
@@ -42,33 +40,41 @@ public class ProcessWriteStream implements WriteStream<Buffer> {
     return delegate;
   }
 
+  public void end(Buffer t) { 
+    delegate.end((io.vertx.core.buffer.Buffer)t.getDelegate());
+  }
+
   public boolean writeQueueFull() { 
-    boolean ret = this.delegate.writeQueueFull();
+    boolean ret = delegate.writeQueueFull();
     return ret;
   }
 
   public ProcessWriteStream exceptionHandler(Handler<Throwable> handler) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.ext.childprocess.ProcessWriteStream) delegate).exceptionHandler(handler);
+    ((io.vertx.ext.childprocess.ProcessWriteStream) delegate).exceptionHandler(handler);
     return this;
   }
 
   public ProcessWriteStream write(Buffer buffer) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.ext.childprocess.ProcessWriteStream) delegate).write((io.vertx.core.buffer.Buffer) buffer.getDelegate());
+    ((io.vertx.ext.childprocess.ProcessWriteStream) delegate).write((io.vertx.core.buffer.Buffer)buffer.getDelegate());
     return this;
   }
 
   public ProcessWriteStream setWriteQueueMaxSize(int i) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.ext.childprocess.ProcessWriteStream) delegate).setWriteQueueMaxSize(i);
+    ((io.vertx.ext.childprocess.ProcessWriteStream) delegate).setWriteQueueMaxSize(i);
     return this;
   }
 
   public ProcessWriteStream drainHandler(Handler<Void> handler) { 
-    ( /* Work around for https://jira.codehaus.org/browse/GROOVY-6970 */ (io.vertx.ext.childprocess.ProcessWriteStream) delegate).drainHandler(handler);
+    ((io.vertx.ext.childprocess.ProcessWriteStream) delegate).drainHandler(handler);
     return this;
   }
 
+  public void end() { 
+    ((io.vertx.ext.childprocess.ProcessWriteStream) delegate).end();
+  }
+
   public void close() { 
-    this.delegate.close();
+    delegate.close();
   }
 
 

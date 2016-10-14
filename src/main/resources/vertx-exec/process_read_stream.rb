@@ -3,7 +3,6 @@ require 'vertx/read_stream'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.ProcessReadStream
 module VertxExec
-  #  @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
   class ProcessReadStream
     include ::Vertx::ReadStream
     # @private

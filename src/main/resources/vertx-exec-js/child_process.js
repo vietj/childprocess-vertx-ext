@@ -140,11 +140,11 @@ var ChildProcess = function(j_val) {
 ChildProcess.spawn = function() {
   var __args = arguments;
   if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.core.Handler)"](__args[0]._jdel, __args[1], function(jVal) {
+    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), function(jVal) {
     __args[2](utils.convReturnVertxGen(jVal, ChildProcess));
   });
   }else if (__args.length === 4 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && (typeof __args[2] === 'object' && __args[2] != null) && typeof __args[3] === 'function') {
-    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.ext.childprocess.ProcessOptions,io.vertx.core.Handler)"](__args[0]._jdel, __args[1], __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null, function(jVal) {
+    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.ext.childprocess.ProcessOptions,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null, function(jVal) {
     __args[3](utils.convReturnVertxGen(jVal, ChildProcess));
   });
   } else throw new TypeError('function invoked with invalid arguments');

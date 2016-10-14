@@ -4,7 +4,6 @@ require 'vertx-exec/process_read_stream'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.ChildProcess
 module VertxExec
-  #  @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
   class ChildProcess
     # @private
     # @param j_del [::VertxExec::ChildProcess] the java delegate

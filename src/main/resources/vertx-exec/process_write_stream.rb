@@ -3,7 +3,6 @@ require 'vertx/write_stream'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.ProcessWriteStream
 module VertxExec
-  #  @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
   class ProcessWriteStream
     include ::Vertx::WriteStream
     # @private
@@ -15,6 +14,16 @@ module VertxExec
     # @return [::VertxExec::ProcessWriteStream] the underlying java delegate
     def j_del
       @j_del
+    end
+    # @param [::Vertx::Buffer] t 
+    # @return [void]
+    def end(t=nil)
+      if !block_given? && t == nil
+        return @j_del.java_method(:end, []).call()
+      elsif t.class.method_defined?(:j_del) && !block_given?
+        return @j_del.java_method(:end, [Java::IoVertxCoreBuffer::Buffer.java_class]).call(t.j_del)
+      end
+      raise ArgumentError, "Invalid arguments when calling end(t)"
     end
     # @return [true,false]
     def write_queue_full?
