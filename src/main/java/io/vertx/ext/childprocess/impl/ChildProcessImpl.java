@@ -9,7 +9,7 @@ import io.vertx.ext.childprocess.*;
 import io.vertx.ext.childprocess.ChildProcess;
 
 import java.nio.ByteBuffer;
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
@@ -19,7 +19,7 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, StreamO
   private static final int OPEN = 0, CLOSING = 1, CLOSED = 2;
 
   private int stdinStatus = OPEN;
-  private final LinkedList<Buffer> stdinPending = new LinkedList<>();
+  private final ArrayDeque<Buffer> stdinPending = new ArrayDeque<>();
   private int stdinSize;
   private int stdinMaxSize = 1024;
   private Handler<Void> drainHandler;
