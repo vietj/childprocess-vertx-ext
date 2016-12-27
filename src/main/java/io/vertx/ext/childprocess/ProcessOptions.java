@@ -6,7 +6,7 @@ import io.vertx.core.json.JsonObject;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@DataObject
+@DataObject(generateConverter = true)
 public class ProcessOptions {
 
   private JsonObject env;
@@ -21,8 +21,7 @@ public class ProcessOptions {
   }
 
   public ProcessOptions(JsonObject json) {
-    env = json.getJsonObject("env");
-    cwd = json.getString("cwd");
+    ProcessOptionsConverter.fromJson(json, this);
   }
 
   public JsonObject getEnv() {
@@ -41,5 +40,11 @@ public class ProcessOptions {
   public ProcessOptions setCwd(String cwd) {
     this.cwd = cwd;
     return this;
+  }
+
+  public JsonObject toJson() {
+    JsonObject json = new JsonObject();
+    ProcessOptionsConverter.toJson(this, json);
+    return json;
   }
 }
