@@ -136,22 +136,37 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   }
 
   @Override
-  public void onStart(NuProcess nuProcess) {
+  public synchronized void onStart(NuProcess nuProcess) {
+    process = nuProcess;
     context.runOnContext(v -> {
-      process = nuProcess;
       handler.handle(this);
     });
   }
 
   @Override
   public synchronized void onExit(int exitCode) {
-    if (exitHandler != null) {
+    if (process == null) {
+      // Early failure
       context.runOnContext(v -> {
-        process = null;
-        synchronized (this) {
-          stdinStatus = CLOSED;
+        if (handler != null) {
+          handler.handle(this);
         }
-        exitHandler.handle(exitCode);
+        handleExit(exitCode);
+      });
+    } else {
+      process = null;
+      synchronized (this) {
+        stdinStatus = CLOSED;
+      }
+      handleExit(exitCode);
+    }
+  }
+
+  private void handleExit(int exitCode) {
+    Handler<Integer> handler = exitHandler;
+    if (handler != null) {
+      context.runOnContext(v -> {
+        handler.handle(exitCode);
       });
     }
   }

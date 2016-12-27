@@ -255,4 +255,15 @@ public class SpawnTest {
     });
     process.destroy(true);
   }
+
+  @Test
+  public void testFoo(TestContext context) throws Exception {
+    Async async = context.async();
+    Process.spawn(vertx, Arrays.asList("/does/not/exists"), process -> {
+      process.exitHandler(code -> {
+        context.assertTrue(code < 0);
+        async.complete();
+      });
+    });
+  }
 }
