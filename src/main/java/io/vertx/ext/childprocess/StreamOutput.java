@@ -9,19 +9,19 @@ import io.vertx.core.streams.WriteStream;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 @VertxGen
-public interface ProcessWriteStream extends WriteStream<Buffer> {
+public interface StreamOutput extends WriteStream<Buffer> {
 
   @Override
-  ProcessWriteStream exceptionHandler(Handler<Throwable> handler);
+  StreamOutput exceptionHandler(Handler<Throwable> handler);
 
   @Override
-  ProcessWriteStream write(Buffer buffer);
+  StreamOutput write(Buffer buffer);
 
   @Override
-  ProcessWriteStream setWriteQueueMaxSize(int i);
+  StreamOutput setWriteQueueMaxSize(int i);
 
   @Override
-  ProcessWriteStream drainHandler(Handler<Void> handler);
+  StreamOutput drainHandler(Handler<Void> handler);
 
   @Override
   default void end() {

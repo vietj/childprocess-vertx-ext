@@ -14,22 +14,22 @@
  * under the License.
  */
 
-/** @module vertx-exec-js/process_write_stream */
+/** @module vertx-exec-js/stream_output */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
 var WriteStream = require('vertx-js/write_stream');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JProcessWriteStream = io.vertx.ext.childprocess.ProcessWriteStream;
+var JStreamOutput = io.vertx.ext.childprocess.StreamOutput;
 
 /**
 
  @class
 */
-var ProcessWriteStream = function(j_val) {
+var StreamOutput = function(j_val) {
 
-  var j_processWriteStream = j_val;
+  var j_streamOutput = j_val;
   var that = this;
   WriteStream.call(this, j_val);
 
@@ -41,9 +41,9 @@ var ProcessWriteStream = function(j_val) {
   this.end = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      j_processWriteStream["end()"]();
+      j_streamOutput["end()"]();
     }  else if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
-      j_processWriteStream["end(io.vertx.core.buffer.Buffer)"](__args[0]._jdel);
+      j_streamOutput["end(io.vertx.core.buffer.Buffer)"](__args[0]._jdel);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -56,7 +56,7 @@ var ProcessWriteStream = function(j_val) {
   this.writeQueueFull = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_processWriteStream["writeQueueFull()"]();
+      return j_streamOutput["writeQueueFull()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -64,12 +64,12 @@ var ProcessWriteStream = function(j_val) {
 
    @public
    @param handler {function} 
-   @return {ProcessWriteStream}
+   @return {StreamOutput}
    */
   this.exceptionHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_processWriteStream["exceptionHandler(io.vertx.core.Handler)"](function(jVal) {
+      j_streamOutput["exceptionHandler(io.vertx.core.Handler)"](function(jVal) {
       handler(utils.convReturnThrowable(jVal));
     });
       return that;
@@ -80,12 +80,12 @@ var ProcessWriteStream = function(j_val) {
 
    @public
    @param buffer {Buffer} 
-   @return {ProcessWriteStream}
+   @return {StreamOutput}
    */
   this.write = function(buffer) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'object' && __args[0]._jdel) {
-      j_processWriteStream["write(io.vertx.core.buffer.Buffer)"](buffer._jdel);
+      j_streamOutput["write(io.vertx.core.buffer.Buffer)"](buffer._jdel);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -94,12 +94,12 @@ var ProcessWriteStream = function(j_val) {
 
    @public
    @param i {number} 
-   @return {ProcessWriteStream}
+   @return {StreamOutput}
    */
   this.setWriteQueueMaxSize = function(i) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='number') {
-      j_processWriteStream["setWriteQueueMaxSize(int)"](i);
+      j_streamOutput["setWriteQueueMaxSize(int)"](i);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -108,12 +108,12 @@ var ProcessWriteStream = function(j_val) {
 
    @public
    @param handler {function} 
-   @return {ProcessWriteStream}
+   @return {StreamOutput}
    */
   this.drainHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_processWriteStream["drainHandler(io.vertx.core.Handler)"](handler);
+      j_streamOutput["drainHandler(io.vertx.core.Handler)"](handler);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -126,15 +126,15 @@ var ProcessWriteStream = function(j_val) {
   this.close = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      j_processWriteStream["close()"]();
+      j_streamOutput["close()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_processWriteStream;
+  this._jdel = j_streamOutput;
 };
 
 // We export the Constructor function
-module.exports = ProcessWriteStream;
+module.exports = StreamOutput;

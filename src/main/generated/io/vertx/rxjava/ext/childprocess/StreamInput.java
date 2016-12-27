@@ -16,21 +16,22 @@
 
 package io.vertx.rxjava.ext.childprocess;
 
-import io.vertx.ext.childprocess.StreamInput;
+import java.util.Map;
+import rx.Observable;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.core.Handler;
 
 /**
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link StreamInput original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.StreamInput original} non RX-ified interface using Vert.x codegen.
  */
 
-public class ProcessReadStream {
+public class StreamInput {
 
-  final StreamInput delegate;
+  final io.vertx.ext.childprocess.StreamInput delegate;
 
-  public ProcessReadStream(StreamInput delegate) {
+  public StreamInput(io.vertx.ext.childprocess.StreamInput delegate) {
     this.delegate = delegate;
   }
 
@@ -38,12 +39,12 @@ public class ProcessReadStream {
     return delegate;
   }
 
-  public ProcessReadStream exceptionHandler(Handler<Throwable> handler) { 
+  public StreamInput exceptionHandler(Handler<Throwable> handler) { 
     delegate.exceptionHandler(handler);
     return this;
   }
 
-  public ProcessReadStream handler(Handler<Buffer> handler) { 
+  public StreamInput handler(Handler<Buffer> handler) { 
     delegate.handler(new Handler<io.vertx.core.buffer.Buffer>() {
       public void handle(io.vertx.core.buffer.Buffer event) {
         handler.handle(Buffer.newInstance(event));
@@ -52,13 +53,13 @@ public class ProcessReadStream {
     return this;
   }
 
-  public ProcessReadStream endHandler(Handler<Void> handler) { 
+  public StreamInput endHandler(Handler<Void> handler) { 
     delegate.endHandler(handler);
     return this;
   }
 
 
-  public static ProcessReadStream newInstance(StreamInput arg) {
-    return arg != null ? new ProcessReadStream(arg) : null;
+  public static StreamInput newInstance(io.vertx.ext.childprocess.StreamInput arg) {
+    return arg != null ? new StreamInput(arg) : null;
   }
 }

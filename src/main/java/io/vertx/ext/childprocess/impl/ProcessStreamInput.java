@@ -3,20 +3,20 @@ package io.vertx.ext.childprocess.impl;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.ext.childprocess.ProcessReadStream;
+import io.vertx.ext.childprocess.StreamInput;
 
 import java.nio.ByteBuffer;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class ProcessReadStreamImpl implements ProcessReadStream {
+public class ProcessStreamInput implements StreamInput {
 
   private final Context context;
   private Handler<Buffer> handler;
   private Handler<Void> endHandler;
 
-  public ProcessReadStreamImpl(Context context) {
+  ProcessStreamInput(Context context) {
     this.context = context;
   }
 
@@ -36,7 +36,6 @@ public class ProcessReadStreamImpl implements ProcessReadStream {
     byte[] bytes = new byte[byteBuffer.remaining()];
     byteBuffer.get(bytes);
     Buffer buffer = Buffer.buffer(bytes);
-    int len = buffer.length();
     context.runOnContext(v -> {
       if (handler != null) {
         handler.handle(buffer);
@@ -45,18 +44,18 @@ public class ProcessReadStreamImpl implements ProcessReadStream {
   }
 
   @Override
-  public ProcessReadStream exceptionHandler(Handler<Throwable> handler) {
+  public StreamInput exceptionHandler(Handler<Throwable> handler) {
     return this;
   }
 
   @Override
-  public ProcessReadStream handler(Handler<Buffer> handler) {
+  public StreamInput handler(Handler<Buffer> handler) {
     this.handler = handler;
     return this;
   }
 
   @Override
-  public ProcessReadStream endHandler(Handler<Void> handler) {
+  public StreamInput endHandler(Handler<Void> handler) {
     this.endHandler = handler;
     return this;
   }

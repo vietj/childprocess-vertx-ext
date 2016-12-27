@@ -4,20 +4,19 @@ import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.streams.ReadStream;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 @VertxGen
-public interface ProcessReadStream {
+public interface StreamInput {
 
   @Fluent
-  ProcessReadStream exceptionHandler(Handler<Throwable> handler);
+  StreamInput exceptionHandler(Handler<Throwable> handler);
 
   @Fluent
-  ProcessReadStream handler(Handler<Buffer> handler);
+  StreamInput handler(Handler<Buffer> handler);
 
   @Fluent
-  ProcessReadStream endHandler(Handler<Void> handler);
+  StreamInput endHandler(Handler<Void> handler);
 }

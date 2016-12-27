@@ -16,9 +16,9 @@
 
 /** @module vertx-exec-js/child_process */
 var utils = require('vertx-js/util/utils');
-var ProcessWriteStream = require('vertx-exec-js/process_write_stream');
+var StreamInput = require('vertx-exec-js/stream_input');
 var Vertx = require('vertx-js/vertx');
-var ProcessReadStream = require('vertx-exec-js/process_read_stream');
+var StreamOutput = require('vertx-exec-js/stream_output');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -54,13 +54,13 @@ var ChildProcess = function(j_val) {
 
    @public
 
-   @return {ProcessWriteStream}
+   @return {StreamOutput}
    */
   this.stdin = function() {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstdin == null) {
-        that.cachedstdin = utils.convReturnVertxGen(j_childProcess["stdin()"](), ProcessWriteStream);
+        that.cachedstdin = utils.convReturnVertxGen(j_childProcess["stdin()"](), StreamOutput);
       }
       return that.cachedstdin;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -70,13 +70,13 @@ var ChildProcess = function(j_val) {
 
    @public
 
-   @return {ProcessReadStream}
+   @return {StreamInput}
    */
   this.stdout = function() {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstdout == null) {
-        that.cachedstdout = utils.convReturnVertxGen(j_childProcess["stdout()"](), ProcessReadStream);
+        that.cachedstdout = utils.convReturnVertxGen(j_childProcess["stdout()"](), StreamInput);
       }
       return that.cachedstdout;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -86,13 +86,13 @@ var ChildProcess = function(j_val) {
 
    @public
 
-   @return {ProcessReadStream}
+   @return {StreamInput}
    */
   this.stderr = function() {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstderr == null) {
-        that.cachedstderr = utils.convReturnVertxGen(j_childProcess["stderr()"](), ProcessReadStream);
+        that.cachedstderr = utils.convReturnVertxGen(j_childProcess["stderr()"](), StreamInput);
       }
       return that.cachedstderr;
     } else throw new TypeError('function invoked with invalid arguments');

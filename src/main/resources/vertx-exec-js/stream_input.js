@@ -14,33 +14,33 @@
  * under the License.
  */
 
-/** @module vertx-exec-js/process_read_stream */
+/** @module vertx-exec-js/stream_input */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JProcessReadStream = io.vertx.ext.childprocess.ProcessReadStream;
+var JStreamInput = io.vertx.ext.childprocess.StreamInput;
 
 /**
 
  @class
 */
-var ProcessReadStream = function(j_val) {
+var StreamInput = function(j_val) {
 
-  var j_processReadStream = j_val;
+  var j_streamInput = j_val;
   var that = this;
 
   /**
 
    @public
    @param handler {function} 
-   @return {ProcessReadStream}
+   @return {StreamInput}
    */
   this.exceptionHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_processReadStream["exceptionHandler(io.vertx.core.Handler)"](function(jVal) {
+      j_streamInput["exceptionHandler(io.vertx.core.Handler)"](function(jVal) {
       handler(utils.convReturnThrowable(jVal));
     });
       return that;
@@ -51,12 +51,12 @@ var ProcessReadStream = function(j_val) {
 
    @public
    @param handler {function} 
-   @return {ProcessReadStream}
+   @return {StreamInput}
    */
   this.handler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_processReadStream["handler(io.vertx.core.Handler)"](function(jVal) {
+      j_streamInput["handler(io.vertx.core.Handler)"](function(jVal) {
       handler(utils.convReturnVertxGen(jVal, Buffer));
     });
       return that;
@@ -67,12 +67,12 @@ var ProcessReadStream = function(j_val) {
 
    @public
    @param handler {function} 
-   @return {ProcessReadStream}
+   @return {StreamInput}
    */
   this.endHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_processReadStream["endHandler(io.vertx.core.Handler)"](handler);
+      j_streamInput["endHandler(io.vertx.core.Handler)"](handler);
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };
@@ -80,8 +80,8 @@ var ProcessReadStream = function(j_val) {
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_processReadStream;
+  this._jdel = j_streamInput;
 };
 
 // We export the Constructor function
-module.exports = ProcessReadStream;
+module.exports = StreamInput;

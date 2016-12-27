@@ -49,13 +49,13 @@ public interface ChildProcess {
   ChildProcess exitHandler(Handler<Integer> handler);
 
   @CacheReturn
-  ProcessWriteStream stdin();
+  StreamOutput stdin();
 
   @CacheReturn
-  ProcessReadStream stdout();
+  StreamInput stdout();
 
   @CacheReturn
-  ProcessReadStream stderr();
+  StreamInput stderr();
 
   void destroy(boolean force);
 

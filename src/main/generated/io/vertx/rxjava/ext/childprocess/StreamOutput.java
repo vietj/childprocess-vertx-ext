@@ -16,7 +16,8 @@
 
 package io.vertx.rxjava.ext.childprocess;
 
-import io.vertx.ext.childprocess.StreamOutput;
+import java.util.Map;
+import rx.Observable;
 import io.vertx.rxjava.core.buffer.Buffer;
 import io.vertx.rxjava.core.streams.WriteStream;
 import io.vertx.core.Handler;
@@ -24,14 +25,14 @@ import io.vertx.core.Handler;
 /**
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link StreamOutput original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.StreamOutput original} non RX-ified interface using Vert.x codegen.
  */
 
-public class ProcessWriteStream implements WriteStream<Buffer> {
+public class StreamOutput implements WriteStream<Buffer> {
 
-  final StreamOutput delegate;
+  final io.vertx.ext.childprocess.StreamOutput delegate;
 
-  public ProcessWriteStream(StreamOutput delegate) {
+  public StreamOutput(io.vertx.ext.childprocess.StreamOutput delegate) {
     this.delegate = delegate;
   }
 
@@ -48,28 +49,28 @@ public class ProcessWriteStream implements WriteStream<Buffer> {
     return ret;
   }
 
-  public ProcessWriteStream exceptionHandler(Handler<Throwable> handler) { 
-    ((StreamOutput) delegate).exceptionHandler(handler);
+  public StreamOutput exceptionHandler(Handler<Throwable> handler) { 
+    ((io.vertx.core.streams.WriteStream) delegate).exceptionHandler(handler);
     return this;
   }
 
-  public ProcessWriteStream write(Buffer buffer) { 
-    ((StreamOutput) delegate).write((io.vertx.core.buffer.Buffer)buffer.getDelegate());
+  public StreamOutput write(Buffer buffer) { 
+    ((io.vertx.core.streams.WriteStream) delegate).write((io.vertx.core.buffer.Buffer)buffer.getDelegate());
     return this;
   }
 
-  public ProcessWriteStream setWriteQueueMaxSize(int i) { 
-    ((StreamOutput) delegate).setWriteQueueMaxSize(i);
+  public StreamOutput setWriteQueueMaxSize(int i) { 
+    ((io.vertx.core.streams.WriteStream) delegate).setWriteQueueMaxSize(i);
     return this;
   }
 
-  public ProcessWriteStream drainHandler(Handler<Void> handler) { 
-    ((StreamOutput) delegate).drainHandler(handler);
+  public StreamOutput drainHandler(Handler<Void> handler) { 
+    ((io.vertx.core.streams.WriteStream) delegate).drainHandler(handler);
     return this;
   }
 
   public void end() { 
-    ((StreamOutput) delegate).end();
+    ((io.vertx.core.streams.WriteStream) delegate).end();
   }
 
   public void close() { 
@@ -77,7 +78,7 @@ public class ProcessWriteStream implements WriteStream<Buffer> {
   }
 
 
-  public static ProcessWriteStream newInstance(StreamOutput arg) {
-    return arg != null ? new ProcessWriteStream(arg) : null;
+  public static StreamOutput newInstance(io.vertx.ext.childprocess.StreamOutput arg) {
+    return arg != null ? new StreamOutput(arg) : null;
   }
 }

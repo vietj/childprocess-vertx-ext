@@ -62,29 +62,29 @@ public class ChildProcess {
     return this;
   }
 
-  public ProcessWriteStream stdin() { 
+  public StreamOutput stdin() { 
     if (cached_0 != null) {
       return cached_0;
     }
-    ProcessWriteStream ret = ProcessWriteStream.newInstance(delegate.stdin());
+    StreamOutput ret = StreamOutput.newInstance(delegate.stdin());
     cached_0 = ret;
     return ret;
   }
 
-  public ProcessReadStream stdout() { 
+  public StreamInput stdout() { 
     if (cached_1 != null) {
       return cached_1;
     }
-    ProcessReadStream ret = ProcessReadStream.newInstance(delegate.stdout());
+    StreamInput ret = StreamInput.newInstance(delegate.stdout());
     cached_1 = ret;
     return ret;
   }
 
-  public ProcessReadStream stderr() { 
+  public StreamInput stderr() { 
     if (cached_2 != null) {
       return cached_2;
     }
-    ProcessReadStream ret = ProcessReadStream.newInstance(delegate.stderr());
+    StreamInput ret = StreamInput.newInstance(delegate.stderr());
     cached_2 = ret;
     return ret;
   }
@@ -98,9 +98,9 @@ public class ChildProcess {
     return ret;
   }
 
-  private ProcessWriteStream cached_0;
-  private ProcessReadStream cached_1;
-  private ProcessReadStream cached_2;
+  private StreamOutput cached_0;
+  private StreamInput cached_1;
+  private StreamInput cached_2;
 
   public static ChildProcess newInstance(io.vertx.ext.childprocess.ChildProcess arg) {
     return arg != null ? new ChildProcess(arg) : null;

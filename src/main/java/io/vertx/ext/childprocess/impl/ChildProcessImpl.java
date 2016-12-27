@@ -14,7 +14,7 @@ import java.util.LinkedList;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class ChildProcessImpl implements NuProcessHandler, ChildProcess, ProcessWriteStream {
+public class ChildProcessImpl implements NuProcessHandler, ChildProcess, StreamOutput {
 
   private static final int OPEN = 0, CLOSING = 1, CLOSED = 2;
 
@@ -24,8 +24,8 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
   private int stdinMaxSize = 1024;
   private Handler<Void> drainHandler;
   private final Context context;
-  private final ProcessReadStreamImpl stdout;
-  private final ProcessReadStreamImpl stderr;
+  private final ProcessStreamInput stdout;
+  private final ProcessStreamInput stderr;
   private final Handler<ChildProcess> handler;
   private Handler<Integer> exitHandler;
   private NuProcess process;
@@ -33,8 +33,8 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
 
   public ChildProcessImpl(Context context, Handler<ChildProcess> handler) {
     this.context = context;
-    this.stdout = new ProcessReadStreamImpl(context);
-    this.stderr = new ProcessReadStreamImpl(context);
+    this.stdout = new ProcessStreamInput(context);
+    this.stderr = new ProcessStreamInput(context);
     this.handler = handler;
   }
 
@@ -47,29 +47,29 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
   }
 
   @Override
-  public ProcessWriteStream stdin() {
+  public StreamOutput stdin() {
     return this;
   }
 
   @Override
-  public ProcessReadStream stdout() {
+  public StreamInput stdout() {
     return stdout;
   }
 
   @Override
-  public ProcessReadStream stderr() {
+  public StreamInput stderr() {
     return stderr;
   }
 
   //
 
   @Override
-  public ProcessWriteStream exceptionHandler(Handler<Throwable> handler) {
+  public StreamOutput exceptionHandler(Handler<Throwable> handler) {
     return this;
   }
 
   @Override
-  public ProcessWriteStream write(Buffer buffer) {
+  public StreamOutput write(Buffer buffer) {
     boolean hasPending;
     synchronized (this) {
       if (stdinStatus != OPEN) {
@@ -87,13 +87,13 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, Process
   }
 
   @Override
-  public synchronized ProcessWriteStream setWriteQueueMaxSize(int i) {
+  public synchronized StreamOutput setWriteQueueMaxSize(int i) {
     stdinMaxSize = i;
     return this;
   }
 
   @Override
-  public ProcessWriteStream drainHandler(Handler<Void> handler) {
+  public StreamOutput drainHandler(Handler<Void> handler) {
     drainHandler = handler;
     checkDrained();
     return this;

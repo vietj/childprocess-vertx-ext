@@ -1,6 +1,6 @@
-require 'vertx-exec/process_write_stream'
+require 'vertx-exec/stream_input'
 require 'vertx/vertx'
-require 'vertx-exec/process_read_stream'
+require 'vertx-exec/stream_output'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.ChildProcess
 module VertxExec
@@ -37,33 +37,33 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling exit_handler()"
     end
-    # @return [::VertxExec::ProcessWriteStream]
+    # @return [::VertxExec::StreamOutput]
     def stdin
       if !block_given?
         if @cached_stdin != nil
           return @cached_stdin
         end
-        return @cached_stdin = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stdin, []).call(),::VertxExec::ProcessWriteStream)
+        return @cached_stdin = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stdin, []).call(),::VertxExec::StreamOutput)
       end
       raise ArgumentError, "Invalid arguments when calling stdin()"
     end
-    # @return [::VertxExec::ProcessReadStream]
+    # @return [::VertxExec::StreamInput]
     def stdout
       if !block_given?
         if @cached_stdout != nil
           return @cached_stdout
         end
-        return @cached_stdout = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stdout, []).call(),::VertxExec::ProcessReadStream)
+        return @cached_stdout = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stdout, []).call(),::VertxExec::StreamInput)
       end
       raise ArgumentError, "Invalid arguments when calling stdout()"
     end
-    # @return [::VertxExec::ProcessReadStream]
+    # @return [::VertxExec::StreamInput]
     def stderr
       if !block_given?
         if @cached_stderr != nil
           return @cached_stderr
         end
-        return @cached_stderr = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stderr, []).call(),::VertxExec::ProcessReadStream)
+        return @cached_stderr = ::Vertx::Util::Utils.safe_create(@j_del.java_method(:stderr, []).call(),::VertxExec::StreamInput)
       end
       raise ArgumentError, "Invalid arguments when calling stderr()"
     end
