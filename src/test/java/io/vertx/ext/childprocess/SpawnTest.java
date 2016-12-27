@@ -17,11 +17,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -207,51 +204,6 @@ public class SpawnTest {
         context.assertEquals(expected.toString(), out.toString());
         async.complete();
       });
-    });
-  }
-
-  @Test
-  public void testPauseResumeStdout(TestContext testContext) throws IOException {
-    Buffer out = Buffer.buffer();
-    Async async1 = testContext.async();
-    Context context = vertx.getOrCreateContext();
-    AtomicReference<ChildProcess> processRef = new AtomicReference<>();
-    context.runOnContext(v -> {
-      AtomicBoolean paused = new AtomicBoolean();
-      ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "StdoutLongSequence"), process -> {
-        processRef.set(process);
-        process.stdout().handler(buf -> {
-          out.appendBuffer(buf);
-          if (out.length() > 1000 && paused.compareAndSet(false, true)) {
-            System.out.println("pausing");
-            process.stdout().pause();
-            vertx.setTimer(1000, id -> {
-              async1.complete();
-            });
-          }
-        });
-      });
-    });
-    async1.awaitSuccess(10000);
-    System.out.println("resuming");
-    Async async2 = testContext.async();
-    context.runOnContext(v -> {
-      ChildProcess process = processRef.get();
-      process.exitHandler(code -> {
-        System.out.println("exit");
-        testContext.assertEquals(0, code);
-        StringBuilder expected = new StringBuilder();
-        for (int i = 0; i < 100000; i++) {
-          expected.append(i);
-        }
-        testContext.assertEquals(expected.toString(), out.toString());
-        async2.complete();
-      });
-      process.stdout().handler(buf -> {
-        System.out.println("buffer after resume " + buf.length());
-        out.appendBuffer(buf);
-      });
-      process.stdout().resume();
     });
   }
 }

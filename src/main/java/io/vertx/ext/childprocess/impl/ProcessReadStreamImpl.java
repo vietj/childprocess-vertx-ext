@@ -15,20 +15,13 @@ public class ProcessReadStreamImpl implements ProcessReadStream {
   private final Context context;
   private Handler<Buffer> handler;
   private Handler<Void> endHandler;
-  private ByteBuffer processBuffer;
-  private boolean paused;
 
   public ProcessReadStreamImpl(Context context) {
     this.context = context;
   }
 
   synchronized void write(ByteBuffer byteBuffer) {
-    if (!paused) {
-      sendBuffer(byteBuffer);
-    } else {
-      // It's always the same buffer
-      processBuffer = byteBuffer;
-    }
+    sendBuffer(byteBuffer);
   }
 
   void close() {
@@ -44,7 +37,6 @@ public class ProcessReadStreamImpl implements ProcessReadStream {
     byteBuffer.get(bytes);
     Buffer buffer = Buffer.buffer(bytes);
     int len = buffer.length();
-    System.out.println("L=" + len);
     context.runOnContext(v -> {
       if (handler != null) {
         handler.handle(buffer);
@@ -60,24 +52,6 @@ public class ProcessReadStreamImpl implements ProcessReadStream {
   @Override
   public ProcessReadStream handler(Handler<Buffer> handler) {
     this.handler = handler;
-    return this;
-  }
-
-  @Override
-  public synchronized ProcessReadStream pause() {
-    paused = true;
-    return this;
-  }
-
-  @Override
-  public synchronized ProcessReadStream resume() {
-    if (paused) {
-      paused = false;
-      if (processBuffer != null) {
-        sendBuffer(processBuffer);
-        processBuffer = null;
-      }
-    }
     return this;
   }
 

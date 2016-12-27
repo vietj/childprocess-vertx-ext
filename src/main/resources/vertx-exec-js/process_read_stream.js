@@ -17,7 +17,6 @@
 /** @module vertx-exec-js/process_read_stream */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
-var ReadStream = require('vertx-js/read_stream');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -31,7 +30,6 @@ var ProcessReadStream = function(j_val) {
 
   var j_processReadStream = j_val;
   var that = this;
-  ReadStream.call(this, j_val);
 
   /**
 
@@ -61,34 +59,6 @@ var ProcessReadStream = function(j_val) {
       j_processReadStream["handler(io.vertx.core.Handler)"](function(jVal) {
       handler(utils.convReturnVertxGen(jVal, Buffer));
     });
-      return that;
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {ProcessReadStream}
-   */
-  this.pause = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      j_processReadStream["pause()"]();
-      return that;
-    } else throw new TypeError('function invoked with invalid arguments');
-  };
-
-  /**
-
-   @public
-
-   @return {ProcessReadStream}
-   */
-  this.resume = function() {
-    var __args = arguments;
-    if (__args.length === 0) {
-      j_processReadStream["resume()"]();
       return that;
     } else throw new TypeError('function invoked with invalid arguments');
   };

@@ -1,10 +1,8 @@
 require 'vertx/buffer'
-require 'vertx/read_stream'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.ProcessReadStream
 module VertxExec
   class ProcessReadStream
-    include ::Vertx::ReadStream
     # @private
     # @param j_del [::VertxExec::ProcessReadStream] the java delegate
     def initialize(j_del)
@@ -32,22 +30,6 @@ module VertxExec
         return self
       end
       raise ArgumentError, "Invalid arguments when calling handler()"
-    end
-    # @return [self]
-    def pause
-      if !block_given?
-        @j_del.java_method(:pause, []).call()
-        return self
-      end
-      raise ArgumentError, "Invalid arguments when calling pause()"
-    end
-    # @return [self]
-    def resume
-      if !block_given?
-        @j_del.java_method(:resume, []).call()
-        return self
-      end
-      raise ArgumentError, "Invalid arguments when calling resume()"
     end
     # @yield 
     # @return [self]
