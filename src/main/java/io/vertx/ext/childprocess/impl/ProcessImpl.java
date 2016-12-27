@@ -1,6 +1,7 @@
 package io.vertx.ext.childprocess.impl;
 
 import com.zaxxer.nuprocess.NuProcess;
+import com.zaxxer.nuprocess.NuProcessBuilder;
 import com.zaxxer.nuprocess.NuProcessHandler;
 import io.vertx.core.Context;
 import io.vertx.core.Handler;
@@ -18,6 +19,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   private static final int OPEN = 0, CLOSING = 1, CLOSED = 2;
 
+  private NuProcessBuilder builder;
   private int stdinStatus = OPEN;
   private final ArrayDeque<Buffer> stdinPending = new ArrayDeque<>();
   private int stdinSize;
@@ -26,19 +28,37 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   private final Context context;
   private final ProcessStreamInput stdout;
   private final ProcessStreamInput stderr;
-  private final Handler<Process> handler;
+  private Handler<Process> processHandler;
   private Handler<Integer> exitHandler;
   private NuProcess process;
   private boolean wantWrite;
 
-  public ProcessImpl(Context context, Handler<Process> handler) {
+  public ProcessImpl(Context context, NuProcessBuilder builder) {
     this.context = context;
     this.stdout = new ProcessStreamInput(context);
     this.stderr = new ProcessStreamInput(context);
-    this.handler = handler;
+    this.builder = builder;
   }
 
   //
+
+
+  @Override
+  public synchronized void start() {
+    start(p -> {});
+  }
+
+  @Override
+  public synchronized void start(Handler<Process> handler) {
+    if (processHandler != null) {
+      throw new IllegalStateException();
+    }
+    processHandler = handler;
+    builder.setProcessListener(this);
+    context.runOnContext(v -> {
+      builder.start();
+    });
+  }
 
   @Override
   public synchronized Process exitHandler(Handler<Integer> handler) {
@@ -72,7 +92,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   public StreamOutput write(Buffer buffer) {
     boolean hasPending;
     synchronized (this) {
-      if (stdinStatus != OPEN) {
+      if (stdinStatus == CLOSING || stdinStatus == CLOSED) {
         throw new IllegalStateException();
       }
       stdinPending.add(buffer);
@@ -138,8 +158,13 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   @Override
   public synchronized void onStart(NuProcess nuProcess) {
     process = nuProcess;
+    stdinStatus = OPEN;
+    if (stdinPending.size() > 0) {
+      wantWrite = true;
+      process.wantWrite();
+    }
     context.runOnContext(v -> {
-      handler.handle(this);
+      processHandler.handle(this);
     });
   }
 
@@ -148,8 +173,8 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
     if (process == null) {
       // Early failure
       context.runOnContext(v -> {
-        if (handler != null) {
-          handler.handle(this);
+        if (processHandler != null) {
+          processHandler.handle(this);
         }
         handleExit(exitCode);
       });

@@ -26,6 +26,7 @@ var JProcess = io.vertx.ext.childprocess.Process;
 var ProcessOptions = io.vertx.ext.childprocess.ProcessOptions;
 
 /**
+ A process launched from this current process.
 
  @class
 */
@@ -38,7 +39,25 @@ var Process = function(j_val) {
 
    @public
    @param handler {function} 
-   @return {Process}
+   */
+  this.start = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      j_process["start()"]();
+    }  else if (__args.length === 1 && typeof __args[0] === 'function') {
+      j_process["start(io.vertx.core.Handler)"](function(jVal) {
+      __args[0](utils.convReturnVertxGen(jVal, Process));
+    });
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+   Set the handler to be called when the process exits, the handler will be called with the
+   process status code value.
+
+   @public
+   @param handler {function} the handler 
+   @return {Process} a reference to this, so the API can be used fluently
    */
   this.exitHandler = function(handler) {
     var __args = arguments;
@@ -54,7 +73,7 @@ var Process = function(j_val) {
 
    @public
 
-   @return {StreamOutput}
+   @return {StreamOutput} the process stdin stream
    */
   this.stdin = function() {
     var __args = arguments;
@@ -70,7 +89,7 @@ var Process = function(j_val) {
 
    @public
 
-   @return {StreamInput}
+   @return {StreamInput} the process stdout stream
    */
   this.stdout = function() {
     var __args = arguments;
@@ -86,7 +105,7 @@ var Process = function(j_val) {
 
    @public
 
-   @return {StreamInput}
+   @return {StreamInput} the process stderr stream
    */
   this.stderr = function() {
     var __args = arguments;
@@ -154,23 +173,48 @@ Process.env = function() {
 };
 
 /**
+ Spawn a child process from this process.
 
  @memberof module:vertx-exec-js/process
- @param vertx {Vertx} 
- @param commands {Array.<string>} 
- @param options {Object} 
- @param handler {function} 
+ @param vertx {Vertx} the vertx instance 
+ @param command {string} the command to run 
+ @param args {Array.<string>} list of string arguments 
+ @param options {Object} the options to run the command 
+ @return {Process} the process
  */
 Process.spawn = function() {
   var __args = arguments;
-  if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-    JProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), function(jVal) {
-    __args[2](utils.convReturnVertxGen(jVal, Process));
-  });
-  }else if (__args.length === 4 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && (typeof __args[2] === 'object' && __args[2] != null) && typeof __args[3] === 'function') {
-    JProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.ext.childprocess.ProcessOptions,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null, function(jVal) {
-    __args[3](utils.convReturnVertxGen(jVal, Process));
-  });
+  if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string') {
+    return utils.convReturnVertxGen(JProcess["spawn(io.vertx.core.Vertx,java.lang.String)"](__args[0]._jdel, __args[1]), Process);
+  }else if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && typeof __args[2] === 'object' && __args[2] instanceof Array) {
+    return utils.convReturnVertxGen(JProcess["spawn(io.vertx.core.Vertx,java.lang.String,java.util.List)"](__args[0]._jdel, __args[1], utils.convParamListBasicOther(__args[2])), Process);
+  }else if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && (typeof __args[2] === 'object' && __args[2] != null)) {
+    return utils.convReturnVertxGen(JProcess["spawn(io.vertx.core.Vertx,java.lang.String,io.vertx.ext.childprocess.ProcessOptions)"](__args[0]._jdel, __args[1], __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null), Process);
+  }else if (__args.length === 4 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && typeof __args[2] === 'object' && __args[2] instanceof Array && (typeof __args[3] === 'object' && __args[3] != null)) {
+    return utils.convReturnVertxGen(JProcess["spawn(io.vertx.core.Vertx,java.lang.String,java.util.List,io.vertx.ext.childprocess.ProcessOptions)"](__args[0]._jdel, __args[1], utils.convParamListBasicOther(__args[2]), __args[3] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[3]))) : null), Process);
+  } else throw new TypeError('function invoked with invalid arguments');
+};
+
+/**
+ Create a child process (not running) from this process.
+
+ @memberof module:vertx-exec-js/process
+ @param vertx {Vertx} the vertx instance 
+ @param command {string} the command to run 
+ @param args {Array.<string>} list of string arguments 
+ @param options {Object} the options to run the command 
+ @return {Process} the created child process
+ */
+Process.create = function() {
+  var __args = arguments;
+  if (__args.length === 2 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string') {
+    return utils.convReturnVertxGen(JProcess["create(io.vertx.core.Vertx,java.lang.String)"](__args[0]._jdel, __args[1]), Process);
+  }else if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && typeof __args[2] === 'object' && __args[2] instanceof Array) {
+    return utils.convReturnVertxGen(JProcess["create(io.vertx.core.Vertx,java.lang.String,java.util.List)"](__args[0]._jdel, __args[1], utils.convParamListBasicOther(__args[2])), Process);
+  }else if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && (typeof __args[2] === 'object' && __args[2] != null)) {
+    return utils.convReturnVertxGen(JProcess["create(io.vertx.core.Vertx,java.lang.String,io.vertx.ext.childprocess.ProcessOptions)"](__args[0]._jdel, __args[1], __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null), Process);
+  }else if (__args.length === 4 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'string' && typeof __args[2] === 'object' && __args[2] instanceof Array && (typeof __args[3] === 'object' && __args[3] != null)) {
+    return utils.convReturnVertxGen(JProcess["create(io.vertx.core.Vertx,java.lang.String,java.util.List,io.vertx.ext.childprocess.ProcessOptions)"](__args[0]._jdel, __args[1], utils.convParamListBasicOther(__args[2]), __args[3] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[3]))) : null), Process);
   } else throw new TypeError('function invoked with invalid arguments');
 };
 

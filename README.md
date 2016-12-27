@@ -3,7 +3,7 @@
 Spawn child process from Vert.x:
 
 ```
-Process.exec(vertx, Arrays.asList("cat"), process -> {
+Process.create(vertx, "cat").spawn(process -> {
   process.stdout().handler(buf -> {
     System.out.println("Process wrote: " + buf);
   });

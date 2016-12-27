@@ -4,6 +4,7 @@ require 'vertx-exec/stream_output'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.Process
 module VertxExec
+  #  A process launched from this current process.
   class Process
     # @private
     # @param j_del [::VertxExec::Process] the java delegate
@@ -22,20 +23,79 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling env()"
     end
-    # @param [::Vertx::Vertx] vertx 
-    # @param [Array<String>] commands 
-    # @param [Hash] options 
-    # @yield 
-    # @return [void]
-    def self.spawn(vertx=nil,commands=nil,options=nil)
-      if vertx.class.method_defined?(:j_del) && commands.class == Array && block_given? && options == nil
-        return Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::JavaUtil::List.java_class,Java::IoVertxCore::Handler.java_class]).call(vertx.j_del,commands.map { |element| element },(Proc.new { |event| yield(::Vertx::Util::Utils.safe_create(event,::VertxExec::Process)) }))
-      elsif vertx.class.method_defined?(:j_del) && commands.class == Array && options.class == Hash && block_given?
-        return Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::JavaUtil::List.java_class,Java::IoVertxExtChildprocess::ProcessOptions.java_class,Java::IoVertxCore::Handler.java_class]).call(vertx.j_del,commands.map { |element| element },Java::IoVertxExtChildprocess::ProcessOptions.new(::Vertx::Util::Utils.to_json_object(options)),(Proc.new { |event| yield(::Vertx::Util::Utils.safe_create(event,::VertxExec::Process)) }))
+    #  Spawn a child process from this process.
+    # @overload spawn(vertx,command)
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command 
+    # @overload spawn(vertx,command,args)
+    #   @param [::Vertx::Vertx] vertx 
+    #   @param [String] command 
+    #   @param [Array<String>] args 
+    # @overload spawn(vertx,command,options)
+    #   @param [::Vertx::Vertx] vertx 
+    #   @param [String] command 
+    #   @param [Hash] options 
+    # @overload spawn(vertx,command,args,options)
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Array<String>] args list of string arguments
+    #   @param [Hash] options the options to run the command
+    # @return [::VertxExec::Process] the process
+    def self.spawn(param_1=nil,param_2=nil,param_3=nil,param_4=nil)
+      if param_1.class.method_defined?(:j_del) && param_2.class == String && !block_given? && param_3 == nil && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class]).call(param_1.j_del,param_2),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Array && !block_given? && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::JavaUtil::List.java_class]).call(param_1.j_del,param_2,param_3.map { |element| element }),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Hash && !block_given? && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::IoVertxExtChildprocess::ProcessOptions.java_class]).call(param_1.j_del,param_2,Java::IoVertxExtChildprocess::ProcessOptions.new(::Vertx::Util::Utils.to_json_object(param_3))),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Array && param_4.class == Hash && !block_given?
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:spawn, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxExtChildprocess::ProcessOptions.java_class]).call(param_1.j_del,param_2,param_3.map { |element| element },Java::IoVertxExtChildprocess::ProcessOptions.new(::Vertx::Util::Utils.to_json_object(param_4))),::VertxExec::Process)
       end
-      raise ArgumentError, "Invalid arguments when calling spawn(vertx,commands,options)"
+      raise ArgumentError, "Invalid arguments when calling spawn(param_1,param_2,param_3,param_4)"
+    end
+    #  Create a child process (not running) from this process.
+    # @overload create(vertx,command)
+    #   @param [::Vertx::Vertx] vertx 
+    #   @param [String] command 
+    # @overload create(vertx,command,args)
+    #   @param [::Vertx::Vertx] vertx 
+    #   @param [String] command 
+    #   @param [Array<String>] args 
+    # @overload create(vertx,command,options)
+    #   @param [::Vertx::Vertx] vertx 
+    #   @param [String] command 
+    #   @param [Hash] options 
+    # @overload create(vertx,command,args,options)
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Array<String>] args list of string arguments
+    #   @param [Hash] options the options to run the command
+    # @return [::VertxExec::Process] the created child process
+    def self.create(param_1=nil,param_2=nil,param_3=nil,param_4=nil)
+      if param_1.class.method_defined?(:j_del) && param_2.class == String && !block_given? && param_3 == nil && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:create, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class]).call(param_1.j_del,param_2),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Array && !block_given? && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:create, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::JavaUtil::List.java_class]).call(param_1.j_del,param_2,param_3.map { |element| element }),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Hash && !block_given? && param_4 == nil
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:create, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::IoVertxExtChildprocess::ProcessOptions.java_class]).call(param_1.j_del,param_2,Java::IoVertxExtChildprocess::ProcessOptions.new(::Vertx::Util::Utils.to_json_object(param_3))),::VertxExec::Process)
+      elsif param_1.class.method_defined?(:j_del) && param_2.class == String && param_3.class == Array && param_4.class == Hash && !block_given?
+        return ::Vertx::Util::Utils.safe_create(Java::IoVertxExtChildprocess::Process.java_method(:create, [Java::IoVertxCore::Vertx.java_class,Java::java.lang.String.java_class,Java::JavaUtil::List.java_class,Java::IoVertxExtChildprocess::ProcessOptions.java_class]).call(param_1.j_del,param_2,param_3.map { |element| element },Java::IoVertxExtChildprocess::ProcessOptions.new(::Vertx::Util::Utils.to_json_object(param_4))),::VertxExec::Process)
+      end
+      raise ArgumentError, "Invalid arguments when calling create(param_1,param_2,param_3,param_4)"
     end
     # @yield 
+    # @return [void]
+    def start
+      if !block_given?
+        return @j_del.java_method(:start, []).call()
+      elsif block_given?
+        return @j_del.java_method(:start, [Java::IoVertxCore::Handler.java_class]).call((Proc.new { |event| yield(::Vertx::Util::Utils.safe_create(event,::VertxExec::Process)) }))
+      end
+      raise ArgumentError, "Invalid arguments when calling start()"
+    end
+    #  Set the handler to be called when the process exits, the handler will be called with the
+    #  process status code value.
+    # @yield the handler
     # @return [self]
     def exit_handler
       if block_given?
@@ -44,7 +104,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling exit_handler()"
     end
-    # @return [::VertxExec::StreamOutput]
+    # @return [::VertxExec::StreamOutput] the process stdin stream
     def stdin
       if !block_given?
         if @cached_stdin != nil
@@ -54,7 +114,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling stdin()"
     end
-    # @return [::VertxExec::StreamInput]
+    # @return [::VertxExec::StreamInput] the process stdout stream
     def stdout
       if !block_given?
         if @cached_stdout != nil
@@ -64,7 +124,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling stdout()"
     end
-    # @return [::VertxExec::StreamInput]
+    # @return [::VertxExec::StreamInput] the process stderr stream
     def stderr
       if !block_given?
         if @cached_stderr != nil

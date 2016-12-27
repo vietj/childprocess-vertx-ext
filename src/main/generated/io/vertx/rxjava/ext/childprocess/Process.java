@@ -25,6 +25,7 @@ import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.Handler;
 
 /**
+ * A process launched from this current process.
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.Process original} non RX-ified interface using Vert.x codegen.
@@ -50,27 +51,94 @@ public class Process {
     return ret;
   }
 
-  public static void spawn(Vertx vertx, List<String> commands, Handler<Process> handler) { 
-    io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, new Handler<io.vertx.ext.childprocess.Process>() {
+  /**
+   * Spawn a child process from this process.
+   * @param vertx the vertx instance
+   * @param command 
+   * @return 
+   */
+  public static Process spawn(Vertx vertx, String command) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command));
+    return ret;
+  }
+
+  public static Process spawn(Vertx vertx, String command, List<String> args) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command, args));
+    return ret;
+  }
+
+  public static Process spawn(Vertx vertx, String command, ProcessOptions options) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command, options));
+    return ret;
+  }
+
+  /**
+   * Spawn a child process from this process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param args list of string arguments
+   * @param options the options to run the command
+   * @return the process
+   */
+  public static Process spawn(Vertx vertx, String command, List<String> args, ProcessOptions options) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command, args, options));
+    return ret;
+  }
+
+  public static Process create(Vertx vertx, String command) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command));
+    return ret;
+  }
+
+  public static Process create(Vertx vertx, String command, List<String> args) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command, args));
+    return ret;
+  }
+
+  public static Process create(Vertx vertx, String command, ProcessOptions options) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command, options));
+    return ret;
+  }
+
+  /**
+   * Create a child process (not running) from this process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param args list of string arguments
+   * @param options the options to run the command
+   * @return the created child process
+   */
+  public static Process create(Vertx vertx, String command, List<String> args, ProcessOptions options) { 
+    Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command, args, options));
+    return ret;
+  }
+
+  public void start() { 
+    delegate.start();
+  }
+
+  public void start(Handler<Process> handler) { 
+    delegate.start(new Handler<io.vertx.ext.childprocess.Process>() {
       public void handle(io.vertx.ext.childprocess.Process event) {
         handler.handle(Process.newInstance(event));
       }
     });
   }
 
-  public static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<Process> handler) { 
-    io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, options, new Handler<io.vertx.ext.childprocess.Process>() {
-      public void handle(io.vertx.ext.childprocess.Process event) {
-        handler.handle(Process.newInstance(event));
-      }
-    });
-  }
-
+  /**
+   * Set the handler to be called when the process exits, the handler will be called with the
+   * process status code value.
+   * @param handler the handler
+   * @return a reference to this, so the API can be used fluently
+   */
   public Process exitHandler(Handler<Integer> handler) { 
     delegate.exitHandler(handler);
     return this;
   }
 
+  /**
+   * @return the process stdin stream
+   */
   public StreamOutput stdin() { 
     if (cached_0 != null) {
       return cached_0;
@@ -80,6 +148,9 @@ public class Process {
     return ret;
   }
 
+  /**
+   * @return the process stdout stream
+   */
   public StreamInput stdout() { 
     if (cached_1 != null) {
       return cached_1;
@@ -89,6 +160,9 @@ public class Process {
     return ret;
   }
 
+  /**
+   * @return the process stderr stream
+   */
   public StreamInput stderr() { 
     if (cached_2 != null) {
       return cached_2;
