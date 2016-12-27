@@ -15,6 +15,13 @@ module VertxExec
     def j_del
       @j_del
     end
+    # @return [Hash{String => String}] the current process environment variables
+    def self.env
+      if !block_given?
+        return Java::IoVertxLangRuby::Helper.adaptingMap(Java::IoVertxExtChildprocess::Process.java_method(:env, []).call(), Proc.new { |val| ::Vertx::Util::Utils.from_object(val) }, Proc.new { |val| ::Vertx::Util::Utils.to_string(val) })
+      end
+      raise ArgumentError, "Invalid arguments when calling env()"
+    end
     # @param [::Vertx::Vertx] vertx 
     # @param [Array<String>] commands 
     # @param [Hash] options 

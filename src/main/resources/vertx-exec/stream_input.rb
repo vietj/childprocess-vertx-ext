@@ -1,8 +1,11 @@
 require 'vertx/buffer'
+require 'vertx/stream_base'
 require 'vertx/util/utils.rb'
 # Generated from io.vertx.ext.childprocess.StreamInput
 module VertxExec
+  #  The input of a process.
   class StreamInput
+    include ::Vertx::StreamBase
     # @private
     # @param j_del [::VertxExec::StreamInput] the java delegate
     def initialize(j_del)
@@ -13,7 +16,8 @@ module VertxExec
     def j_del
       @j_del
     end
-    # @yield 
+    #  Set an exception handler on the read stream.
+    # @yield the exception handler
     # @return [self]
     def exception_handler
       if block_given?
@@ -22,6 +26,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling exception_handler()"
     end
+    #  Set a buffer handler. As bytes are read, the handler will be called with the data.
     # @yield 
     # @return [self]
     def handler
@@ -31,6 +36,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling handler()"
     end
+    #  Set an end handler. Once the stream has ended, and there is no more data to be read, this handler will be called.
     # @yield 
     # @return [self]
     def end_handler

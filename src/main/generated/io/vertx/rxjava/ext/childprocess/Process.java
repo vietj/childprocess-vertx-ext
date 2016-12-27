@@ -20,6 +20,7 @@ import java.util.Map;
 import rx.Observable;
 import io.vertx.ext.childprocess.ProcessOptions;
 import java.util.List;
+import java.util.Map;
 import io.vertx.rxjava.core.Vertx;
 import io.vertx.core.Handler;
 
@@ -39,6 +40,14 @@ public class Process {
 
   public Object getDelegate() {
     return delegate;
+  }
+
+  /**
+   * @return the current process environment variables
+   */
+  public static Map<String,String> env() { 
+    Map<String,String> ret = io.vertx.ext.childprocess.Process.env();
+    return ret;
   }
 
   public static void spawn(Vertx vertx, List<String> commands, Handler<Process> handler) { 

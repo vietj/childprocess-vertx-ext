@@ -24,6 +24,7 @@ var JsonObject = io.vertx.core.json.JsonObject;
 var JStreamOutput = io.vertx.ext.childprocess.StreamOutput;
 
 /**
+ The output of a process.
 
  @class
 */
@@ -119,6 +120,7 @@ var StreamOutput = function(j_val) {
   };
 
   /**
+   Closes the stream.
 
    @public
 

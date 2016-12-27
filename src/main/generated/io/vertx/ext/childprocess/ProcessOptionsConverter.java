@@ -31,7 +31,12 @@ public class ProcessOptionsConverter {
       obj.setCwd((String)json.getValue("cwd"));
     }
     if (json.getValue("env") instanceof JsonObject) {
-      obj.setEnv(((JsonObject)json.getValue("env")).copy());
+      java.util.Map<String, java.lang.String> map = new java.util.LinkedHashMap<>();
+      json.getJsonObject("env").forEach(entry -> {
+        if (entry.getValue() instanceof String)
+          map.put(entry.getKey(), (String)entry.getValue());
+      });
+      obj.setEnv(map);
     }
   }
 
@@ -40,7 +45,9 @@ public class ProcessOptionsConverter {
       json.put("cwd", obj.getCwd());
     }
     if (obj.getEnv() != null) {
-      json.put("env", obj.getEnv());
+      JsonObject map = new JsonObject();
+      obj.getEnv().forEach((key,value) -> map.put(key, value));
+      json.put("env", map);
     }
   }
 }

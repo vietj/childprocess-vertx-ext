@@ -4,6 +4,9 @@
 public class PrintEnv {
 
   public static void main(String[] args) {
-    System.out.print(System.getenv("foo"));
+    String val = System.getenv(args[0]);
+    if (val != null) {
+      System.out.print(val);
+    }
   }
 }

@@ -3,7 +3,6 @@ package io.vertx.ext.childprocess;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
@@ -17,7 +16,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -179,12 +181,57 @@ public class SpawnTest {
   @Test
   public void testEnv(TestContext context) {
     Async async = context.async();
-    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv"), new ProcessOptions().setEnv(new JsonObject().put("foo", "foo_value")), process -> {
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv", "foo"), new ProcessOptions().setEnv(Collections.singletonMap("foo", "foo_value")),process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
         context.assertEquals(0, code);
         context.assertEquals("foo_value", out.toString());
+        async.complete();
+      });
+    });
+  }
+
+  @Test
+  public void testEmptyEnv(TestContext context) {
+    Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
+    Async async = context.async();
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions().setEnv(new HashMap<>()), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, code);
+        context.assertEquals("", out.toString());
+        async.complete();
+      });
+    });
+  }
+
+  @Test
+  public void testNullEnv(TestContext context) {
+    Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
+    Async async = context.async();
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions().setEnv(new HashMap<>()), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, code);
+        context.assertEquals("", out.toString());
+        async.complete();
+      });
+    });
+  }
+
+  @Test
+  public void testDefaultEnv(TestContext context) {
+    Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
+    Async async = context.async();
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions(), process -> {
+      Buffer out = Buffer.buffer();
+      process.stdout().handler(out::appendBuffer);
+      process.exitHandler(code -> {
+        context.assertEquals(0, code);
+        context.assertEquals(entry.getValue(), out.toString());
         async.complete();
       });
     });

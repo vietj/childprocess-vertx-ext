@@ -12,6 +12,9 @@
 |===
 ^|Name | Type ^| Description
 |[[cwd]]`cwd`|`String`|-
-|[[env]]`env`|`Json object`|-
+|[[env]]`env`|`String`|
++++
+Set the child process environment variables,
++++
 |===
 

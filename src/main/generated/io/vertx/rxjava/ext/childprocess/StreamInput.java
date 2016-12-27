@@ -19,15 +19,17 @@ package io.vertx.rxjava.ext.childprocess;
 import java.util.Map;
 import rx.Observable;
 import io.vertx.rxjava.core.buffer.Buffer;
+import io.vertx.rxjava.core.streams.StreamBase;
 import io.vertx.core.Handler;
 
 /**
+ * The input of a process.
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.StreamInput original} non RX-ified interface using Vert.x codegen.
  */
 
-public class StreamInput {
+public class StreamInput implements StreamBase {
 
   final io.vertx.ext.childprocess.StreamInput delegate;
 
@@ -39,11 +41,21 @@ public class StreamInput {
     return delegate;
   }
 
+  /**
+   * Set an exception handler on the read stream.
+   * @param handler the exception handler
+   * @return a reference to this, so the API can be used fluently
+   */
   public StreamInput exceptionHandler(Handler<Throwable> handler) { 
-    delegate.exceptionHandler(handler);
+    ((io.vertx.ext.childprocess.StreamInput) delegate).exceptionHandler(handler);
     return this;
   }
 
+  /**
+   * Set a buffer handler. As bytes are read, the handler will be called with the data.
+   * @param handler 
+   * @return a reference to this, so the API can be used fluently
+   */
   public StreamInput handler(Handler<Buffer> handler) { 
     delegate.handler(new Handler<io.vertx.core.buffer.Buffer>() {
       public void handle(io.vertx.core.buffer.Buffer event) {
@@ -53,6 +65,11 @@ public class StreamInput {
     return this;
   }
 
+  /**
+   * Set an end handler. Once the stream has ended, and there is no more data to be read, this handler will be called.
+   * @param handler 
+   * @return a reference to this, so the API can be used fluently
+   */
   public StreamInput endHandler(Handler<Void> handler) { 
     delegate.endHandler(handler);
     return this;

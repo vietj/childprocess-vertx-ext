@@ -19,25 +19,27 @@ import java.util.Map;
 @VertxGen
 public interface Process {
 
+  /**
+   * @return the current process environment variables
+   */
+  static Map<String, String> env() {
+    return new HashMap<>(System.getenv());
+  }
 
   static void spawn(Vertx vertx, List<String> commands, Handler<Process> handler) {
-    NuProcessBuilder builder = new NuProcessBuilder(new ProcessImpl(vertx.getOrCreateContext(), handler), commands);
-    builder.start();
+    spawn(vertx, commands, new ProcessOptions(), handler);
   }
 
   static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<Process> handler) {
-    NuProcessBuilder builder;
-    if (options.getEnv() == null) {
-      builder = new NuProcessBuilder(commands);
-    } else {
-      Map<String, String> env = new HashMap<>();
-      options.getEnv().forEach(entry -> {
+    Map<String, String> env = new HashMap<>();
+    if (options.getEnv() != null) {
+      options.getEnv().entrySet().forEach(entry -> {
         if (entry.getValue() != null) {
-          env.put(entry.getKey(), entry.getValue().toString());
+          env.put(entry.getKey(), entry.getValue());
         }
       });
-      builder = new NuProcessBuilder(commands, env);
     }
+    NuProcessBuilder builder = new NuProcessBuilder(commands, env);
     if (options.getCwd() != null) {
       builder.setCwd(new File(options.getCwd()).toPath());
     }

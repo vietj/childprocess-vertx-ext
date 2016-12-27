@@ -17,12 +17,14 @@
 /** @module vertx-exec-js/stream_input */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
+var StreamBase = require('vertx-js/stream_base');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
 var JStreamInput = io.vertx.ext.childprocess.StreamInput;
 
 /**
+ The input of a process.
 
  @class
 */
@@ -30,12 +32,14 @@ var StreamInput = function(j_val) {
 
   var j_streamInput = j_val;
   var that = this;
+  StreamBase.call(this, j_val);
 
   /**
+   Set an exception handler on the read stream.
 
    @public
-   @param handler {function} 
-   @return {StreamInput}
+   @param handler {function} the exception handler 
+   @return {StreamInput} a reference to this, so the API can be used fluently
    */
   this.exceptionHandler = function(handler) {
     var __args = arguments;
@@ -48,10 +52,11 @@ var StreamInput = function(j_val) {
   };
 
   /**
+   Set a buffer handler. As bytes are read, the handler will be called with the data.
 
    @public
    @param handler {function} 
-   @return {StreamInput}
+   @return {StreamInput} a reference to this, so the API can be used fluently
    */
   this.handler = function(handler) {
     var __args = arguments;
@@ -64,10 +69,11 @@ var StreamInput = function(j_val) {
   };
 
   /**
+   Set an end handler. Once the stream has ended, and there is no more data to be read, this handler will be called.
 
    @public
    @param handler {function} 
-   @return {StreamInput}
+   @return {StreamInput} a reference to this, so the API can be used fluently
    */
   this.endHandler = function(handler) {
     var __args = arguments;

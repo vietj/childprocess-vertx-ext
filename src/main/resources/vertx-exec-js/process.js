@@ -143,6 +143,19 @@ var Process = function(j_val) {
 /**
 
  @memberof module:vertx-exec-js/process
+
+ @return {Array.<string>} the current process environment variables
+ */
+Process.env = function() {
+  var __args = arguments;
+  if (__args.length === 0) {
+    return utils.convReturnMap(JProcess["env()"]());
+  } else throw new TypeError('function invoked with invalid arguments');
+};
+
+/**
+
+ @memberof module:vertx-exec-js/process
  @param vertx {Vertx} 
  @param commands {Array.<string>} 
  @param options {Object} 
