@@ -6,7 +6,7 @@ import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.childprocess.*;
-import io.vertx.ext.childprocess.ChildProcess;
+import io.vertx.ext.childprocess.Process;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
@@ -14,7 +14,7 @@ import java.util.ArrayDeque;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class ChildProcessImpl implements NuProcessHandler, ChildProcess, StreamOutput {
+public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   private static final int OPEN = 0, CLOSING = 1, CLOSED = 2;
 
@@ -26,12 +26,12 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, StreamO
   private final Context context;
   private final ProcessStreamInput stdout;
   private final ProcessStreamInput stderr;
-  private final Handler<ChildProcess> handler;
+  private final Handler<Process> handler;
   private Handler<Integer> exitHandler;
   private NuProcess process;
   private boolean wantWrite;
 
-  public ChildProcessImpl(Context context, Handler<ChildProcess> handler) {
+  public ProcessImpl(Context context, Handler<Process> handler) {
     this.context = context;
     this.stdout = new ProcessStreamInput(context);
     this.stderr = new ProcessStreamInput(context);
@@ -41,7 +41,7 @@ public class ChildProcessImpl implements NuProcessHandler, ChildProcess, StreamO
   //
 
   @Override
-  public synchronized ChildProcess exitHandler(Handler<Integer> handler) {
+  public synchronized Process exitHandler(Handler<Integer> handler) {
     exitHandler = handler;
     return this;
   }

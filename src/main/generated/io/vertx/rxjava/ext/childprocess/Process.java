@@ -26,14 +26,14 @@ import io.vertx.core.Handler;
 /**
  *
  * <p/>
- * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.ChildProcess original} non RX-ified interface using Vert.x codegen.
+ * NOTE: This class has been automatically generated from the {@link io.vertx.ext.childprocess.Process original} non RX-ified interface using Vert.x codegen.
  */
 
-public class ChildProcess {
+public class Process {
 
-  final io.vertx.ext.childprocess.ChildProcess delegate;
+  final io.vertx.ext.childprocess.Process delegate;
 
-  public ChildProcess(io.vertx.ext.childprocess.ChildProcess delegate) {
+  public Process(io.vertx.ext.childprocess.Process delegate) {
     this.delegate = delegate;
   }
 
@@ -41,23 +41,23 @@ public class ChildProcess {
     return delegate;
   }
 
-  public static void spawn(Vertx vertx, List<String> commands, Handler<ChildProcess> handler) { 
-    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
-      public void handle(io.vertx.ext.childprocess.ChildProcess event) {
-        handler.handle(ChildProcess.newInstance(event));
+  public static void spawn(Vertx vertx, List<String> commands, Handler<Process> handler) { 
+    io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, new Handler<io.vertx.ext.childprocess.Process>() {
+      public void handle(io.vertx.ext.childprocess.Process event) {
+        handler.handle(Process.newInstance(event));
       }
     });
   }
 
-  public static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<ChildProcess> handler) { 
-    io.vertx.ext.childprocess.ChildProcess.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, options, new Handler<io.vertx.ext.childprocess.ChildProcess>() {
-      public void handle(io.vertx.ext.childprocess.ChildProcess event) {
-        handler.handle(ChildProcess.newInstance(event));
+  public static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<Process> handler) { 
+    io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), commands, options, new Handler<io.vertx.ext.childprocess.Process>() {
+      public void handle(io.vertx.ext.childprocess.Process event) {
+        handler.handle(Process.newInstance(event));
       }
     });
   }
 
-  public ChildProcess exitHandler(Handler<Integer> handler) { 
+  public Process exitHandler(Handler<Integer> handler) { 
     delegate.exitHandler(handler);
     return this;
   }
@@ -99,7 +99,7 @@ public class ChildProcess {
    * <p>
    * If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
    * gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
-   * {@link io.vertx.rxjava.ext.childprocess.ChildProcess#isRunning} may return <code>true</code> for a brief period after calling this method.
+   * {@link io.vertx.rxjava.ext.childprocess.Process#isRunning} may return <code>true</code> for a brief period after calling this method.
    * @param force if true is passed, the process will be forcibly killed
    */
   public void destroy(boolean force) { 
@@ -119,7 +119,7 @@ public class ChildProcess {
   private StreamInput cached_1;
   private StreamInput cached_2;
 
-  public static ChildProcess newInstance(io.vertx.ext.childprocess.ChildProcess arg) {
-    return arg != null ? new ChildProcess(arg) : null;
+  public static Process newInstance(io.vertx.ext.childprocess.Process arg) {
+    return arg != null ? new Process(arg) : null;
   }
 }

@@ -14,7 +14,7 @@
  * under the License.
  */
 
-/** @module vertx-exec-js/child_process */
+/** @module vertx-exec-js/process */
 var utils = require('vertx-js/util/utils');
 var StreamInput = require('vertx-exec-js/stream_input');
 var Vertx = require('vertx-js/vertx');
@@ -22,28 +22,28 @@ var StreamOutput = require('vertx-exec-js/stream_output');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
-var JChildProcess = io.vertx.ext.childprocess.ChildProcess;
+var JProcess = io.vertx.ext.childprocess.Process;
 var ProcessOptions = io.vertx.ext.childprocess.ProcessOptions;
 
 /**
 
  @class
 */
-var ChildProcess = function(j_val) {
+var Process = function(j_val) {
 
-  var j_childProcess = j_val;
+  var j_process = j_val;
   var that = this;
 
   /**
 
    @public
    @param handler {function} 
-   @return {ChildProcess}
+   @return {Process}
    */
   this.exitHandler = function(handler) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] === 'function') {
-      j_childProcess["exitHandler(io.vertx.core.Handler)"](function(jVal) {
+      j_process["exitHandler(io.vertx.core.Handler)"](function(jVal) {
       handler(jVal);
     });
       return that;
@@ -60,7 +60,7 @@ var ChildProcess = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstdin == null) {
-        that.cachedstdin = utils.convReturnVertxGen(j_childProcess["stdin()"](), StreamOutput);
+        that.cachedstdin = utils.convReturnVertxGen(j_process["stdin()"](), StreamOutput);
       }
       return that.cachedstdin;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -76,7 +76,7 @@ var ChildProcess = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstdout == null) {
-        that.cachedstdout = utils.convReturnVertxGen(j_childProcess["stdout()"](), StreamInput);
+        that.cachedstdout = utils.convReturnVertxGen(j_process["stdout()"](), StreamInput);
       }
       return that.cachedstdout;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -92,7 +92,7 @@ var ChildProcess = function(j_val) {
     var __args = arguments;
     if (__args.length === 0) {
       if (that.cachedstderr == null) {
-        that.cachedstderr = utils.convReturnVertxGen(j_childProcess["stderr()"](), StreamInput);
+        that.cachedstderr = utils.convReturnVertxGen(j_process["stderr()"](), StreamInput);
       }
       return that.cachedstderr;
     } else throw new TypeError('function invoked with invalid arguments');
@@ -108,7 +108,7 @@ var ChildProcess = function(j_val) {
    <p>
    If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
    gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
-   {@link ChildProcess#isRunning} may return <code>true</code> for a brief period after calling this method.
+   {@link Process#isRunning} may return <code>true</code> for a brief period after calling this method.
 
    @public
    @param force {boolean} if true is passed, the process will be forcibly killed 
@@ -116,7 +116,7 @@ var ChildProcess = function(j_val) {
   this.destroy = function(force) {
     var __args = arguments;
     if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      j_childProcess["destroy(boolean)"](force);
+      j_process["destroy(boolean)"](force);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -130,36 +130,36 @@ var ChildProcess = function(j_val) {
   this.isRunning = function() {
     var __args = arguments;
     if (__args.length === 0) {
-      return j_childProcess["isRunning()"]();
+      return j_process["isRunning()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
   // A reference to the underlying Java delegate
   // NOTE! This is an internal API and must not be used in user code.
   // If you rely on this property your code is likely to break if we change it / remove it without warning.
-  this._jdel = j_childProcess;
+  this._jdel = j_process;
 };
 
 /**
 
- @memberof module:vertx-exec-js/child_process
+ @memberof module:vertx-exec-js/process
  @param vertx {Vertx} 
  @param commands {Array.<string>} 
  @param options {Object} 
  @param handler {function} 
  */
-ChildProcess.spawn = function() {
+Process.spawn = function() {
   var __args = arguments;
   if (__args.length === 3 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && typeof __args[2] === 'function') {
-    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), function(jVal) {
-    __args[2](utils.convReturnVertxGen(jVal, ChildProcess));
+    JProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), function(jVal) {
+    __args[2](utils.convReturnVertxGen(jVal, Process));
   });
   }else if (__args.length === 4 && typeof __args[0] === 'object' && __args[0]._jdel && typeof __args[1] === 'object' && __args[1] instanceof Array && (typeof __args[2] === 'object' && __args[2] != null) && typeof __args[3] === 'function') {
-    JChildProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.ext.childprocess.ProcessOptions,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null, function(jVal) {
-    __args[3](utils.convReturnVertxGen(jVal, ChildProcess));
+    JProcess["spawn(io.vertx.core.Vertx,java.util.List,io.vertx.ext.childprocess.ProcessOptions,io.vertx.core.Handler)"](__args[0]._jdel, utils.convParamListBasicOther(__args[1]), __args[2] != null ? new ProcessOptions(new JsonObject(JSON.stringify(__args[2]))) : null, function(jVal) {
+    __args[3](utils.convReturnVertxGen(jVal, Process));
   });
   } else throw new TypeError('function invoked with invalid arguments');
 };
 
 // We export the Constructor function
-module.exports = ChildProcess;
+module.exports = Process;

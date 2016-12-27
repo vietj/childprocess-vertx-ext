@@ -17,15 +17,15 @@ import java.util.Map;
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 @VertxGen
-public interface ChildProcess {
+public interface Process {
 
 
-  static void spawn(Vertx vertx, List<String> commands, Handler<ChildProcess> handler) {
-    NuProcessBuilder builder = new NuProcessBuilder(new ChildProcessImpl(vertx.getOrCreateContext(), handler), commands);
+  static void spawn(Vertx vertx, List<String> commands, Handler<Process> handler) {
+    NuProcessBuilder builder = new NuProcessBuilder(new ProcessImpl(vertx.getOrCreateContext(), handler), commands);
     builder.start();
   }
 
-  static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<ChildProcess> handler) {
+  static void spawn(Vertx vertx, List<String> commands, ProcessOptions options, Handler<Process> handler) {
     NuProcessBuilder builder;
     if (options.getEnv() == null) {
       builder = new NuProcessBuilder(commands);
@@ -41,12 +41,12 @@ public interface ChildProcess {
     if (options.getCwd() != null) {
       builder.setCwd(new File(options.getCwd()).toPath());
     }
-    builder.setProcessListener(new ChildProcessImpl(vertx.getOrCreateContext(), handler));
+    builder.setProcessListener(new ProcessImpl(vertx.getOrCreateContext(), handler));
     builder.start();
   }
 
   @Fluent
-  ChildProcess exitHandler(Handler<Integer> handler);
+  Process exitHandler(Handler<Integer> handler);
 
   @CacheReturn
   StreamOutput stdin();

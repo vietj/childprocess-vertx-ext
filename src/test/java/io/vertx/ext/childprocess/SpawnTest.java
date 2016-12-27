@@ -45,7 +45,7 @@ public class SpawnTest {
     Async async = testContext.async();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "ExitCode"), process -> {
+      Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "ExitCode"), process -> {
         process.exitHandler(code -> {
           testContext.assertEquals(context, Vertx.currentContext());
           testContext.assertEquals(25, code);
@@ -59,7 +59,7 @@ public class SpawnTest {
   public void testStdin(TestContext context) {
     Async async = context.async();
     AtomicInteger status = new AtomicInteger();
-    ChildProcess.spawn(vertx, Arrays.asList("read"), process -> {
+    Process.spawn(vertx, Arrays.asList("read"), process -> {
       StreamOutput stdin = process.stdin();
       stdin.write(Buffer.buffer("hello"));
       stdin.close();
@@ -72,20 +72,20 @@ public class SpawnTest {
 
   @Test
   public void testStdout(TestContext context) {
-    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStdout", "the_echoed_value"), ChildProcess::stdout);
+    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStdout", "the_echoed_value"), Process::stdout);
   }
 
   @Test
   public void testStderr(TestContext context) {
-    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStderr", "the_echoed_value"), ChildProcess::stderr);
+    testStream(context, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "EchoStderr", "the_echoed_value"), Process::stderr);
   }
 
-  private void testStream(TestContext testContext, List<String> cmd, Function<ChildProcess, StreamInput> streamExtractor) {
+  private void testStream(TestContext testContext, List<String> cmd, Function<Process, StreamInput> streamExtractor) {
     Async async = testContext.async();
     AtomicInteger status = new AtomicInteger();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      ChildProcess.spawn(vertx, cmd, process -> {
+      Process.spawn(vertx, cmd, process -> {
         StreamInput stream = streamExtractor.apply(process);
         stream.handler(buf -> {
           testContext.assertEquals(context, Vertx.currentContext());
@@ -113,7 +113,7 @@ public class SpawnTest {
     AtomicInteger status = new AtomicInteger();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", /*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", "io.vertx.ext.childprocess.Main", tmp.toFile().getAbsolutePath()), process -> {
+      Process.spawn(vertx, Arrays.asList("/usr/bin/java", /*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", "io.vertx.ext.childprocess.Main", tmp.toFile().getAbsolutePath()), process -> {
         StreamOutput stdin = process.stdin();
         stdin.setWriteQueueMaxSize(8000);
         process.exitHandler(code -> {
@@ -147,7 +147,7 @@ public class SpawnTest {
   public void testCat(TestContext context) {
     Async async = context.async();
     AtomicInteger status = new AtomicInteger();
-    ChildProcess.spawn(vertx, Arrays.asList("/bin/cat"), process -> {
+    Process.spawn(vertx, Arrays.asList("/bin/cat"), process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       StreamOutput stdin = process.stdin();
@@ -165,7 +165,7 @@ public class SpawnTest {
   public void testCwd(TestContext context) {
     Async async = context.async();
     String cwd = new File(new File("target"), "test-classes").getAbsolutePath();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "PrintCwd"), new ProcessOptions().setCwd(cwd), process -> {
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "PrintCwd"), new ProcessOptions().setCwd(cwd), process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -179,7 +179,7 @@ public class SpawnTest {
   @Test
   public void testEnv(TestContext context) {
     Async async = context.async();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv"), new ProcessOptions().setEnv(new JsonObject().put("foo", "foo_value")), process -> {
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "PrintEnv"), new ProcessOptions().setEnv(new JsonObject().put("foo", "foo_value")), process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -193,7 +193,7 @@ public class SpawnTest {
   @Test
   public void testStdoutLongSequence(TestContext context) {
     Async async = context.async();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "StdoutLongSequence"), process -> {
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "StdoutLongSequence"), process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -212,8 +212,8 @@ public class SpawnTest {
   public void testDestroy(TestContext context) throws Exception {
     Async async = context.async();
     StringBuilder sb = new StringBuilder();
-    AtomicReference<ChildProcess> p = new AtomicReference<>();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
+    AtomicReference<Process> p = new AtomicReference<>();
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
       p.set(process);
       process.stdout().handler(sb::append);
     });
@@ -224,7 +224,7 @@ public class SpawnTest {
     }
     context.assertEquals("ok", sb.toString());
     sb.setLength(0);
-    ChildProcess process = p.get();
+    Process process = p.get();
     process.exitHandler(status -> {
       context.assertEquals("exited", sb.toString());
       async.complete();
@@ -236,8 +236,8 @@ public class SpawnTest {
   public void testDestroyForce(TestContext context) throws Exception {
     Async async = context.async();
     StringBuilder sb = new StringBuilder();
-    AtomicReference<ChildProcess> p = new AtomicReference<>();
-    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
+    AtomicReference<Process> p = new AtomicReference<>();
+    Process.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
       p.set(process);
       process.stdout().handler(sb::append);
     });
@@ -248,7 +248,7 @@ public class SpawnTest {
     }
     context.assertEquals("ok", sb.toString());
     sb.setLength(0);
-    ChildProcess process = p.get();
+    Process process = p.get();
     process.exitHandler(status -> {
       context.assertEquals("", sb.toString());
       async.complete();
