@@ -57,8 +57,25 @@ public interface ChildProcess {
   @CacheReturn
   StreamInput stderr();
 
+  /**
+   * Terminates the process.
+   * <p>
+   * If {@code force} is {@code false}, the process will be terminated gracefully (i.e. its shutdown logic will
+   * be allowed to execute), assuming the OS supports such behavior. Note that the process may not actually
+   * terminate, as its cleanup logic may fail or it may choose to ignore the termination request. If a guarantee
+   * of termination is required, call this method with force equal to true instead.
+   * <p>
+   * If {@code force} is {@code true}, the process is guaranteed to terminate, but whether it is terminated
+   * gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
+   * {@link #isRunning()} may return {@code true} for a brief period after calling this method.
+   *
+   * @param force if true is passed, the process will be forcibly killed
+   */
   void destroy(boolean force);
 
+  /**
+   * Tests whether or not the process is still running or has exited.
+   */
   boolean isRunning();
 
 }

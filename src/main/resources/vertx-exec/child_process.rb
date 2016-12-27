@@ -67,7 +67,17 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling stderr()"
     end
-    # @param [true,false] force 
+    #  Terminates the process.
+    #  <p>
+    #  If <code>force</code> is <code>false</code>, the process will be terminated gracefully (i.e. its shutdown logic will
+    #  be allowed to execute), assuming the OS supports such behavior. Note that the process may not actually
+    #  terminate, as its cleanup logic may fail or it may choose to ignore the termination request. If a guarantee
+    #  of termination is required, call this method with force equal to true instead.
+    #  <p>
+    #  If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
+    #  gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
+    #  {::VertxExec::ChildProcess#is_running} may return <code>true</code> for a brief period after calling this method.
+    # @param [true,false] force if true is passed, the process will be forcibly killed
     # @return [void]
     def destroy(force=nil)
       if (force.class == TrueClass || force.class == FalseClass) && !block_given?
@@ -75,6 +85,7 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling destroy(force)"
     end
+    #  Tests whether or not the process is still running or has exited.
     # @return [true,false]
     def running?
       if !block_given?

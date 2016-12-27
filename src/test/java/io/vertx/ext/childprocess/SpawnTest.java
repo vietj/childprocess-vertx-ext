@@ -19,6 +19,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
 /**
@@ -205,5 +206,53 @@ public class SpawnTest {
         async.complete();
       });
     });
+  }
+
+  @Test
+  public void testDestroy(TestContext context) throws Exception {
+    Async async = context.async();
+    StringBuilder sb = new StringBuilder();
+    AtomicReference<ChildProcess> p = new AtomicReference<>();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
+      p.set(process);
+      process.stdout().handler(sb::append);
+    });
+    long now = System.currentTimeMillis();
+    while (sb.length() < 2) {
+      context.assertTrue(System.currentTimeMillis() - now < 10000);
+      Thread.sleep(1);
+    }
+    context.assertEquals("ok", sb.toString());
+    sb.setLength(0);
+    ChildProcess process = p.get();
+    process.exitHandler(status -> {
+      context.assertEquals("exited", sb.toString());
+      async.complete();
+    });
+    process.destroy(false);
+  }
+
+  @Test
+  public void testDestroyForce(TestContext context) throws Exception {
+    Async async = context.async();
+    StringBuilder sb = new StringBuilder();
+    AtomicReference<ChildProcess> p = new AtomicReference<>();
+    ChildProcess.spawn(vertx, Arrays.asList("/usr/bin/java", "-cp", "target/test-classes", "Shutdown"), process -> {
+      p.set(process);
+      process.stdout().handler(sb::append);
+    });
+    long now = System.currentTimeMillis();
+    while (sb.length() < 2) {
+      context.assertTrue(System.currentTimeMillis() - now < 10000);
+      Thread.sleep(1);
+    }
+    context.assertEquals("ok", sb.toString());
+    sb.setLength(0);
+    ChildProcess process = p.get();
+    process.exitHandler(status -> {
+      context.assertEquals("", sb.toString());
+      async.complete();
+    });
+    process.destroy(true);
   }
 }
