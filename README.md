@@ -3,11 +3,11 @@
 Spawn child process from Vert.x:
 
 ```
-Process.exec(vertx, Arrays.asList("cat"), process -> {
+ChildProcess.exec(vertx, Arrays.asList("cat"), process -> {
   process.stdout().handler(buf -> {
     System.out.println("Process wrote: " + buf);
   });
-  ProcessWriteStream stdin = process.stdin();
+  StreamOutput stdin = process.stdin();
   stdin.write(Buffer.buffer("hello"));
   stdin.close();
   process.exitHandler(code -> {
