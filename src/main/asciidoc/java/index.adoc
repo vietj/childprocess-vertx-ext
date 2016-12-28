@@ -1,6 +1,15 @@
-== Using Vert.x Child Process
+= Child Process for Vert.x
+:toc: left
 
-To use vert.x child process, add the following dependency to the _dependencies_ section of your build descriptor:
+Child Process is a Vert.x component for spawning OS child processes.
+
+* based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
+* standard streams are fully non blocking
+* spawned process can be killed
+
+== Using Child Process
+
+To use Child Process, add the following dependency to the _dependencies_ section of your build descriptor:
 
 * Maven (in your `pom.xml`):
 
@@ -20,4 +29,132 @@ To use vert.x child process, add the following dependency to the _dependencies_ 
 dependencies {
   compile 'com.julienviet:vertx-child-process:1.0.0-SNAPSHOT'
 }
+----
+
+== Spawning child processes
+
+You can spawn child processes with the `link:../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-[Process.spawn]` method:
+
+[source,java]
+----
+Process.spawn(vertx, "ls");
+----
+
+you can give arguments to child processes
+
+[source,java]
+----
+Process.spawn(vertx, "ls", Arrays.asList("-lh", "/usr"));
+----
+
+by default child processes use the current process environment options, you can pass key-value pairs
+as new environment variables
+
+[source,java]
+----
+Map<String, String> env = new HashMap<>();
+env.put("MY_VAR", "whatever");
+Process.spawn(vertx, "ls", new ProcessOptions().setEnv(env));
+----
+
+`link:../../apidocs/com/julienviet/childprocess/Process.html#env--[Process.env]` gives you the current process environment key-value pairs
+
+[source,java]
+----
+ProcessOptions options = new ProcessOptions().setEnv(Process.env());
+Process.spawn(vertx, "ls", options);
+----
+
+By default, the child processes uses the current process _current working directory_, the
+`link:../../apidocs/com/julienviet/childprocess/ProcessOptions.html#setCwd-java.lang.String-[setCwd]` option overrides it
+
+[source,java]
+----
+ProcessOptions options = new ProcessOptions().setCwd("/some-dir");
+Process.spawn(vertx, "ls", options);
+----
+
+== Interacting with child processes
+
+The child process streams are available as
+
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stdin--[stdin]`
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stdout--[stdout]`
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stderr--[stderr]`
+
+[source,java]
+----
+Process process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(buff -> {
+  System.out.println(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+----
+
+Calling `link:../../apidocs/com/julienviet/childprocess/Process.html#kill--[kill]` kills the child process, on POSIX it sends the
+`SIGTERM` signal.
+
+[source,java]
+----
+Process process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(buff -> {
+  System.out.println(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+
+// Kill the process
+process.kill();
+----
+
+Child processes can also be forcibly killed
+
+[source,java]
+----
+Process process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(buff -> {
+  System.out.println(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+
+// Kill the process forcibly
+process.kill(true);
+----
+
+== Child process lifecycle
+
+You can be aware of the child process termination
+
+[source,java]
+----
+Process process = Process.spawn(vertx, "sleep", Arrays.asList("2"));
+
+process.exitHandler(code -> {
+  System.out.println("Child process exited with code: " + code);
+});
+----
+
+== Delayed start
+
+Calling `link:../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-[Process.spawn]` starts the process after the current event loop task
+execution, so you can set handlers on the process without a race condition.
+
+Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
+from a non Vert.x thread:
+
+[source,java]
+----
+Process process = Process.create(vertx, "echo \"Hello World\"");
+
+process.stdout().handler(buff -> {
+  System.out.println(buff.toString());
+});
+
+// Start the process
+process.start();
 ----

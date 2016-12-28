@@ -1,6 +1,15 @@
-== Using Vert.x Child Process
+= Child Process for Vert.x
+:toc: left
 
-To use vert.x child process, add the following dependency to the _dependencies_ section of your build descriptor:
+Child Process is a Vert.x component for spawning OS child processes.
+
+* based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
+* standard streams are fully non blocking
+* spawned process can be killed
+
+== Using Child Process
+
+To use Child Process, add the following dependency to the _dependencies_ section of your build descriptor:
 
 * Maven (in your `pom.xml`):
 
@@ -20,4 +29,161 @@ To use vert.x child process, add the following dependency to the _dependencies_ 
 dependencies {
   compile 'com.julienviet:vertx-child-process:1.0.0-SNAPSHOT'
 }
+----
+
+== Spawning child processes
+
+You can spawn child processes with the `link:../../jsdoc/module-child-process-js_process-Process.html#spawn[Process.spawn]` method:
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+Process.spawn(vertx, "ls");
+
+----
+
+you can give arguments to child processes
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+Process.spawn(vertx, "ls", ["-lh", "/usr"]);
+
+----
+
+by default child processes use the current process environment options, you can pass key-value pairs
+as new environment variables
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var env = {};
+env["MY_VAR"] = "whatever";
+Process.spawn(vertx, "ls", {
+  "env" : env
+});
+
+----
+
+`link:../../jsdoc/module-child-process-js_process-Process.html#env[Process.env]` gives you the current process environment key-value pairs
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var options = {
+  "env" : Process.env()
+};
+Process.spawn(vertx, "ls", options);
+
+----
+
+By default, the child processes uses the current process _current working directory_, the
+`link:../dataobjects.html#ProcessOptions#setCwd[cwd]` option overrides it
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var options = {
+  "cwd" : "/some-dir"
+};
+Process.spawn(vertx, "ls", options);
+
+----
+
+== Interacting with child processes
+
+The child process streams are available as
+
+* `link:../../jsdoc/module-child-process-js_process-Process.html#stdin[stdin]`
+* `link:../../jsdoc/module-child-process-js_process-Process.html#stdout[stdout]`
+* `link:../../jsdoc/module-child-process-js_process-Process.html#stderr[stderr]`
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var Buffer = require("vertx-js/buffer");
+var process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(function (buff) {
+  console.log(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+
+----
+
+Calling `link:../../jsdoc/module-child-process-js_process-Process.html#kill[kill]` kills the child process, on POSIX it sends the
+`SIGTERM` signal.
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var Buffer = require("vertx-js/buffer");
+var process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(function (buff) {
+  console.log(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+
+// Kill the process
+process.kill();
+
+----
+
+Child processes can also be forcibly killed
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var Buffer = require("vertx-js/buffer");
+var process = Process.spawn(vertx, "cat");
+
+process.stdout().handler(function (buff) {
+  console.log(buff.toString());
+});
+
+process.stdin().write(Buffer.buffer("Hello World"));
+
+// Kill the process forcibly
+process.kill(true);
+
+----
+
+== Child process lifecycle
+
+You can be aware of the child process termination
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var process = Process.spawn(vertx, "sleep", ["2"]);
+
+process.exitHandler(function (code) {
+  console.log("Child process exited with code: " + code);
+});
+
+----
+
+== Delayed start
+
+Calling `link:../../jsdoc/module-child-process-js_process-Process.html#spawn[Process.spawn]` starts the process after the current event loop task
+execution, so you can set handlers on the process without a race condition.
+
+Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
+from a non Vert.x thread:
+
+[source,js]
+----
+var Process = require("child-process-js/process");
+var process = Process.create(vertx, "echo \"Hello World\"");
+
+process.stdout().handler(function (buff) {
+  console.log(buff.toString());
+});
+
+// Start the process
+process.start();
+
 ----
