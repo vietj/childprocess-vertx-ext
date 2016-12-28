@@ -198,6 +198,14 @@ public class Process {
     return ret;
   }
   /**
+   * Terminates the process in a graceful manner.
+   * <p>
+   * On a POSIX OS, it sends the <code>SIGTERM</code>.
+   */
+  public void kill() {
+    delegate.kill();
+  }
+  /**
    * Terminates the process.
    * <p>
    * If <code>force</code> is <code>false</code>, the process will be terminated gracefully (i.e. its shutdown logic will
@@ -208,10 +216,12 @@ public class Process {
    * If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
    * gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
    * {@link com.julienviet.groovy.childprocess.Process#isRunning} may return <code>true</code> for a brief period after calling this method.
+   * <p>
+   * On a POSIX OS, it sends the <code>SIGTERM</code> or <code>SIGKILL</code> signals.
    * @param force if true is passed, the process will be forcibly killed
    */
-  public void destroy(boolean force) {
-    delegate.destroy(force);
+  public void kill(boolean force) {
+    delegate.kill(force);
   }
   /**
    * Tests whether or not the process is still running or has exited.

@@ -264,7 +264,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   }
 
   @Override
-  public void destroy(boolean force) {
+  public void kill(boolean force) {
     if (process != null) {
       process.destroy(force);
     }

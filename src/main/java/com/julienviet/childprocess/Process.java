@@ -189,6 +189,16 @@ public interface Process {
   StreamInput stderr();
 
   /**
+   * Terminates the process in a graceful manner.
+   * <p>
+   * On a POSIX OS, it sends the {@code SIGTERM}.
+   */
+  default void kill() {
+    kill(false);
+  }
+
+
+  /**
    * Terminates the process.
    * <p>
    * If {@code force} is {@code false}, the process will be terminated gracefully (i.e. its shutdown logic will
@@ -199,10 +209,12 @@ public interface Process {
    * If {@code force} is {@code true}, the process is guaranteed to terminate, but whether it is terminated
    * gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
    * {@link #isRunning()} may return {@code true} for a brief period after calling this method.
+   * <p>
+   * On a POSIX OS, it sends the {@code SIGTERM} or {@code SIGKILL} signals.
    *
    * @param force if true is passed, the process will be forcibly killed
    */
-  void destroy(boolean force);
+  void kill(boolean force);
 
   /**
    * Tests whether or not the process is still running or has exited.

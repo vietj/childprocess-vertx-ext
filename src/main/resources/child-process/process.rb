@@ -152,13 +152,17 @@ module ChildProcess
     #  If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
     #  gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
     #  {::ChildProcess::Process#is_running} may return <code>true</code> for a brief period after calling this method.
+    #  <p>
+    #  On a POSIX OS, it sends the <code>SIGTERM</code> or <code>SIGKILL</code> signals.
     # @param [true,false] force if true is passed, the process will be forcibly killed
     # @return [void]
-    def destroy(force=nil)
-      if (force.class == TrueClass || force.class == FalseClass) && !block_given?
-        return @j_del.java_method(:destroy, [Java::boolean.java_class]).call(force)
+    def kill(force=nil)
+      if !block_given? && force == nil
+        return @j_del.java_method(:kill, []).call()
+      elsif (force.class == TrueClass || force.class == FalseClass) && !block_given?
+        return @j_del.java_method(:kill, [Java::boolean.java_class]).call(force)
       end
-      raise ArgumentError, "Invalid arguments when calling destroy(force)"
+      raise ArgumentError, "Invalid arguments when calling kill(force)"
     end
     #  Tests whether or not the process is still running or has exited.
     # @return [true,false]

@@ -274,7 +274,7 @@ public class SpawnTest {
       context.assertEquals("exited", sb.toString());
       async.complete();
     });
-    process.destroy(false);
+    process.kill(false);
   }
 
   @Test
@@ -298,7 +298,7 @@ public class SpawnTest {
       context.assertEquals("", sb.toString());
       async.complete();
     });
-    process.destroy(true);
+    process.kill(true);
   }
 
   @Test

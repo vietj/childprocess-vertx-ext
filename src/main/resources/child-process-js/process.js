@@ -142,14 +142,18 @@ var Process = function(j_val) {
    If <code>force</code> is <code>true</code>, the process is guaranteed to terminate, but whether it is terminated
    gracefully or not is OS-dependent. Note that it may take the OS a moment to terminate the process, so
    {@link Process#isRunning} may return <code>true</code> for a brief period after calling this method.
+   <p>
+   On a POSIX OS, it sends the <code>SIGTERM</code> or <code>SIGKILL</code> signals.
 
    @public
    @param force {boolean} if true is passed, the process will be forcibly killed 
    */
-  this.destroy = function(force) {
+  this.kill = function() {
     var __args = arguments;
-    if (__args.length === 1 && typeof __args[0] ==='boolean') {
-      j_process["destroy(boolean)"](force);
+    if (__args.length === 0) {
+      j_process["kill()"]();
+    }  else if (__args.length === 1 && typeof __args[0] ==='boolean') {
+      j_process["kill(boolean)"](__args[0]);
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
