@@ -27,7 +27,7 @@
 
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>Child Process extension for Vert.x</name>
   <url>https://github.com/vietj/vertx-childprocess</url>
