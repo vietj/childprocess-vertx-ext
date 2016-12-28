@@ -1,6 +1,6 @@
 # Child Process for Vert.x
 
-Spawn child process from Vert.x:
+Spawn child processes from Vert.x:
 
 ```
 Process.create(vertx, "cat").spawn(process -> {

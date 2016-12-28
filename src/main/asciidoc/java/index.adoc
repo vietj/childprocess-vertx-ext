@@ -1,0 +1,23 @@
+== Using Vert.x Child Process
+
+To use vert.x child process, add the following dependency to the _dependencies_ section of your build descriptor:
+
+* Maven (in your `pom.xml`):
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>com.julienviet</groupId>
+  <artifactId>vertx-child-process</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+</dependency>
+----
+
+* Gradle (in your `build.gradle` file):
+
+[source,groovy,subs="+attributes"]
+----
+dependencies {
+  compile 'com.julienviet:vertx-child-process:1.0.0-SNAPSHOT'
+}
+----
