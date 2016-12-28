@@ -23,18 +23,18 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling env()"
     end
-    #  Spawn a child process from this process.
+    #  Create and start a child process from this process.
     # @overload spawn(vertx,command)
     #   @param [::Vertx::Vertx] vertx the vertx instance
-    #   @param [String] command 
+    #   @param [String] command the command to run
     # @overload spawn(vertx,command,args)
-    #   @param [::Vertx::Vertx] vertx 
-    #   @param [String] command 
-    #   @param [Array<String>] args 
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Array<String>] args list of string arguments
     # @overload spawn(vertx,command,options)
-    #   @param [::Vertx::Vertx] vertx 
-    #   @param [String] command 
-    #   @param [Hash] options 
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Hash] options the options to run the command
     # @overload spawn(vertx,command,args,options)
     #   @param [::Vertx::Vertx] vertx the vertx instance
     #   @param [String] command the command to run
@@ -53,18 +53,18 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling spawn(param_1,param_2,param_3,param_4)"
     end
-    #  Create a child process (not running) from this process.
+    #  Create a child process (not running) from this process, call {::VertxExec::Process#start} to start the process.
     # @overload create(vertx,command)
-    #   @param [::Vertx::Vertx] vertx 
-    #   @param [String] command 
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
     # @overload create(vertx,command,args)
-    #   @param [::Vertx::Vertx] vertx 
-    #   @param [String] command 
-    #   @param [Array<String>] args 
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Array<String>] args list of string arguments
     # @overload create(vertx,command,options)
-    #   @param [::Vertx::Vertx] vertx 
-    #   @param [String] command 
-    #   @param [Hash] options 
+    #   @param [::Vertx::Vertx] vertx the vertx instance
+    #   @param [String] command the command to run
+    #   @param [Hash] options the options to run the command
     # @overload create(vertx,command,args,options)
     #   @param [::Vertx::Vertx] vertx the vertx instance
     #   @param [String] command the command to run
@@ -83,7 +83,8 @@ module VertxExec
       end
       raise ArgumentError, "Invalid arguments when calling create(param_1,param_2,param_3,param_4)"
     end
-    # @yield 
+    #  Start the process.
+    # @yield the handler to be called when the process has started
     # @return [void]
     def start
       if !block_given?
@@ -103,6 +104,13 @@ module VertxExec
         return self
       end
       raise ArgumentError, "Invalid arguments when calling exit_handler()"
+    end
+    # @return [Fixnum] the process PID or null if the process is not running
+    def pid
+      if !block_given?
+        return @j_del.java_method(:pid, []).call()
+      end
+      raise ArgumentError, "Invalid arguments when calling pid()"
     end
     # @return [::VertxExec::StreamOutput] the process stdin stream
     def stdin

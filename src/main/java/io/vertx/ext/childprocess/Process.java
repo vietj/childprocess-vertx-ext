@@ -166,6 +166,11 @@ public interface Process {
   Process exitHandler(Handler<Integer> handler);
 
   /**
+   * @return the process PID or null if the process is not running
+   */
+  Integer pid();
+
+  /**
    * @return the process stdin stream
    */
   @CacheReturn

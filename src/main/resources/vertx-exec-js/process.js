@@ -36,9 +36,10 @@ var Process = function(j_val) {
   var that = this;
 
   /**
+   Start the process.
 
    @public
-   @param handler {function} 
+   @param handler {function} the handler to be called when the process has started 
    */
   this.start = function() {
     var __args = arguments;
@@ -66,6 +67,19 @@ var Process = function(j_val) {
       handler(jVal);
     });
       return that;
+    } else throw new TypeError('function invoked with invalid arguments');
+  };
+
+  /**
+
+   @public
+
+   @return {number} the process PID or null if the process is not running
+   */
+  this.pid = function() {
+    var __args = arguments;
+    if (__args.length === 0) {
+      return j_process["pid()"]();
     } else throw new TypeError('function invoked with invalid arguments');
   };
 
@@ -173,7 +187,7 @@ Process.env = function() {
 };
 
 /**
- Spawn a child process from this process.
+ Create and start a child process from this process.
 
  @memberof module:vertx-exec-js/process
  @param vertx {Vertx} the vertx instance 
@@ -196,7 +210,7 @@ Process.spawn = function() {
 };
 
 /**
- Create a child process (not running) from this process.
+ Create a child process (not running) from this process, call {@link Process#start} to start the process.
 
  @memberof module:vertx-exec-js/process
  @param vertx {Vertx} the vertx instance 

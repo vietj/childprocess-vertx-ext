@@ -67,6 +67,11 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   }
 
   @Override
+  public synchronized Integer pid() {
+    return process != null ? process.getPID() : null;
+  }
+
+  @Override
   public StreamOutput stdin() {
     return this;
   }

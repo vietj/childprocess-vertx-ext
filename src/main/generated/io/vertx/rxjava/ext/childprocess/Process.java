@@ -52,28 +52,42 @@ public class Process {
   }
 
   /**
-   * Spawn a child process from this process.
+   * Create and start a child process from this process.
    * @param vertx the vertx instance
-   * @param command 
-   * @return 
+   * @param command the command to run
+   * @return the process
    */
   public static Process spawn(Vertx vertx, String command) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command));
     return ret;
   }
 
+  /**
+   * Create and start a child process from this process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param args list of string arguments
+   * @return the process
+   */
   public static Process spawn(Vertx vertx, String command, List<String> args) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command, args));
     return ret;
   }
 
+  /**
+   * Create and start a child process from this process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param options the options to run the command
+   * @return the process
+   */
   public static Process spawn(Vertx vertx, String command, ProcessOptions options) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.spawn((io.vertx.core.Vertx)vertx.getDelegate(), command, options));
     return ret;
   }
 
   /**
-   * Spawn a child process from this process.
+   * Create and start a child process from this process.
    * @param vertx the vertx instance
    * @param command the command to run
    * @param args list of string arguments
@@ -85,23 +99,43 @@ public class Process {
     return ret;
   }
 
+  /**
+   * Create a child process (not running) from this process, call {@link io.vertx.rxjava.ext.childprocess.Process#start} to start the process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @return the created child process
+   */
   public static Process create(Vertx vertx, String command) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command));
     return ret;
   }
 
+  /**
+   * Create a child process (not running) from this process, call {@link io.vertx.rxjava.ext.childprocess.Process#start} to start the process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param args list of string arguments
+   * @return the created child process
+   */
   public static Process create(Vertx vertx, String command, List<String> args) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command, args));
     return ret;
   }
 
+  /**
+   * Create a child process (not running) from this process, call {@link io.vertx.rxjava.ext.childprocess.Process#start} to start the process.
+   * @param vertx the vertx instance
+   * @param command the command to run
+   * @param options the options to run the command
+   * @return the created child process
+   */
   public static Process create(Vertx vertx, String command, ProcessOptions options) { 
     Process ret = Process.newInstance(io.vertx.ext.childprocess.Process.create((io.vertx.core.Vertx)vertx.getDelegate(), command, options));
     return ret;
   }
 
   /**
-   * Create a child process (not running) from this process.
+   * Create a child process (not running) from this process, call {@link io.vertx.rxjava.ext.childprocess.Process#start} to start the process.
    * @param vertx the vertx instance
    * @param command the command to run
    * @param args list of string arguments
@@ -113,10 +147,17 @@ public class Process {
     return ret;
   }
 
+  /**
+   * Start the process.
+   */
   public void start() { 
     delegate.start();
   }
 
+  /**
+   * Start the process.
+   * @param handler the handler to be called when the process has started
+   */
   public void start(Handler<Process> handler) { 
     delegate.start(new Handler<io.vertx.ext.childprocess.Process>() {
       public void handle(io.vertx.ext.childprocess.Process event) {
@@ -134,6 +175,14 @@ public class Process {
   public Process exitHandler(Handler<Integer> handler) { 
     delegate.exitHandler(handler);
     return this;
+  }
+
+  /**
+   * @return the process PID or null if the process is not running
+   */
+  public Integer pid() { 
+    Integer ret = delegate.pid();
+    return ret;
   }
 
   /**
