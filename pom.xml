@@ -31,6 +31,16 @@
   <version>1.0.0-SNAPSHOT</version>
 
   <name>Child Process extension for Vert.x</name>
+  <url>https://github.com/vietj/vertx-childprocess</url>
+  <description>Spawn child processes from Vert.x</description>
+
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
 
   <scm>
     <connection>scm:git:git@github.com:vietj/childprocess-vertx-ext.git</connection>
@@ -38,8 +48,16 @@
     <url>git@github.com:vietj/childprocess-vertx-ext.git</url>
   </scm>
 
+  <developers>
+    <developer>
+      <name>Julien Viet</name>
+      <email>julien@julienviet.com</email>
+    </developer>
+  </developers>
+
   <properties>
     <stack.version>3.3.3</stack.version>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <dependencyManagement>

@@ -1,4 +1,4 @@
-# Child Process extension for Vert.x
+## Child Process extension for Vert.x
 
 Spawn child processes from Vert.x:
 
@@ -24,3 +24,7 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 * link:src/main/asciidoc/groovy/index.adoc[Groovy in-source docs]
 * link:src/main/asciidoc/ruby/index.adoc[Ruby in-source docs]
 * link:src/main/asciidoc/js/index.adoc[JavaScript in-source docs]
+
+## License
+
+Apache License - Version 2.0
