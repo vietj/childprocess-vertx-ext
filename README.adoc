@@ -1,4 +1,4 @@
-# Child Process for Vert.x
+# Child Process extension for Vert.x
 
 Spawn child processes from Vert.x:
 

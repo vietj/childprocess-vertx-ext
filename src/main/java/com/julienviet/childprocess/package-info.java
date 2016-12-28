@@ -1,5 +1,5 @@
 /**
- * = Child Process for Vert.x
+ * = Child Process extension for Vert.x
  * :toc: left
  *
  * Child Process is a Vert.x component for spawning OS child processes.

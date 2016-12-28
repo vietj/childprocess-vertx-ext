@@ -27,10 +27,10 @@
   </parent>
 
   <groupId>com.julienviet</groupId>
-  <artifactId>vertx-child-process</artifactId>
+  <artifactId>child-process-vertx-ext</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 
-  <name>Vert.x Child Process</name>
+  <name>Child Process extension for Vert.x</name>
 
   <properties>
     <stack.version>3.3.3</stack.version>
