@@ -118,4 +118,23 @@
     </dependency>
   </dependencies>
 
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <sourceFileIncludes>
+              <sourceFileInclude>com/julienviet/**/*.java</sourceFileInclude>
+            </sourceFileIncludes>
+            <links>
+              <link>http://vertx.io/docs/apidocs/</link>
+            </links>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
 </project>
