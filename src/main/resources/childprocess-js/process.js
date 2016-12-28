@@ -14,11 +14,11 @@
  * under the License.
  */
 
-/** @module child-process-js/process */
+/** @module childprocess-js/process */
 var utils = require('vertx-js/util/utils');
 var Vertx = require('vertx-js/vertx');
-var StreamOutput = require('child-process-js/stream_output');
-var StreamInput = require('child-process-js/stream_input');
+var StreamOutput = require('childprocess-js/stream_output');
+var StreamInput = require('childprocess-js/stream_input');
 
 var io = Packages.io;
 var JsonObject = io.vertx.core.json.JsonObject;
@@ -179,7 +179,7 @@ var Process = function(j_val) {
 
 /**
 
- @memberof module:child-process-js/process
+ @memberof module:childprocess-js/process
 
  @return {Array.<string>} the current process environment variables
  */
@@ -193,7 +193,7 @@ Process.env = function() {
 /**
  Create and start a child process from this process.
 
- @memberof module:child-process-js/process
+ @memberof module:childprocess-js/process
  @param vertx {Vertx} the vertx instance 
  @param command {string} the command to run 
  @param args {Array.<string>} list of string arguments 
@@ -216,7 +216,7 @@ Process.spawn = function() {
 /**
  Create a child process (not running) from this process, call {@link Process#start} to start the process.
 
- @memberof module:child-process-js/process
+ @memberof module:childprocess-js/process
  @param vertx {Vertx} the vertx instance 
  @param command {string} the command to run 
  @param args {Array.<string>} list of string arguments 

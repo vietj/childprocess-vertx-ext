@@ -17,7 +17,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 ----
 <dependency>
   <groupId>com.julienviet</groupId>
-  <artifactId>child-process-vertx-ext</artifactId>
+  <artifactId>childprocess-vertx-ext</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ----
@@ -27,18 +27,18 @@ To use Child Process, add the following dependency to the _dependencies_ section
 [source,groovy,subs="+attributes"]
 ----
 dependencies {
-  compile 'com.julienviet:child-process-vertx-ext:1.0.0-SNAPSHOT'
+  compile 'com.julienviet:childprocess-vertx-ext:1.0.0-SNAPSHOT'
 }
 ----
 
 == Spawning child processes
 
-You can spawn child processes with the `link:../../yardoc/ChildProcess/Process.html#spawn-class_method[Process.spawn]` method:
+You can spawn child processes with the `link:../../yardoc/Childprocess/Process.html#spawn-class_method[Process.spawn]` method:
 
 [source,ruby]
 ----
-require 'child-process/process'
-ChildProcess::Process.spawn(vertx, "ls")
+require 'childprocess/process'
+Childprocess::Process.spawn(vertx, "ls")
 
 ----
 
@@ -46,8 +46,8 @@ you can give arguments to child processes
 
 [source,ruby]
 ----
-require 'child-process/process'
-ChildProcess::Process.spawn(vertx, "ls", ["-lh", "/usr"])
+require 'childprocess/process'
+Childprocess::Process.spawn(vertx, "ls", ["-lh", "/usr"])
 
 ----
 
@@ -56,24 +56,24 @@ as new environment variables
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 env = Hash.new()
 env["MY_VAR"] = "whatever"
-ChildProcess::Process.spawn(vertx, "ls", {
+Childprocess::Process.spawn(vertx, "ls", {
   'env' => env
 })
 
 ----
 
-`link:../../yardoc/ChildProcess/Process.html#env-class_method[Process.env]` gives you the current process environment key-value pairs
+`link:../../yardoc/Childprocess/Process.html#env-class_method[Process.env]` gives you the current process environment key-value pairs
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 options = {
-  'env' => ChildProcess::Process.env()
+  'env' => Childprocess::Process.env()
 }
-ChildProcess::Process.spawn(vertx, "ls", options)
+Childprocess::Process.spawn(vertx, "ls", options)
 
 ----
 
@@ -82,11 +82,11 @@ By default, the child processes uses the current process _current working direct
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 options = {
   'cwd' => "/some-dir"
 }
-ChildProcess::Process.spawn(vertx, "ls", options)
+Childprocess::Process.spawn(vertx, "ls", options)
 
 ----
 
@@ -94,15 +94,15 @@ ChildProcess::Process.spawn(vertx, "ls", options)
 
 The child process streams are available as
 
-* `link:../../yardoc/ChildProcess/Process.html#stdin-instance_method[stdin]`
-* `link:../../yardoc/ChildProcess/Process.html#stdout-instance_method[stdout]`
-* `link:../../yardoc/ChildProcess/Process.html#stderr-instance_method[stderr]`
+* `link:../../yardoc/Childprocess/Process.html#stdin-instance_method[stdin]`
+* `link:../../yardoc/Childprocess/Process.html#stdout-instance_method[stdout]`
+* `link:../../yardoc/Childprocess/Process.html#stderr-instance_method[stderr]`
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 require 'vertx/buffer'
-process = ChildProcess::Process.spawn(vertx, "cat")
+process = Childprocess::Process.spawn(vertx, "cat")
 
 process.stdout().handler() { |buff|
   puts buff.to_string()
@@ -112,14 +112,14 @@ process.stdin().write(Vertx::Buffer.buffer("Hello World"))
 
 ----
 
-Calling `link:../../yardoc/ChildProcess/Process.html#kill-instance_method[kill]` kills the child process, on POSIX it sends the
+Calling `link:../../yardoc/Childprocess/Process.html#kill-instance_method[kill]` kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 require 'vertx/buffer'
-process = ChildProcess::Process.spawn(vertx, "cat")
+process = Childprocess::Process.spawn(vertx, "cat")
 
 process.stdout().handler() { |buff|
   puts buff.to_string()
@@ -136,9 +136,9 @@ Child processes can also be forcibly killed
 
 [source,ruby]
 ----
-require 'child-process/process'
+require 'childprocess/process'
 require 'vertx/buffer'
-process = ChildProcess::Process.spawn(vertx, "cat")
+process = Childprocess::Process.spawn(vertx, "cat")
 
 process.stdout().handler() { |buff|
   puts buff.to_string()
@@ -157,8 +157,8 @@ You can be aware of the child process termination
 
 [source,ruby]
 ----
-require 'child-process/process'
-process = ChildProcess::Process.spawn(vertx, "sleep", ["2"])
+require 'childprocess/process'
+process = Childprocess::Process.spawn(vertx, "sleep", ["2"])
 
 process.exit_handler() { |code|
   puts "Child process exited with code: #{code}"
@@ -168,7 +168,7 @@ process.exit_handler() { |code|
 
 == Delayed start
 
-Calling `link:../../yardoc/ChildProcess/Process.html#spawn-class_method[Process.spawn]` starts the process after the current event loop task
+Calling `link:../../yardoc/Childprocess/Process.html#spawn-class_method[Process.spawn]` starts the process after the current event loop task
 execution, so you can set handlers on the process without a race condition.
 
 Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
@@ -176,8 +176,8 @@ from a non Vert.x thread:
 
 [source,ruby]
 ----
-require 'child-process/process'
-process = ChildProcess::Process.create(vertx, "echo \"Hello World\"")
+require 'childprocess/process'
+process = Childprocess::Process.create(vertx, "echo \"Hello World\"")
 
 process.stdout().handler() { |buff|
   puts buff.to_string()

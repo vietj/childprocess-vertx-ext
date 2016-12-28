@@ -2,17 +2,17 @@ require 'vertx/buffer'
 require 'vertx/stream_base'
 require 'vertx/util/utils.rb'
 # Generated from com.julienviet.childprocess.StreamInput
-module ChildProcess
+module Childprocess
   #  The input of a process.
   class StreamInput
     include ::Vertx::StreamBase
     # @private
-    # @param j_del [::ChildProcess::StreamInput] the java delegate
+    # @param j_del [::Childprocess::StreamInput] the java delegate
     def initialize(j_del)
       @j_del = j_del
     end
     # @private
-    # @return [::ChildProcess::StreamInput] the underlying java delegate
+    # @return [::Childprocess::StreamInput] the underlying java delegate
     def j_del
       @j_del
     end

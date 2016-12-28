@@ -14,7 +14,7 @@
  * under the License.
  */
 
-/** @module child-process-js/stream_input */
+/** @module childprocess-js/stream_input */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
 var StreamBase = require('vertx-js/stream_base');

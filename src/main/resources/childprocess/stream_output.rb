@@ -2,17 +2,17 @@ require 'vertx/buffer'
 require 'vertx/write_stream'
 require 'vertx/util/utils.rb'
 # Generated from com.julienviet.childprocess.StreamOutput
-module ChildProcess
+module Childprocess
   #  The output of a process.
   class StreamOutput
     include ::Vertx::WriteStream
     # @private
-    # @param j_del [::ChildProcess::StreamOutput] the java delegate
+    # @param j_del [::Childprocess::StreamOutput] the java delegate
     def initialize(j_del)
       @j_del = j_del
     end
     # @private
-    # @return [::ChildProcess::StreamOutput] the underlying java delegate
+    # @return [::Childprocess::StreamOutput] the underlying java delegate
     def j_del
       @j_del
     end

@@ -121,7 +121,7 @@
  * {@link examples.Examples#ex40}
  * ----
  */
-@ModuleGen(name = "child-process", groupPackage = "com.julienviet")
+@ModuleGen(name = "childprocess", groupPackage = "com.julienviet")
 @Document(fileName = "index.adoc")
 package com.julienviet.childprocess;
 

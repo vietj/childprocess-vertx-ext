@@ -14,7 +14,7 @@
  * under the License.
  */
 
-/** @module child-process-js/stream_output */
+/** @module childprocess-js/stream_output */
 var utils = require('vertx-js/util/utils');
 var Buffer = require('vertx-js/buffer');
 var WriteStream = require('vertx-js/write_stream');

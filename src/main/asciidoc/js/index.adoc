@@ -17,7 +17,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 ----
 <dependency>
   <groupId>com.julienviet</groupId>
-  <artifactId>child-process-vertx-ext</artifactId>
+  <artifactId>childprocess-vertx-ext</artifactId>
   <version>1.0.0-SNAPSHOT</version>
 </dependency>
 ----
@@ -27,17 +27,17 @@ To use Child Process, add the following dependency to the _dependencies_ section
 [source,groovy,subs="+attributes"]
 ----
 dependencies {
-  compile 'com.julienviet:child-process-vertx-ext:1.0.0-SNAPSHOT'
+  compile 'com.julienviet:childprocess-vertx-ext:1.0.0-SNAPSHOT'
 }
 ----
 
 == Spawning child processes
 
-You can spawn child processes with the `link:../../jsdoc/module-child-process-js_process-Process.html#spawn[Process.spawn]` method:
+You can spawn child processes with the `link:../../jsdoc/module-childprocess-js_process-Process.html#spawn[Process.spawn]` method:
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 Process.spawn(vertx, "ls");
 
 ----
@@ -46,7 +46,7 @@ you can give arguments to child processes
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 Process.spawn(vertx, "ls", ["-lh", "/usr"]);
 
 ----
@@ -56,7 +56,7 @@ as new environment variables
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var env = {};
 env["MY_VAR"] = "whatever";
 Process.spawn(vertx, "ls", {
@@ -65,11 +65,11 @@ Process.spawn(vertx, "ls", {
 
 ----
 
-`link:../../jsdoc/module-child-process-js_process-Process.html#env[Process.env]` gives you the current process environment key-value pairs
+`link:../../jsdoc/module-childprocess-js_process-Process.html#env[Process.env]` gives you the current process environment key-value pairs
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var options = {
   "env" : Process.env()
 };
@@ -82,7 +82,7 @@ By default, the child processes uses the current process _current working direct
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var options = {
   "cwd" : "/some-dir"
 };
@@ -94,13 +94,13 @@ Process.spawn(vertx, "ls", options);
 
 The child process streams are available as
 
-* `link:../../jsdoc/module-child-process-js_process-Process.html#stdin[stdin]`
-* `link:../../jsdoc/module-child-process-js_process-Process.html#stdout[stdout]`
-* `link:../../jsdoc/module-child-process-js_process-Process.html#stderr[stderr]`
+* `link:../../jsdoc/module-childprocess-js_process-Process.html#stdin[stdin]`
+* `link:../../jsdoc/module-childprocess-js_process-Process.html#stdout[stdout]`
+* `link:../../jsdoc/module-childprocess-js_process-Process.html#stderr[stderr]`
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var Buffer = require("vertx-js/buffer");
 var process = Process.spawn(vertx, "cat");
 
@@ -112,12 +112,12 @@ process.stdin().write(Buffer.buffer("Hello World"));
 
 ----
 
-Calling `link:../../jsdoc/module-child-process-js_process-Process.html#kill[kill]` kills the child process, on POSIX it sends the
+Calling `link:../../jsdoc/module-childprocess-js_process-Process.html#kill[kill]` kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var Buffer = require("vertx-js/buffer");
 var process = Process.spawn(vertx, "cat");
 
@@ -136,7 +136,7 @@ Child processes can also be forcibly killed
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var Buffer = require("vertx-js/buffer");
 var process = Process.spawn(vertx, "cat");
 
@@ -157,7 +157,7 @@ You can be aware of the child process termination
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var process = Process.spawn(vertx, "sleep", ["2"]);
 
 process.exitHandler(function (code) {
@@ -168,7 +168,7 @@ process.exitHandler(function (code) {
 
 == Delayed start
 
-Calling `link:../../jsdoc/module-child-process-js_process-Process.html#spawn[Process.spawn]` starts the process after the current event loop task
+Calling `link:../../jsdoc/module-childprocess-js_process-Process.html#spawn[Process.spawn]` starts the process after the current event loop task
 execution, so you can set handlers on the process without a race condition.
 
 Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
@@ -176,7 +176,7 @@ from a non Vert.x thread:
 
 [source,js]
 ----
-var Process = require("child-process-js/process");
+var Process = require("childprocess-js/process");
 var process = Process.create(vertx, "echo \"Hello World\"");
 
 process.stdout().handler(function (buff) {
