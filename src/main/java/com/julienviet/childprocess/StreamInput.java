@@ -7,7 +7,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.streams.StreamBase;
 
 /**
- * The input of a process.
+ * The input of a process: a stream of {@link Buffer buffers}.
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */

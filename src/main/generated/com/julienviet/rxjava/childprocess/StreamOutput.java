@@ -23,7 +23,7 @@ import io.vertx.rxjava.core.streams.WriteStream;
 import io.vertx.core.Handler;
 
 /**
- * The output of a process.
+ * The output of a process:  a stream of .
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link com.julienviet.childprocess.StreamOutput original} non RX-ified interface using Vert.x codegen.
@@ -78,7 +78,7 @@ public class StreamOutput implements WriteStream<Buffer> {
   }
 
   /**
-   * Closes the stream.
+   * Close the stream.
    */
   public void close() { 
     delegate.close();

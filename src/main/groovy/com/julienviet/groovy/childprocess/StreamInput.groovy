@@ -22,7 +22,7 @@ import io.vertx.groovy.core.buffer.Buffer
 import io.vertx.groovy.core.streams.StreamBase
 import io.vertx.core.Handler
 /**
- * The input of a process.
+ * The input of a process: a stream of .
 */
 @CompileStatic
 public class StreamInput implements StreamBase {

@@ -17,6 +17,10 @@ import java.util.Map;
 
 /**
  * A process launched from this current process.
+ * <p>
+ * Call the static {@link #spawn(Vertx, String)} to spawn child processes from the current process.
+ * <p>
+ * Please see the user manual for more detailed usage information.
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */

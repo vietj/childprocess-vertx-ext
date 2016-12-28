@@ -27,7 +27,7 @@ var ProcessOptions = com.julienviet.childprocess.ProcessOptions;
 
 /**
  A process launched from this current process.
-
+ <p>
  @class
 */
 var Process = function(j_val) {

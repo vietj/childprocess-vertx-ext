@@ -23,7 +23,7 @@ import io.vertx.rxjava.core.streams.StreamBase;
 import io.vertx.core.Handler;
 
 /**
- * The input of a process.
+ * The input of a process: a stream of .
  *
  * <p/>
  * NOTE: This class has been automatically generated from the {@link com.julienviet.childprocess.StreamInput original} non RX-ified interface using Vert.x codegen.

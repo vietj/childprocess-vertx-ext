@@ -24,7 +24,6 @@ var JsonObject = io.vertx.core.json.JsonObject;
 var JStreamInput = com.julienviet.childprocess.StreamInput;
 
 /**
- The input of a process.
 
  @class
 */

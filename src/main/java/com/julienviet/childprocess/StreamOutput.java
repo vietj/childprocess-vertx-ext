@@ -6,7 +6,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.core.streams.WriteStream;
 
 /**
- * The output of a process.
+ * The output of a process:  a stream of {@link Buffer buffers}.
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
@@ -34,7 +34,7 @@ public interface StreamOutput extends WriteStream<Buffer> {
   }
 
   /**
-   * Closes the stream.
+   * Close the stream.
    */
   void close();
 }

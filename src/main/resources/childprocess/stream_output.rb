@@ -3,7 +3,7 @@ require 'vertx/write_stream'
 require 'vertx/util/utils.rb'
 # Generated from com.julienviet.childprocess.StreamOutput
 module Childprocess
-  #  The output of a process.
+  #  The output of a process:  a stream of .
   class StreamOutput
     include ::Vertx::WriteStream
     # @private
@@ -69,7 +69,7 @@ module Childprocess
       end
       raise ArgumentError, "Invalid arguments when calling drain_handler()"
     end
-    #  Closes the stream.
+    #  Close the stream.
     # @return [void]
     def close
       if !block_given?

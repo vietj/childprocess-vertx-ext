@@ -5,6 +5,10 @@ require 'vertx/util/utils.rb'
 # Generated from com.julienviet.childprocess.Process
 module Childprocess
   #  A process launched from this current process.
+  #  <p>
+  #  Call the static {::Childprocess::Process#spawn} to spawn child processes from the current process.
+  #  <p>
+  #  Please see the user manual for more detailed usage information.
   class Process
     # @private
     # @param j_del [::Childprocess::Process] the java delegate

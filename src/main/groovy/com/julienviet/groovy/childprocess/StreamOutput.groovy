@@ -22,7 +22,7 @@ import io.vertx.groovy.core.buffer.Buffer
 import io.vertx.groovy.core.streams.WriteStream
 import io.vertx.core.Handler
 /**
- * The output of a process.
+ * The output of a process:  a stream of .
 */
 @CompileStatic
 public class StreamOutput implements WriteStream<Buffer> {
@@ -63,7 +63,7 @@ public class StreamOutput implements WriteStream<Buffer> {
     ((io.vertx.core.streams.WriteStream) delegate).end();
   }
   /**
-   * Closes the stream.
+   * Close the stream.
    */
   public void close() {
     delegate.close();

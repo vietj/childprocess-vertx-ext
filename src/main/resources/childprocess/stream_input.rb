@@ -3,7 +3,7 @@ require 'vertx/stream_base'
 require 'vertx/util/utils.rb'
 # Generated from com.julienviet.childprocess.StreamInput
 module Childprocess
-  #  The input of a process.
+  #  The input of a process: a stream of .
   class StreamInput
     include ::Vertx::StreamBase
     # @private

@@ -25,6 +25,10 @@ import io.vertx.groovy.core.Vertx
 import io.vertx.core.Handler
 /**
  * A process launched from this current process.
+ * <p>
+ * Call the static {@link com.julienviet.groovy.childprocess.Process#spawn} to spawn child processes from the current process.
+ * <p>
+ * Please see the user manual for more detailed usage information.
 */
 @CompileStatic
 public class Process {
