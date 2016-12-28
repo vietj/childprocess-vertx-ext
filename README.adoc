@@ -1,4 +1,36 @@
-## Child Process extension for Vert.x
+== Child Process extension for Vert.x
+
+Spawn child processes from Vert.x.
+
+Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
+
+== What for ?
+
+link:http://vertx.io[Vert.x] 3.3.3
+
+== Using Child Process
+
+To use Child Process, add the following dependency to the _dependencies_ section of your build descriptor:
+
+* Maven (in your `pom.xml`):
+
+[source,xml,subs="+attributes"]
+----
+<dependency>
+  <groupId>com.julienviet</groupId>
+  <artifactId>childprocess-vertx-ext</artifactId>
+  <version>1.0.0</version>
+</dependency>
+----
+
+* Gradle (in your `build.gradle` file):
+
+[source,groovy,subs="+attributes"]
+----
+dependencies {
+  compile 'com.julienviet:childprocess-vertx-ext:1.0.0'
+}
+----
 
 Spawn child processes from Vert.x:
 
@@ -16,15 +48,19 @@ Process.create(vertx, "cat").spawn(process -> {
 });
 ```
 
-Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
+== Web-site docs
 
-## Web-site docs
+* link:http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html[Java docs]
+* link:http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html[Groovy docs]
+* link:http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html[Ruby docs]
+* link:http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html[JavaScript docs]
 
-* link:src/main/asciidoc/java/index.adoc[Java in-source docs]
-* link:src/main/asciidoc/groovy/index.adoc[Groovy in-source docs]
-* link:src/main/asciidoc/ruby/index.adoc[Ruby in-source docs]
-* link:src/main/asciidoc/js/index.adoc[JavaScript in-source docs]
-
-## License
+== License
 
 Apache License - Version 2.0
+
+== Publishing docs
+
+* mvn package -Pdocs
+* cp -r target/docs docs/
+* mv docs/childprocess-vertx-ext docs/guide
