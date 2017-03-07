@@ -18,7 +18,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.1.0-SNAPSHOT</version>
 </dependency>
 ----
 
@@ -27,17 +27,16 @@ To use Child Process, add the following dependency to the _dependencies_ section
 [source,groovy,subs="+attributes"]
 ----
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.0.0-SNAPSHOT'
+  compile 'com.julienviet:childprocess-vertx-ext:1.1.0-SNAPSHOT'
 }
 ----
 
 == Spawning child processes
 
-You can spawn child processes with the `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#spawn(io.vertx.core.Vertx,%20java.lang.String)[Process.spawn]` method:
+You can spawn child processes with the `link:../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-[Process.spawn]` method:
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 Process.spawn(vertx, "ls")
 
 ----
@@ -46,7 +45,6 @@ you can give arguments to child processes
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 Process.spawn(vertx, "ls", ["-lh", "/usr"])
 
 ----
@@ -56,7 +54,6 @@ as new environment variables
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 def env = [:]
 env["MY_VAR"] = "whatever"
 Process.spawn(vertx, "ls", [
@@ -65,11 +62,10 @@ Process.spawn(vertx, "ls", [
 
 ----
 
-`link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#env()[Process.env]` gives you the current process environment key-value pairs
+`link:../../apidocs/com/julienviet/childprocess/Process.html#env--[Process.env]` gives you the current process environment key-value pairs
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 def options = [
   env:Process.env()
 ]
@@ -78,11 +74,10 @@ Process.spawn(vertx, "ls", options)
 ----
 
 By default, the child processes uses the current process _current working directory_, the
-`link:../dataobjects.html#ProcessOptions#setCwd(java.lang.String)[cwd]` option overrides it
+`link:../../apidocs/com/julienviet/childprocess/ProcessOptions.html#setCwd-java.lang.String-[setCwd]` option overrides it
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 def options = [
   cwd:"/some-dir"
 ]
@@ -94,14 +89,12 @@ Process.spawn(vertx, "ls", options)
 
 The child process streams are available as
 
-* `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stdin()[stdin]`
-* `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stdout()[stdout]`
-* `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stderr()[stderr]`
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stdin--[stdin]`
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stdout--[stdout]`
+* `link:../../apidocs/com/julienviet/childprocess/Process.html#stderr--[stderr]`
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
-import io.vertx.groovy.core.buffer.Buffer
 def process = Process.spawn(vertx, "cat")
 
 process.stdout().handler({ buff ->
@@ -112,13 +105,11 @@ process.stdin().write(Buffer.buffer("Hello World"))
 
 ----
 
-Calling `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#kill()[kill]` kills the child process, on POSIX it sends the
+Calling `link:../../apidocs/com/julienviet/childprocess/Process.html#kill--[kill]` kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
-import io.vertx.groovy.core.buffer.Buffer
 def process = Process.spawn(vertx, "cat")
 
 process.stdout().handler({ buff ->
@@ -136,8 +127,6 @@ Child processes can also be forcibly killed
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
-import io.vertx.groovy.core.buffer.Buffer
 def process = Process.spawn(vertx, "cat")
 
 process.stdout().handler({ buff ->
@@ -157,7 +146,6 @@ You can be aware of the child process termination
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 def process = Process.spawn(vertx, "sleep", ["2"])
 
 process.exitHandler({ code ->
@@ -168,7 +156,7 @@ process.exitHandler({ code ->
 
 == Delayed start
 
-Calling `link:../../groovydoc/com/julienviet/groovy/childprocess/Process.html#spawn(io.vertx.core.Vertx,%20java.lang.String)[Process.spawn]` starts the process after the current event loop task
+Calling `link:../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-[Process.spawn]` starts the process after the current event loop task
 execution, so you can set handlers on the process without a race condition.
 
 Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
@@ -176,7 +164,6 @@ from a non Vert.x thread:
 
 [source,groovy]
 ----
-import com.julienviet.groovy.childprocess.Process
 def process = Process.create(vertx, "echo \"Hello World\"")
 
 process.stdout().handler({ buff ->
