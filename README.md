@@ -1,36 +1,34 @@
-== Child Process extension for Vert.x
+## Child Process extension for Vert.x
 
 Spawn child processes from Vert.x.
 
 Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
 
-== What for ?
+## What for ?
 
-link:http://vertx.io[Vert.x] 3.4.2
+[Vert.x](http://vertx.io) 3.4.2
 
-== Using Child Process
+## Using Child Process
 
 To use Child Process, add the following dependency to the _dependencies_ section of your build descriptor:
 
 * Maven (in your `pom.xml`):
 
-[source,xml,subs="+attributes"]
-----
+```
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
   <version>1.1.2</version>
 </dependency>
-----
+```
 
 * Gradle (in your `build.gradle` file):
 
-[source,groovy,subs="+attributes"]
-----
+```
 dependencies {
   compile 'com.julienviet:childprocess-vertx-ext:1.1.2'
 }
-----
+```
 
 Spawn child processes from Vert.x:
 
@@ -48,18 +46,34 @@ Process.create(vertx, "cat").spawn(process -> {
 });
 ```
 
-== Web-site docs
+## Web-site docs
 
-* link:http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html[Java docs]
-* link:http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html[Groovy docs]
-* link:http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html[Ruby docs]
-* link:http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html[JavaScript docs]
+* [Java docs](http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html)
+* [Groovy docs](http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html)
+* [Ruby docs](http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html)
+* [JavaScript docs](http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html)
 
-== License
+## Snapshots
+
+[![Build Status](https://travis-ci.org/vietj/childprocess-vertx-ext.svg?branch=master)](https://travis-ci.org/vietj/childprocess-vertx-ext)
+
+Use the dependency
+
+```
+<dependency>
+  <groupId>com.julienviet</groupId>
+  <artifactId>childprocess-vertx-ext</artifactId>
+  <version>1.1.3-SNAPSHOT</version>
+</dependency>
+```
+
+Snapshots are deploy in Sonatype OSS repository: https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext/
+
+## License
 
 Apache License - Version 2.0
 
-== Publishing docs
+## Publishing docs
 
 * mvn package -Pdocs
 * cp -r target/docs docs/
