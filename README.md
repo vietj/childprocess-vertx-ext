@@ -6,7 +6,7 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 
 ## What for ?
 
-[Vert.x](http://vertx.io) 3.4.2
+[Vert.x 3.4.2](http://vertx.io)
 
 ## Using Child Process
 
