@@ -65,6 +65,58 @@
 <h2 id="_child_process_extension_for_vert_x">Child Process extension for Vert.x</h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>Spawn child processes from Vert.x.</p>
+</div>
+<div class="paragraph">
+<p>Based on <a href="https://github.com/brettwooldridge/NuProcess" class="bare">https://github.com/brettwooldridge/NuProcess</a> <em>Low-overhead, non-blocking I/O, external Process implementation for Java</em>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_what_for">What for ?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="http://vertx.io">Vert.x</a> 3.4.1</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_using_child_process">Using Child Process</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To use Child Process, add the following dependency to the <em>dependencies</em> section of your build descriptor:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Maven (in your <code>pom.xml</code>):</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+  &lt;groupId&gt;com.julienviet&lt;/groupId&gt;
+  &lt;artifactId&gt;childprocess-vertx-ext&lt;/artifactId&gt;
+  &lt;version&gt;1.1.1&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Gradle (in your <code>build.gradle</code> file):</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
+  compile 'com.julienviet:childprocess-vertx-ext:1.1.1'
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Spawn child processes from Vert.x:</p>
 </div>
 <div class="listingblock">
@@ -82,9 +134,6 @@
 });</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Based on <a href="https://github.com/brettwooldridge/NuProcess" class="bare">https://github.com/brettwooldridge/NuProcess</a> <em>Low-overhead, non-blocking I/O, external Process implementation for Java</em>.</p>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -93,16 +142,16 @@
 <div class="ulist">
 <ul>
 <li>
-<p><a href="src/main/asciidoc/java/index.adoc">Java in-source docs</a></p>
+<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html">Java docs</a></p>
 </li>
 <li>
-<p><a href="src/main/asciidoc/groovy/index.adoc">Groovy in-source docs</a></p>
+<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html">Groovy docs</a></p>
 </li>
 <li>
-<p><a href="src/main/asciidoc/ruby/index.adoc">Ruby in-source docs</a></p>
+<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html">Ruby docs</a></p>
 </li>
 <li>
-<p><a href="src/main/asciidoc/js/index.adoc">JavaScript in-source docs</a></p>
+<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html">JavaScript docs</a></p>
 </li>
 </ul>
 </div>
@@ -115,10 +164,28 @@
 <p>Apache License - Version 2.0</p>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_publishing_docs">Publishing docs</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>mvn package -Pdocs</p>
+</li>
+<li>
+<p>cp -r target/docs docs/</p>
+</li>
+<li>
+<p>mv docs/childprocess-vertx-ext docs/guide</p>
+</li>
+</ul>
+</div>
+</div>
 </div></div></div>
 
     <div id="footer">
-  Generated on Wed Dec 28 23:06:32 2016 by
+  Generated on Tue Jun 27 07:58:04 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.1).
 </div>

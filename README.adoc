@@ -6,7 +6,7 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 
 == What for ?
 
-link:http://vertx.io[Vert.x] 3.4.1
+link:http://vertx.io[Vert.x] 3.4.2
 
 == Using Child Process
 
@@ -19,7 +19,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
 </dependency>
 ----
 
@@ -28,7 +28,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 [source,groovy,subs="+attributes"]
 ----
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.1.1'
+  compile 'com.julienviet:childprocess-vertx-ext:1.1.2'
 }
 ----
 

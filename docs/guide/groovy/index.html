@@ -561,7 +561,7 @@ table.CodeRay td.code>pre{padding:0}
 <pre class="CodeRay highlight"><code data-lang="xml"><span class="tag">&lt;dependency&gt;</span>
   <span class="tag">&lt;groupId&gt;</span>com.julienviet<span class="tag">&lt;/groupId&gt;</span>
   <span class="tag">&lt;artifactId&gt;</span>childprocess-vertx-ext<span class="tag">&lt;/artifactId&gt;</span>
-  <span class="tag">&lt;version&gt;</span>1.0.0<span class="tag">&lt;/version&gt;</span>
+  <span class="tag">&lt;version&gt;</span>1.1.3-SNAPSHOT<span class="tag">&lt;/version&gt;</span>
 <span class="tag">&lt;/dependency&gt;</span></code></pre>
 </div>
 </div>
@@ -575,7 +575,7 @@ table.CodeRay td.code>pre{padding:0}
 <div class="listingblock">
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">dependencies {
-  compile <span class="string"><span class="delimiter">'</span><span class="content">com.julienviet:childprocess-vertx-ext:1.0.0</span><span class="delimiter">'</span></span>
+  compile <span class="string"><span class="delimiter">'</span><span class="content">com.julienviet:childprocess-vertx-ext:1.1.3-SNAPSHOT</span><span class="delimiter">'</span></span>
 }</code></pre>
 </div>
 </div>
@@ -585,12 +585,11 @@ table.CodeRay td.code>pre{padding:0}
 <h2 id="_spawning_child_processes">Spawning child processes</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You can spawn child processes with the <code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#spawn(io.vertx.core.Vertx,%20java.lang.String)">Process.spawn</a></code> method:</p>
+<p>You can spawn child processes with the <code><a href="../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-">Process.spawn</a></code> method:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>)</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -598,8 +597,7 @@ table.CodeRay td.code>pre{padding:0}
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">-lh</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/usr</span><span class="delimiter">&quot;</span></span>])</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">-lh</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/usr</span><span class="delimiter">&quot;</span></span>])</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -608,8 +606,7 @@ as new environment variables</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">def</span> env = [:]
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> env = [:]
 env[<span class="string"><span class="delimiter">&quot;</span><span class="content">MY_VAR</span><span class="delimiter">&quot;</span></span>] = <span class="string"><span class="delimiter">&quot;</span><span class="content">whatever</span><span class="delimiter">&quot;</span></span>
 <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, [
   <span class="key">env</span>:env
@@ -617,12 +614,11 @@ env[<span class="string"><span class="delimiter">&quot;</span><span class="conte
 </div>
 </div>
 <div class="paragraph">
-<p><code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#env()">Process.env</a></code> gives you the current process environment key-value pairs</p>
+<p><code><a href="../../apidocs/com/julienviet/childprocess/Process.html#env--">Process.env</a></code> gives you the current process environment key-value pairs</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">def</span> options = [
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> options = [
   <span class="key">env</span>:<span class="predefined-type">Process</span>.env()
 ]
 <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, options)</code></pre>
@@ -630,12 +626,11 @@ env[<span class="string"><span class="delimiter">&quot;</span><span class="conte
 </div>
 <div class="paragraph">
 <p>By default, the child processes uses the current process <em>current working directory</em>, the
-<code><a href="../dataobjects.html#ProcessOptions#setCwd(java.lang.String)">cwd</a></code> option overrides it</p>
+<code><a href="../../apidocs/com/julienviet/childprocess/ProcessOptions.html#setCwd-java.lang.String-">setCwd</a></code> option overrides it</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">def</span> options = [
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> options = [
   <span class="key">cwd</span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">/some-dir</span><span class="delimiter">&quot;</span></span>
 ]
 <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">ls</span><span class="delimiter">&quot;</span></span>, options)</code></pre>
@@ -652,21 +647,19 @@ env[<span class="string"><span class="delimiter">&quot;</span><span class="conte
 <div class="ulist">
 <ul>
 <li>
-<p><code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stdin()">stdin</a></code></p>
+<p><code><a href="../../apidocs/com/julienviet/childprocess/Process.html#stdin--">stdin</a></code></p>
 </li>
 <li>
-<p><code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stdout()">stdout</a></code></p>
+<p><code><a href="../../apidocs/com/julienviet/childprocess/Process.html#stdout--">stdout</a></code></p>
 </li>
 <li>
-<p><code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#stderr()">stderr</a></code></p>
+<p><code><a href="../../apidocs/com/julienviet/childprocess/Process.html#stderr--">stderr</a></code></p>
 </li>
 </ul>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">import</span> <span class="include">io.vertx.groovy.core.buffer.Buffer</span>
-<span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
 
 process.stdout().handler({ buff -&gt;
   println(buff.toString())
@@ -676,14 +669,12 @@ process.stdin().write(<span class="predefined-type">Buffer</span>.buffer(<span c
 </div>
 </div>
 <div class="paragraph">
-<p>Calling <code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#kill()">kill</a></code> kills the child process, on POSIX it sends the
+<p>Calling <code><a href="../../apidocs/com/julienviet/childprocess/Process.html#kill--">kill</a></code> kills the child process, on POSIX it sends the
 <code>SIGTERM</code> signal.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">import</span> <span class="include">io.vertx.groovy.core.buffer.Buffer</span>
-<span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
 
 process.stdout().handler({ buff -&gt;
   println(buff.toString())
@@ -700,9 +691,7 @@ process.kill()</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">import</span> <span class="include">io.vertx.groovy.core.buffer.Buffer</span>
-<span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">cat</span><span class="delimiter">&quot;</span></span>)
 
 process.stdout().handler({ buff -&gt;
   println(buff.toString())
@@ -724,8 +713,7 @@ process.kill(<span class="predefined-constant">true</span>)</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">sleep</span><span class="delimiter">&quot;</span></span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span>])
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> process = <span class="predefined-type">Process</span>.spawn(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">sleep</span><span class="delimiter">&quot;</span></span>, [<span class="string"><span class="delimiter">&quot;</span><span class="content">2</span><span class="delimiter">&quot;</span></span>])
 
 process.exitHandler({ code -&gt;
   println(<span class="string"><span class="delimiter">&quot;</span><span class="content">Child process exited with code: </span><span class="inline"><span class="inline-delimiter">${</span>code<span class="inline-delimiter">}</span></span><span class="delimiter">&quot;</span></span>)
@@ -738,7 +726,7 @@ process.exitHandler({ code -&gt;
 <h2 id="_delayed_start">Delayed start</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Calling <code><a href="../../groovydoc/com/julienviet/groovy/childprocess/Process.html#spawn(io.vertx.core.Vertx,%20java.lang.String)">Process.spawn</a></code> starts the process after the current event loop task
+<p>Calling <code><a href="../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-">Process.spawn</a></code> starts the process after the current event loop task
 execution, so you can set handlers on the process without a race condition.</p>
 </div>
 <div class="paragraph">
@@ -747,8 +735,7 @@ from a non Vert.x thread:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">import</span> <span class="include">com.julienviet.groovy.childprocess.Process</span>
-<span class="keyword">def</span> process = <span class="predefined-type">Process</span>.create(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">echo </span><span class="char">\&quot;</span><span class="content">Hello World</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span>)
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="keyword">def</span> process = <span class="predefined-type">Process</span>.create(vertx, <span class="string"><span class="delimiter">&quot;</span><span class="content">echo </span><span class="char">\&quot;</span><span class="content">Hello World</span><span class="char">\&quot;</span><span class="delimiter">&quot;</span></span>)
 
 process.stdout().handler({ buff -&gt;
   println(buff.toString())
@@ -763,7 +750,7 @@ process.start()</code></pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-12-28 23:05:48 CET
+Last updated 2017-06-27 07:57:24 CEST
 </div>
 </div>
 </body>
