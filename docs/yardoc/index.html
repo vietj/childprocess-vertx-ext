@@ -61,133 +61,115 @@
 
     <iframe id="search_frame"></iframe>
 
-    <div id="content"><div id='filecontents'><div class="sect1">
-<h2 id="_child_process_extension_for_vert_x">Child Process extension for Vert.x</h2>
-<div class="sectionbody">
-<div class="paragraph">
+    <div id="content"><div id='filecontents'>
+<h2 id="label-Child+Process+extension+for+Vert.x">Child Process extension for Vert.x</h2>
+
 <p>Spawn child processes from Vert.x.</p>
-</div>
-<div class="paragraph">
-<p>Based on <a href="https://github.com/brettwooldridge/NuProcess" class="bare">https://github.com/brettwooldridge/NuProcess</a> <em>Low-overhead, non-blocking I/O, external Process implementation for Java</em>.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_what_for">What for ?</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="http://vertx.io">Vert.x</a> 3.4.1</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_using_child_process">Using Child Process</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>To use Child Process, add the following dependency to the <em>dependencies</em> section of your build descriptor:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
+
+<p>Based on <a
+href="https://github.com/brettwooldridge/NuProcess">github.com/brettwooldridge/NuProcess</a>
+<em>Low-overhead, non-blocking I/O, external Process implementation for
+Java</em>.</p>
+
+<h2 id="label-What+for+-3F">What for ?</h2>
+
+<p><a href="http://vertx.io">Vert.x 3.5.0</a></p>
+
+<h2 id="label-Using+Child+Process">Using Child Process</h2>
+
+<p>To use Child Process, add the following dependency to the
+<em>dependencies</em> section of your build descriptor:</p>
+<ul><li>
 <p>Maven (in your <code>pom.xml</code>):</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;dependency&gt;
+</li></ul>
+
+<pre class="code ruby"><code class="ruby">&lt;dependency&gt;
   &lt;groupId&gt;com.julienviet&lt;/groupId&gt;
   &lt;artifactId&gt;childprocess-vertx-ext&lt;/artifactId&gt;
-  &lt;version&gt;1.1.1&lt;/version&gt;
+  &lt;version&gt;1.2.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
-</div>
-</div>
-<div class="ulist">
-<ul>
-<li>
+<ul><li>
 <p>Gradle (in your <code>build.gradle</code> file):</p>
-</li>
-</ul>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-groovy" data-lang="groovy">dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.1.1'
-}</code></pre>
-</div>
-</div>
-<div class="paragraph">
+</li></ul>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_dependencies'>dependencies</span> <span class='lbrace'>{</span>
+  <span class='id identifier rubyid_compile'>compile</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>com.julienviet:childprocess-vertx-ext:1.2.0</span><span class='tstring_end'>&#39;</span></span>
+<span class='rbrace'>}</span>
+</code></pre>
+
 <p>Spawn child processes from Vert.x:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code>Process.create(vertx, "cat").spawn(process -&gt; {
-  process.stdout().handler(buf -&gt; {
-    System.out.println("Process wrote: " + buf);
-  });
-  StreamOutput stdin = process.stdin();
-  stdin.write(Buffer.buffer("hello"));
-  stdin.close();
-  process.exitHandler(code -&gt; {
-    System.out.println("Process exited: " + code);
-  });
-});</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_web_site_docs">Web-site docs</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html">Java docs</a></p>
-</li>
-<li>
-<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html">Groovy docs</a></p>
-</li>
-<li>
-<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html">Ruby docs</a></p>
-</li>
-<li>
-<p><a href="http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html">JavaScript docs</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_license">License</h2>
-<div class="sectionbody">
-<div class="paragraph">
+
+<pre class="code ruby"><code class="ruby"><span class='const'>Process</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_vertx'>vertx</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cat</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_spawn'>spawn</span><span class='lparen'>(</span><span class='id identifier rubyid_process'>process</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span>
+  <span class='id identifier rubyid_process'>process</span><span class='period'>.</span><span class='id identifier rubyid_stdout'>stdout</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_handler'>handler</span><span class='lparen'>(</span><span class='id identifier rubyid_buf'>buf</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span>
+    <span class='const'>System</span><span class='period'>.</span><span class='id identifier rubyid_out'>out</span><span class='period'>.</span><span class='id identifier rubyid_println'>println</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Process wrote: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_buf'>buf</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='const'>StreamOutput</span> <span class='id identifier rubyid_stdin'>stdin</span> <span class='op'>=</span> <span class='id identifier rubyid_process'>process</span><span class='period'>.</span><span class='id identifier rubyid_stdin'>stdin</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='id identifier rubyid_stdin'>stdin</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='const'>Buffer</span><span class='period'>.</span><span class='id identifier rubyid_buffer'>buffer</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>hello</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='id identifier rubyid_stdin'>stdin</span><span class='period'>.</span><span class='id identifier rubyid_close'>close</span><span class='lparen'>(</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='id identifier rubyid_process'>process</span><span class='period'>.</span><span class='id identifier rubyid_exitHandler'>exitHandler</span><span class='lparen'>(</span><span class='id identifier rubyid_code'>code</span> <span class='tlambda'>-&gt;</span> <span class='tlambeg'>{</span>
+    <span class='const'>System</span><span class='period'>.</span><span class='id identifier rubyid_out'>out</span><span class='period'>.</span><span class='id identifier rubyid_println'>println</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Process exited: </span><span class='tstring_end'>&quot;</span></span> <span class='op'>+</span> <span class='id identifier rubyid_code'>code</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+  <span class='rbrace'>}</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+<span class='rbrace'>}</span><span class='rparen'>)</span><span class='semicolon'>;</span>
+</code></pre>
+
+<h2 id="label-Web-site+docs">Web-site docs</h2>
+<ul><li>
+<p><a
+href="http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html">Java
+docs</a></p>
+</li><li>
+<p><a
+href="http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html">Groovy
+docs</a></p>
+</li><li>
+<p><a
+href="http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html">Ruby
+docs</a></p>
+</li><li>
+<p><a
+href="http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html">JavaScript
+docs</a></p>
+</li></ul>
+
+<h2 id="label-Previous+Vert.x+versions">Previous Vert.x versions</h2>
+<ul><li>
+<p>Vert.x <code>3.4.2</code> : use <code>1.1.2</code></p>
+</li></ul>
+
+<h2 id="label-Snapshots">Snapshots</h2>
+
+<p><a href="https://travis-ci.org/vietj/childprocess-vertx-ext"><img
+src="https://travis-ci.org/vietj/childprocess-vertx-ext.svg?branch=master"></a></p>
+
+<p>Use the dependency</p>
+
+<pre class="code ruby"><code class="ruby">&lt;dependency&gt;
+  &lt;groupId&gt;com.julienviet&lt;/groupId&gt;
+  &lt;artifactId&gt;childprocess-vertx-ext&lt;/artifactId&gt;
+  &lt;version&gt;1.2.1-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+
+<p>Snapshots are deploy in Sonatype OSS repository: <a
+href="https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext">oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext</a>/</p>
+
+<h2 id="label-License">License</h2>
+
 <p>Apache License - Version 2.0</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_publishing_docs">Publishing docs</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
+
+<h2 id="label-Publishing+docs">Publishing docs</h2>
+<ul><li>
 <p>mvn package -Pdocs</p>
-</li>
-<li>
+</li><li>
 <p>cp -r target/docs docs/</p>
-</li>
-<li>
+</li><li>
 <p>mv docs/childprocess-vertx-ext docs/guide</p>
-</li>
-</ul>
-</div>
-</div>
-</div></div></div>
+</li></ul>
+</div></div>
 
     <div id="footer">
-  Generated on Tue Jun 27 07:58:04 2017 by
+  Generated on Mon Oct 30 12:00:27 2017 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.8.7.6 (ruby-2.3.1).
+  0.8.7.6 (ruby-2.3.3).
 </div>
 
   </body>
