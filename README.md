@@ -6,7 +6,7 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 
 ## What for ?
 
-[Vert.x 3.5.0](http://vertx.io)
+[Vert.x 3.5.2](http://vertx.io)
 
 ## Using Child Process
 
@@ -18,7 +18,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.2.0</version>
+  <version>1.2.2</version>
 </dependency>
 ```
 
@@ -26,7 +26,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.2.0'
+  compile 'com.julienviet:childprocess-vertx-ext:1.2.2'
 }
 ```
 
@@ -67,7 +67,7 @@ Use the dependency
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.2.1-SNAPSHOT</version>
+  <version>1.2.3-SNAPSHOT</version>
 </dependency>
 ```
 

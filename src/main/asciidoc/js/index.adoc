@@ -18,7 +18,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.2.2-SNAPSHOT</version>
+  <version>1.2.2</version>
 </dependency>
 ----
 
@@ -27,7 +27,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 [source,groovy,subs="+attributes"]
 ----
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.2.2-SNAPSHOT'
+  compile 'com.julienviet:childprocess-vertx-ext:1.2.2'
 }
 ----
 
