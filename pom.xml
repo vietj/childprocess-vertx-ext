@@ -55,7 +55,7 @@
   </developers>
 
   <properties>
-    <stack.version>3.5.2</stack.version>
+    <stack.version>3.6.0</stack.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

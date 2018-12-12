@@ -8,16 +8,14 @@
 ++++
 '''
 
-[cols=">25%,^25%,50%"]
+[cols=">25%,25%,50%"]
 [frame="topbot"]
 |===
 ^|Name | Type ^| Description
-|[[cwd]]`cwd`|`String`|
-+++
+|[[cwd]]`@cwd`|`String`|+++
 Set the child process current working directory.
 +++
-|[[env]]`env`|`String`|
-+++
+|[[env]]`@env`|`String`|+++
 Set the child process environment variables as key-value pairs.
 +++
 |===
