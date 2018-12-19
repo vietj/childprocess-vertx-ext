@@ -1,3 +1,9 @@
+jekyll/apidocs
+jekyll/yardoc
+jekyll/guide
+jekyll/.*
+jekyll/_site
+jekyll/jsdoc
 .vertx
 .DS_Store
 .gradle
