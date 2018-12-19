@@ -73,7 +73,7 @@ Java</em>.</p>
 
 <h2 id="label-What+for+-3F">What for ?</h2>
 
-<p><a href="http://vertx.io">Vert.x 3.5.0</a></p>
+<p><a href="http://vertx.io">Vert.x 3.6.2</a></p>
 
 <h2 id="label-Using+Child+Process">Using Child Process</h2>
 
@@ -86,14 +86,14 @@ Java</em>.</p>
 <pre class="code ruby"><code class="ruby">&lt;dependency&gt;
   &lt;groupId&gt;com.julienviet&lt;/groupId&gt;
   &lt;artifactId&gt;childprocess-vertx-ext&lt;/artifactId&gt;
-  &lt;version&gt;1.2.0&lt;/version&gt;
+  &lt;version&gt;1.3.0&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 <ul><li>
 <p>Gradle (in your <code>build.gradle</code> file):</p>
 </li></ul>
 
 <pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_dependencies'>dependencies</span> <span class='lbrace'>{</span>
-  <span class='id identifier rubyid_compile'>compile</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>com.julienviet:childprocess-vertx-ext:1.2.0</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_compile'>compile</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>com.julienviet:childprocess-vertx-ext:1.3.0</span><span class='tstring_end'>&#39;</span></span>
 <span class='rbrace'>}</span>
 </code></pre>
 
@@ -133,7 +133,9 @@ docs</a></p>
 
 <h2 id="label-Previous+Vert.x+versions">Previous Vert.x versions</h2>
 <ul><li>
-<p>Vert.x <code>3.4.2</code> : use <code>1.1.2</code></p>
+<p>Vert.x <code>3.5.x</code> : use <code>1.2.2</code></p>
+</li><li>
+<p>Vert.x <code>3.4.x</code> : use <code>1.1.2</code></p>
 </li></ul>
 
 <h2 id="label-Snapshots">Snapshots</h2>
@@ -146,7 +148,7 @@ src="https://travis-ci.org/vietj/childprocess-vertx-ext.svg?branch=master"></a><
 <pre class="code ruby"><code class="ruby">&lt;dependency&gt;
   &lt;groupId&gt;com.julienviet&lt;/groupId&gt;
   &lt;artifactId&gt;childprocess-vertx-ext&lt;/artifactId&gt;
-  &lt;version&gt;1.2.1-SNAPSHOT&lt;/version&gt;
+  &lt;version&gt;1.3.1-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre>
 
 <p>Snapshots are deploy in Sonatype OSS repository: <a
@@ -156,18 +158,31 @@ href="https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/chi
 
 <p>Apache License - Version 2.0</p>
 
-<h2 id="label-Publishing+docs">Publishing docs</h2>
+<h2 id="label-Documentation">Documentation</h2>
+
+<p>The online and published documentation is in <code>/docs</code> and is
+served by GitHub pages with Jekyll.</p>
+
+<p>You can find the actual guide source in <a
+href="src/main/docs/index.md">src/main/docs/index.md</a>. At compilation
+time, this source generates the <code>jekyll/guide/java/index.md</code>.</p>
+
+<p>The current documentation is in <code>/jekyll</code> and can be preview
+using Docker and your browser</p>
 <ul><li>
-<p>mvn package -Pdocs</p>
+<p>generate the documentation <em>* <code>mvn compile</code> to generate
+<code>jekyll/guide/java/index.md</code> *</em> <code>mvn site</code> to
+generate the javadoc in <code>jekyll/apidocs</code></p>
 </li><li>
-<p>cp -r target/docs docs/</p>
+<p>run Jekyll <em>* <code>cd jekyll</code> *</em> <code>docker-compose
+up</code></p>
 </li><li>
-<p>mv docs/childprocess-vertx-ext docs/guide</p>
+<p>open your browser at <a href="http://localhost:4000">localhost:4000</a></p>
 </li></ul>
 </div></div>
 
     <div id="footer">
-  Generated on Sun Jun 10 14:24:26 2018 by
+  Generated on Wed Dec 19 11:17:17 2018 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.8.7.6 (ruby-2.3.3).
 </div>
