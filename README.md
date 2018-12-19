@@ -14,7 +14,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 * Maven (in your `pom.xml`):
 
-```
+```xml
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
@@ -24,7 +24,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 * Gradle (in your `build.gradle` file):
 
-```
+```groovy
 dependencies {
   compile 'com.julienviet:childprocess-vertx-ext:1.3.0'
 }
@@ -32,7 +32,7 @@ dependencies {
 
 Spawn child processes from Vert.x:
 
-```
+```java
 Process.create(vertx, "cat").spawn(process -> {
   process.stdout().handler(buf -> {
     System.out.println("Process wrote: " + buf);
@@ -48,11 +48,11 @@ Process.create(vertx, "cat").spawn(process -> {
 
 ## Web-site docs
 
-* http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html[Java docs]
-* http://www.julienviet.com/childprocess-vertx-ext/guide/kotlin/index.html[Kotlin docs]
-* http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html[Groovy docs]
-* http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html[Ruby docs]
-* http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html[JavaScript docs]
+* [Java docs](http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html)
+* [Kotlin docs](http://www.julienviet.com/childprocess-vertx-ext/guide/kotlin/index.html)
+* [Groovy docs](http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html)
+* [Ruby docs](http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html)
+* [JavaScript docs](http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html)
 
 ## Previous Vert.x versions
 
@@ -65,7 +65,7 @@ Process.create(vertx, "cat").spawn(process -> {
 
 Use the dependency
 
-```
+```xml
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
