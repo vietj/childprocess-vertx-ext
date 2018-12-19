@@ -48,11 +48,11 @@ Process.create(vertx, "cat").spawn(process -> {
 
 ## Web-site docs
 
-* [Java](guide/java/index.md)
-* [Kotlin](guide/kotlin/index.md)
-* [Groovy](guide/groovy/index.md)
-* [JavaScript](guide/js/index.md)
-* [Ruby](guide/ruby/index.md)
+* http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html[Java docs]
+* http://www.julienviet.com/childprocess-vertx-ext/guide/kotlin/index.html[Kotlin docs]
+* http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html[Groovy docs]
+* http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html[Ruby docs]
+* http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html[JavaScript docs]
 
 ## Previous Vert.x versions
 
