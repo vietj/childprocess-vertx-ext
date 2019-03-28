@@ -83,7 +83,7 @@ public interface Process {
    * @return the process
    */
   static Process spawn(Vertx vertx, String command, ProcessOptions options) {
-    return spawn(vertx, command, Collections.emptyList(), new ProcessOptions());
+    return spawn(vertx, command, Collections.emptyList(), options);
   }
 
   /**
@@ -133,7 +133,7 @@ public interface Process {
    * @return the created child process
    */
   static Process create(Vertx vertx, String command, ProcessOptions options) {
-    return create(vertx, command, Collections.emptyList(), new ProcessOptions());
+    return create(vertx, command, Collections.emptyList(), options);
   }
 
   /**
