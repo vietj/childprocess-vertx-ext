@@ -33,7 +33,7 @@ dependencies {
 Spawn child processes from Vert.x:
 
 ```java
-Process.create(vertx, "cat").spawn(process -> {
+Process.create(vertx, "cat").start(process -> {
   process.stdout().handler(buf -> {
     System.out.println("Process wrote: " + buf);
   });
