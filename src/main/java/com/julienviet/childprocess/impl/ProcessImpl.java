@@ -22,7 +22,9 @@ import com.julienviet.childprocess.StreamOutput;
 import com.zaxxer.nuprocess.NuProcess;
 import com.zaxxer.nuprocess.NuProcessBuilder;
 import com.zaxxer.nuprocess.NuProcessHandler;
+import io.vertx.core.AsyncResult;
 import io.vertx.core.Context;
+import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import com.julienviet.childprocess.Process;
@@ -112,7 +114,17 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   }
 
   @Override
-  public StreamOutput write(Buffer buffer) {
+  public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
+
+  }
+
+  @Override
+  public void end(Handler<AsyncResult<Void>> handler) {
+
+  }
+
+  @Override
+  public Future<Void> write(Buffer buffer) {
     boolean hasPending;
     synchronized (this) {
       if (stdinStatus == CLOSING || stdinStatus == CLOSED) {
@@ -126,7 +138,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
       wantWrite = true;
       process.wantWrite();
     }
-    return this;
+    return null;
   }
 
   @Override
@@ -148,7 +160,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
   }
 
   @Override
-  public void close() {
+  public Future<Void> close() {
     synchronized (this) {
       switch (stdinStatus) {
         case OPEN:
@@ -157,19 +169,20 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
               stdinStatus = CLOSED;
             } else {
               stdinStatus = CLOSING;
-              return;
+              return null;
             }
           } else {
             // We close the stream before the process started
             stdinStatus = CLOSING;
-            return;
+            return null;
           }
           break;
         default:
-          return;
+          return null;
       }
     }
     process.closeStdin(false);
+    return null;
   }
 
   //

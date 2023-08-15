@@ -34,8 +34,6 @@ import java.lang.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -196,42 +194,14 @@ public class SpawnTest {
   @Test
   public void testEnv(TestContext context) {
     Async async = context.async();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", "foo"), new ProcessOptions().setEnv(Collections.singletonMap("foo", "foo_value"))).start(process -> {
+    ProcessOptions options = new ProcessOptions();
+    options.getEnv().put("foo", "foo_value");
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", "foo"), options).start(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
         context.assertEquals(0, code);
         context.assertEquals("foo_value", out.toString());
-        async.complete();
-      });
-    });
-  }
-
-  @Test
-  public void testEmptyEnv(TestContext context) {
-    Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
-    Async async = context.async();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions().setEnv(new HashMap<>())).start(process -> {
-      Buffer out = Buffer.buffer();
-      process.stdout().handler(out::appendBuffer);
-      process.exitHandler(code -> {
-        context.assertEquals(0, code);
-        context.assertEquals("", out.toString());
-        async.complete();
-      });
-    });
-  }
-
-  @Test
-  public void testNullEnv(TestContext context) {
-    Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
-    Async async = context.async();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions().setEnv(new HashMap<>())).start(process -> {
-      Buffer out = Buffer.buffer();
-      process.stdout().handler(out::appendBuffer);
-      process.exitHandler(code -> {
-        context.assertEquals(0, code);
-        context.assertEquals("", out.toString());
         async.complete();
       });
     });

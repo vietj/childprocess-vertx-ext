@@ -22,7 +22,7 @@
   <parent>
     <groupId>io.vertx</groupId>
     <artifactId>vertx-parent</artifactId>
-    <version>12</version>
+    <version>19</version>
   </parent>
 
   <groupId>com.julienviet</groupId>
@@ -55,11 +55,10 @@
   </developers>
 
   <properties>
-    <stack.version>3.6.2</stack.version>
+    <stack.version>4.4.4</stack.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
-    <kotlin.version>1.3.0</kotlin.version>
   </properties>
 
   <dependencyManagement>
@@ -86,65 +85,12 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-lang-groovy</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-lang-js</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-lang-ruby</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java-gen</artifactId>
-      <optional>true</optional>
-      <version>${stack.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java2</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-rx-java2-gen</artifactId>
-      <optional>true</optional>
-      <version>${stack.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-lang-kotlin</artifactId>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-lang-kotlin-gen</artifactId>
-      <version>3.6.2</version>
-      <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
       <artifactId>vertx-codegen</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-docgen</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-codetrans</artifactId>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -289,25 +235,6 @@
             <link>http://fasterxml.github.io/jackson-databind/javadoc/2.9/</link>
           </links>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>kotlin-maven-plugin</artifactId>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <version>${kotlin.version}</version>
-        <executions>
-          <execution>
-            <configuration>
-              <jvmTarget>1.8</jvmTarget>
-              <sourceDirs>
-                <sourceDir>${basedir}/src/main/kotlin</sourceDir>
-              </sourceDirs>
-            </configuration>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <phase>compile</phase>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
