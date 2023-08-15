@@ -47,6 +47,19 @@
     <url>git@github.com:vietj/childprocess-vertx-ext.git</url>
   </scm>
 
+  <distributionManagement>
+    <snapshotRepository>
+      <id>sonatype-snapshots-repository</id>
+      <name>Sonatype Snapshots Repository</name>
+      <url>${sonatype.snapshotRepository}</url>
+    </snapshotRepository>
+    <repository>
+      <id>sonatype-release-repository</id>
+      <name>Sonatype Release Repository</name>
+      <url>${vertx.releaseRepository}</url>
+    </repository>
+  </distributionManagement>
+
   <developers>
     <developer>
       <name>Julien Viet</name>
@@ -59,6 +72,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
+    <sonatype.releaseRepository>https://oss.sonatype.org/service/local/staging/deploy/maven2/</sonatype.releaseRepository>
+    <sonatype.snapshotRepository>https://oss.sonatype.org/content/repositories/snapshots/</sonatype.snapshotRepository>
   </properties>
 
   <dependencyManagement>

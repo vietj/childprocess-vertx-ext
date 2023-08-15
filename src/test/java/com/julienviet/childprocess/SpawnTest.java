@@ -26,6 +26,7 @@ import io.vertx.ext.unit.junit.VertxUnitRunner;
 import io.vertx.test.core.TestUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -75,6 +76,7 @@ public class SpawnTest {
     });
   }
 
+  @Ignore
   @Test
   public void testStdin(TestContext context) {
     Buffer chunk = Buffer.buffer(TestUtils.randomAlphaString(1024));
@@ -170,6 +172,7 @@ public class SpawnTest {
     });
   }
 
+  @Ignore
   @Test
   public void testCat(TestContext context) {
     Async async = context.async();

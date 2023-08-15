@@ -1,12 +1,14 @@
 ## Child Process extension for Vert.x
 
+[![childprocess-vertx-ext](https://github.com/vietj/childprocess-vertx-ext/actions/workflows/ci.yml/badge.svg)](https://github.com/vietj/childprocess-vertx-ext/actions/workflows/ci.yml)
+
 Spawn child processes from Vert.x.
 
 Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blocking I/O, external Process implementation for Java_.
 
 ## What for ?
 
-[Vert.x 3.6.2](http://vertx.io)
+[Vert.x 4.x](http://vertx.io)
 
 ## Using Child Process
 
@@ -54,15 +56,13 @@ Process
 
 ## Snapshots
 
-[![Build Status](https://travis-ci.org/vietj/childprocess-vertx-ext.svg?branch=master)](https://travis-ci.org/vietj/childprocess-vertx-ext)
-
 Use the dependency
 
 ```xml
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
