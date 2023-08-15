@@ -20,14 +20,10 @@ package com.julienviet.childprocess.impl;
 import com.julienviet.childprocess.StreamInput;
 import com.julienviet.childprocess.StreamOutput;
 import com.zaxxer.nuprocess.NuProcess;
-import com.zaxxer.nuprocess.NuProcessBuilder;
-import com.zaxxer.nuprocess.NuProcessHandler;
-import io.vertx.core.AsyncResult;
-import io.vertx.core.Context;
-import io.vertx.core.Future;
-import io.vertx.core.Handler;
+import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import com.julienviet.childprocess.Process;
+import io.vertx.core.impl.ContextInternal;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
@@ -35,50 +31,34 @@ import java.util.ArrayDeque;
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
+public class ProcessImpl implements Process, StreamOutput {
 
   private static final int OPEN = 0, CLOSING = 1, CLOSED = 2;
 
-  private NuProcessBuilder builder;
   private int stdinStatus = OPEN;
-  private final ArrayDeque<Buffer> stdinPending = new ArrayDeque<>();
-  private int stdinSize;
+  private Promise<Void> stdninEnd;
+  private final ArrayDeque<Write> stdinPending = new ArrayDeque<>();
+  private int stdinPendingSize;
   private int stdinMaxSize = 1024;
   private Handler<Void> drainHandler;
-  private final Context context;
+  private final ContextInternal context;
   private final ProcessStreamInput stdout;
   private final ProcessStreamInput stderr;
-  private Handler<Process> processHandler;
   private Handler<Integer> exitHandler;
-  private NuProcess process;
+  private final NuProcess process;
+  private Promise<Integer> exitFuture;
   private boolean wantWrite;
 
-  public ProcessImpl(Context context, NuProcessBuilder builder) {
+  public ProcessImpl(ContextInternal context, NuProcess process) {
     this.context = context;
+    this.process = process;
     this.stdout = new ProcessStreamInput(context);
     this.stderr = new ProcessStreamInput(context);
-    this.builder = builder;
+    this.exitFuture = context.promise();
+    this.stdninEnd = context.promise();
   }
 
   //
-
-
-  @Override
-  public synchronized void start() {
-    start(p -> {});
-  }
-
-  @Override
-  public synchronized void start(Handler<Process> handler) {
-    if (processHandler != null) {
-      throw new IllegalStateException();
-    }
-    processHandler = handler;
-    builder.setProcessListener(this);
-    context.runOnContext(v -> {
-      builder.start();
-    });
-  }
 
   @Override
   public synchronized Process exitHandler(Handler<Integer> handler) {
@@ -88,7 +68,7 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   @Override
   public synchronized Integer pid() {
-    return process != null ? process.getPID() : null;
+    return process.getPID();
   }
 
   @Override
@@ -115,30 +95,29 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   @Override
   public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-
+    write(data).onComplete(handler);
   }
 
   @Override
   public void end(Handler<AsyncResult<Void>> handler) {
-
+    end().onComplete(handler);
   }
 
   @Override
   public Future<Void> write(Buffer buffer) {
-    boolean hasPending;
+    Promise<Void> promise = context.promise();
     synchronized (this) {
       if (stdinStatus == CLOSING || stdinStatus == CLOSED) {
         throw new IllegalStateException();
       }
-      stdinPending.add(buffer);
-      stdinSize += buffer.length();
-      hasPending = stdinSize > 0;
+      stdinPending.add(new Write(buffer, promise));
+      stdinPendingSize += buffer.length();
+      if (process != null && !wantWrite) {
+        wantWrite = true;
+        process.wantWrite();
+      }
     }
-    if (process != null && hasPending && !wantWrite) {
-      wantWrite = true;
-      process.wantWrite();
-    }
-    return null;
+    return promise.future();
   }
 
   @Override
@@ -149,147 +128,115 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   @Override
   public StreamOutput drainHandler(Handler<Void> handler) {
-    drainHandler = handler;
+    synchronized (this) {
+      drainHandler = handler;
+    }
     checkDrained();
     return this;
   }
 
   @Override
   public synchronized boolean writeQueueFull() {
-    return stdinSize > stdinMaxSize;
+    return stdinPendingSize > stdinMaxSize;
   }
 
   @Override
   public Future<Void> close() {
     synchronized (this) {
-      switch (stdinStatus) {
-        case OPEN:
-          if (process != null) {
-            if (stdinSize == 0) {
-              stdinStatus = CLOSED;
-            } else {
-              stdinStatus = CLOSING;
-              return null;
-            }
-          } else {
-            // We close the stream before the process started
-            stdinStatus = CLOSING;
-            return null;
-          }
-          break;
-        default:
-          return null;
+      if (stdinStatus != OPEN) {
+        return stdninEnd.future();
+      }
+      if (stdinPendingSize == 0) {
+        stdinStatus = CLOSED;
+      } else {
+        stdinStatus = CLOSING;
+        return stdninEnd.future();
       }
     }
     process.closeStdin(false);
-    return null;
+    stdninEnd.complete();
+    return stdninEnd.future();
   }
 
   //
 
-  @Override
-  public void onPreStart(NuProcess nuProcess) {
-  }
-
-  @Override
-  public synchronized void onStart(NuProcess nuProcess) {
-    process = nuProcess;
-    stdinStatus = OPEN;
-    if (stdinPending.size() > 0) {
-      wantWrite = true;
-      process.wantWrite();
-    }
-    context.runOnContext(v -> {
-      processHandler.handle(this);
-    });
-  }
-
-  @Override
   public synchronized void onExit(int exitCode) {
-    if (process == null) {
-      // Early failure
-      context.runOnContext(v -> {
-        if (processHandler != null) {
-          processHandler.handle(this);
-        }
-        handleExit(exitCode);
-      });
-    } else {
-      process = null;
-      synchronized (this) {
-        stdinStatus = CLOSED;
-      }
-      handleExit(exitCode);
+    synchronized (this) {
+      stdinStatus = CLOSED;
     }
+    handleExit(exitCode);
   }
 
   private void handleExit(int exitCode) {
+    exitFuture.complete(exitCode);
     Handler<Integer> handler = exitHandler;
     if (handler != null) {
-      context.runOnContext(v -> {
-        handler.handle(exitCode);
-      });
+      context.emit(exitCode, handler);
     }
   }
 
-  @Override
-  public void onStdout(ByteBuffer byteBuffer, boolean closed) {
-    if (byteBuffer != null && byteBuffer.remaining() > 0) {
-      stdout.write(byteBuffer);
+  public void onStdout(Buffer buffer, boolean closed) {
+    if (buffer != null) {
+      stdout.write(buffer);
     }
     if (closed) {
       stdout.close();
     }
   }
 
-  @Override
-  public void onStderr(ByteBuffer byteBuffer, boolean closed) {
-    if (byteBuffer != null && byteBuffer.remaining() > 0) {
-      stderr.write(byteBuffer);
+  public void onStderr(Buffer buffer, boolean closed) {
+    if (buffer != null) {
+      stderr.write(buffer);
     }
     if (closed) {
       stderr.close();
     }
   }
 
-  @Override
-  public synchronized boolean onStdinReady(ByteBuffer byteBuffer) {
-    Buffer buffer;
-    while (byteBuffer.remaining() > 0 && (buffer = stdinPending.poll()) != null) {
-      byte[] bytes;
-      if (buffer.length() <= byteBuffer.remaining()) {
-        bytes = buffer.getBytes();
+  public boolean onStdinReady(ByteBuffer byteBuffer) {
+    synchronized (this) {
+      Write write;
+      while (byteBuffer.remaining() > 0 && (write = stdinPending.poll()) != null) {
+        byte[] bytes;
+        if (write.buffer.length() <= byteBuffer.remaining()) {
+          bytes = write.buffer.getBytes();
+          write.promise.complete();
+        } else {
+          bytes = write.buffer.getBytes(0, byteBuffer.remaining());
+          stdinPending.addFirst(new Write(write.buffer.slice(byteBuffer.remaining(), write.buffer.length()), write.promise));
+        }
+        byteBuffer.put(bytes); // See to do directly with Netty ByteBuf
+        stdinPendingSize -= bytes.length;
+      }
+      byteBuffer.flip();
+      context.execute(v -> checkDrained());
+      if (stdinPendingSize > 0) {
+        return true;
       } else {
-        bytes = buffer.getBytes(0, byteBuffer.remaining());
-        stdinPending.addFirst(buffer.slice(byteBuffer.remaining(), buffer.length()));
+        wantWrite = false;
+        if (stdinStatus == CLOSING) {
+          stdinStatus = CLOSED;
+        } else {
+          return false;
+        }
       }
-      byteBuffer.put(bytes); // See to do directly with Netty ByteBuf
-      stdinSize -= bytes.length;
     }
-    byteBuffer.flip();
-    context.runOnContext(v -> checkDrained());
-    if (stdinSize > 0) {
-      return true;
-    } else {
-      wantWrite = false;
-      if (stdinStatus == CLOSING) {
-        stdinStatus = CLOSED;
-        process.closeStdin(false);
-      }
-      return false;
-    }
+    process.closeStdin(false);
+    stdninEnd.complete();
+    return false;
   }
 
   private void checkDrained() {
+    Handler<Void> handler;
     synchronized (this) {
-      if (stdinSize >= stdinMaxSize / 2) {
+      if (stdinPendingSize >= stdinMaxSize / 2) {
         return;
       }
-    }
-    if (drainHandler != null) {
-      Handler<Void> handler = drainHandler;
+      handler = drainHandler;
       drainHandler = null;
-      handler.handle(null);
+    }
+    if (handler != null) {
+      context.emit(handler);
     }
   }
 
@@ -302,6 +249,15 @@ public class ProcessImpl implements NuProcessHandler, Process, StreamOutput {
 
   @Override
   public boolean isRunning() {
-    return process != null && process.isRunning();
+    return process.isRunning();
+  }
+
+  private static class Write {
+    final Buffer buffer;
+    final Promise<Void> promise;
+    Write(Buffer buffer, Promise<Void> promise) {
+      this.buffer = buffer;
+      this.promise = promise;
+    }
   }
 }

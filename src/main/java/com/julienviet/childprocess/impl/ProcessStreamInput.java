@@ -17,47 +17,40 @@
 
 package com.julienviet.childprocess.impl;
 
-import io.vertx.core.Context;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import com.julienviet.childprocess.StreamInput;
-
-import java.nio.ByteBuffer;
+import io.vertx.core.impl.ContextInternal;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
 public class ProcessStreamInput implements StreamInput {
 
-  private final Context context;
-  private Handler<Buffer> handler;
+  private final ContextInternal context;
+  private Handler<Buffer> dataHandler;
   private Handler<Void> endHandler;
 
-  ProcessStreamInput(Context context) {
+  ProcessStreamInput(ContextInternal context) {
     this.context = context;
   }
 
-  synchronized void write(ByteBuffer byteBuffer) {
-    sendBuffer(byteBuffer);
+  synchronized void write(Buffer buffer) {
+    sendBuffer(buffer);
   }
 
   void close() {
-    context.runOnContext(v -> {
-      if (endHandler != null) {
-        endHandler.handle(null);
-      }
-    });
+    Handler<Void> handler = endHandler;
+    if (handler != null) {
+      context.emit(handler);
+    }
   }
 
-  private void sendBuffer(ByteBuffer byteBuffer) {
-    byte[] bytes = new byte[byteBuffer.remaining()];
-    byteBuffer.get(bytes);
-    Buffer buffer = Buffer.buffer(bytes);
-    context.runOnContext(v -> {
-      if (handler != null) {
-        handler.handle(buffer);
-      }
-    });
+  private void sendBuffer(Buffer buffer) {
+    Handler<Buffer> handler = dataHandler;
+    if (handler != null) {
+      context.emit(buffer, handler);
+    }
   }
 
   @Override
@@ -67,7 +60,7 @@ public class ProcessStreamInput implements StreamInput {
 
   @Override
   public StreamInput handler(Handler<Buffer> handler) {
-    this.handler = handler;
+    this.dataHandler = handler;
     return this;
   }
 

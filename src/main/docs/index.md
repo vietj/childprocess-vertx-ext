@@ -30,11 +30,13 @@ dependencies {
 
 ## Spawning child processes
 
-You can spawn child processes with the {@link com.julienviet.childprocess.Process#spawn} method:
+You can spawn child processes with the {@link com.julienviet.childprocess.Process#create} and  {@link com.julienviet.childprocess.ProcessBuilder#start} methods:
 
 ```$lang
 {@link examples.Examples#ex01}
 ```
+
+the future returned by `start` completes when the process has started or failed
 
 you can give arguments to child processes
 
@@ -42,8 +44,7 @@ you can give arguments to child processes
 {@link examples.Examples#ex02}
 ```
 
-by default child processes use the current process environment options, you can pass key-value pairs
-as new environment variables
+by default child processes use the current process environment options, you can pass key-value pairs as new environment variables
 
 ```$lang
 {@link examples.Examples#ex03}
@@ -93,16 +94,4 @@ You can be aware of the child process termination
 
 ```$lang
 {@link examples.Examples#ex20}
-```
-
-## Delayed start
-
-Calling {@link com.julienviet.childprocess.Process#spawn} starts the process after the current event loop task
-execution, so you can set handlers on the process without a race condition.
-
-Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
-from a non Vert.x thread:
-
-```$lang
-{@link examples.Examples#ex40}
 ```

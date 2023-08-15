@@ -18,7 +18,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.3.0</version>
+  <version>2.0.0</version>
 </dependency>
 ```
 
@@ -26,38 +26,31 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```groovy
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:1.3.0'
+  compile 'com.julienviet:childprocess-vertx-ext:2.0.0'
 }
 ```
 
 Spawn child processes from Vert.x:
 
 ```java
-Process.create(vertx, "cat").spawn(process -> {
+Process
+  .create(vertx, "cat")
+  .startHandler(process -> {
+  process.exitHandler(code -> {
+    System.out.println("Process exited: " + code);
+  });
   process.stdout().handler(buf -> {
     System.out.println("Process wrote: " + buf);
   });
   StreamOutput stdin = process.stdin();
   stdin.write(Buffer.buffer("hello"));
   stdin.close();
-  process.exitHandler(code -> {
-    System.out.println("Process exited: " + code);
-  });
-});
+}).start();
 ```
 
 ## Web-site docs
 
 * [Java docs](http://www.julienviet.com/childprocess-vertx-ext/guide/java/index.html)
-* [Kotlin docs](http://www.julienviet.com/childprocess-vertx-ext/guide/kotlin/index.html)
-* [Groovy docs](http://www.julienviet.com/childprocess-vertx-ext/guide/groovy/index.html)
-* [Ruby docs](http://www.julienviet.com/childprocess-vertx-ext/guide/ruby/index.html)
-* [JavaScript docs](http://www.julienviet.com/childprocess-vertx-ext/guide/js/index.html)
-
-## Previous Vert.x versions
-
-- Vert.x `3.5.x` : use `1.2.2`
-- Vert.x `3.4.x` : use `1.1.2`
 
 ## Snapshots
 
@@ -69,11 +62,11 @@ Use the dependency
 <dependency>
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
-  <version>1.3.1-SNAPSHOT</version>
+  <version>2.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
-Snapshots are deploy in Sonatype OSS repository: https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext/
+Snapshots are deployed in Sonatype OSS repository: https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext/
 
 ## License
 

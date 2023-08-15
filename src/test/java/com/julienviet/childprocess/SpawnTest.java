@@ -23,6 +23,7 @@ import io.vertx.core.buffer.Buffer;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.unit.TestContext;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
+import io.vertx.test.core.TestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -63,28 +64,35 @@ public class SpawnTest {
     Async async = testContext.async();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      Process process = Process.spawn(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "ExitCode"));
-      process.exitHandler(code -> {
-        testContext.assertEquals(context, Vertx.currentContext());
-        testContext.assertEquals(25, code);
-        async.complete();
-      });
+      ProcessBuilder processBuilder = Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "ExitCode"));
+      processBuilder.startHandler(process -> {
+        process.exitHandler(code -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(25, code);
+          async.complete();
+        });
+      }).start();
     });
   }
 
   @Test
   public void testStdin(TestContext context) {
-    Async async = context.async();
+    Buffer chunk = Buffer.buffer(TestUtils.randomAlphaString(1024));
+    Async async = context.async(2);
     AtomicInteger status = new AtomicInteger();
-    Process.create(vertx, "read").start(process -> {
+    Process.create(vertx, "read").startHandler(process -> {
       StreamOutput stdin = process.stdin();
-      stdin.write(Buffer.buffer("hello"));
-      stdin.close();
+      while (!stdin.writeQueueFull()) {
+        stdin.write(chunk);
+      }
+      stdin
+        .close()
+        .onComplete(context.asyncAssertSuccess(v -> async.countDown()));
       process.exitHandler(code -> {
         context.assertEquals(0, status.getAndIncrement());
-        async.complete();
+        async.countDown();
       });
-    });
+    }).start();
   }
 
   @Test
@@ -102,21 +110,23 @@ public class SpawnTest {
     AtomicInteger status = new AtomicInteger();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      Process process = Process.spawn(vertx, command, args);
-      StreamInput stream = streamExtractor.apply(process);
-      stream.handler(buf -> {
-        testContext.assertEquals(context, Vertx.currentContext());
-        testContext.assertEquals(0, status.getAndIncrement());
-        testContext.assertEquals("the_echoed_value", buf.toString());
-      });
-      stream.endHandler(d -> {
-        testContext.assertEquals(context, Vertx.currentContext());
-        testContext.assertEquals(1, status.getAndIncrement());
-      });
-      process.exitHandler(code -> {
-        testContext.assertEquals(2, status.getAndIncrement());
-        async.complete();
-      });
+      ProcessBuilder processBuilder = Process.create(vertx, command, args);
+      processBuilder.startHandler(process -> {
+        StreamInput stream = streamExtractor.apply(process);
+        stream.handler(buf -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(0, status.getAndIncrement());
+          testContext.assertEquals("the_echoed_value", buf.toString());
+        });
+        stream.endHandler(d -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(1, status.getAndIncrement());
+        });
+        process.exitHandler(code -> {
+          testContext.assertEquals(2, status.getAndIncrement());
+          async.complete();
+        });
+      }).start();
     });
   }
 
@@ -129,32 +139,34 @@ public class SpawnTest {
     AtomicInteger status = new AtomicInteger();
     Context context = vertx.getOrCreateContext();
     context.runOnContext(v -> {
-      Process process = Process.spawn(vertx, "/usr/bin/java", Arrays.asList(/*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", Main.class.getName(), tmp.toFile().getAbsolutePath()));
-      StreamOutput stdin = process.stdin();
-      stdin.setWriteQueueMaxSize(8000);
-      process.exitHandler(code -> {
-        testContext.assertEquals(1, status.getAndIncrement());
-        testContext.assertEquals(0, code);
-        async.complete();
-      });
-      int size = 0;
-      while (!stdin.writeQueueFull()) {
-        Buffer buf = Buffer.buffer("hello");
-        stdin.write(buf);
-        size += buf.length();
-      }
-      testContext.assertTrue(size > 8000);
-      try {
-        Files.write(tmp, new byte[1]);
-      } catch (IOException e) {
-        testContext.fail(e);
-        return;
-      }
-      stdin.drainHandler(v2 -> {
-        testContext.assertEquals(context, Vertx.currentContext());
-        testContext.assertEquals(0, status.getAndIncrement());
-        stdin.write(Buffer.buffer(new byte[]{4})); // EOF
-      });
+      ProcessBuilder processBuilder = Process.create(vertx, "/usr/bin/java", Arrays.asList(/*"-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005",*/ "-cp", "target/test-classes", Main.class.getName(), tmp.toFile().getAbsolutePath()));
+      processBuilder.startHandler(process -> {
+        StreamOutput stdin = process.stdin();
+        stdin.setWriteQueueMaxSize(8000);
+        process.exitHandler(code -> {
+          testContext.assertEquals(1, status.getAndIncrement());
+          testContext.assertEquals(0, code);
+          async.complete();
+        });
+        int size = 0;
+        while (!stdin.writeQueueFull()) {
+          Buffer buf = Buffer.buffer("hello");
+          stdin.write(buf);
+          size += buf.length();
+        }
+        testContext.assertTrue(size > 8000);
+        try {
+          Files.write(tmp, new byte[1]);
+        } catch (IOException e) {
+          testContext.fail(e);
+          return;
+        }
+        stdin.drainHandler(v2 -> {
+          testContext.assertEquals(context, Vertx.currentContext());
+          testContext.assertEquals(0, status.getAndIncrement());
+          stdin.write(Buffer.buffer(new byte[]{4})); // EOF
+        });
+      }).start();
     });
   }
 
@@ -162,7 +174,7 @@ public class SpawnTest {
   public void testCat(TestContext context) {
     Async async = context.async();
     AtomicInteger status = new AtomicInteger();
-    Process.create(vertx, "/bin/cat").start(process -> {
+    Process.create(vertx, "/bin/cat").startHandler(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       StreamOutput stdin = process.stdin();
@@ -173,14 +185,14 @@ public class SpawnTest {
         context.assertEquals(0, status.getAndIncrement());
         async.complete();
       });
-    });
+    }).start();
   }
 
   @Test
   public void testCwd(TestContext context) {
     Async async = context.async();
     String cwd = new File(new File("target"), "test-classes").getAbsolutePath();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("PrintCwd"), new ProcessOptions().setCwd(cwd)).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("PrintCwd"), new ProcessOptions().setCwd(cwd)).startHandler(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -188,7 +200,7 @@ public class SpawnTest {
         context.assertEquals(cwd, new File(out.toString()).getAbsolutePath());
         async.complete();
       });
-    });
+    }).start();
   }
 
   @Test
@@ -196,7 +208,7 @@ public class SpawnTest {
     Async async = context.async();
     ProcessOptions options = new ProcessOptions();
     options.getEnv().put("foo", "foo_value");
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", "foo"), options).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", "foo"), options).startHandler(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -204,14 +216,14 @@ public class SpawnTest {
         context.assertEquals("foo_value", out.toString());
         async.complete();
       });
-    });
+    }).start();
   }
 
   @Test
   public void testDefaultEnv(TestContext context) {
     Map.Entry<String, String> entry = System.getenv().entrySet().iterator().next();
     Async async = context.async();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions()).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "PrintEnv", entry.getKey()), new ProcessOptions()).startHandler(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -219,13 +231,13 @@ public class SpawnTest {
         context.assertEquals(entry.getValue(), out.toString());
         async.complete();
       });
-    });
+    }).start();
   }
 
   @Test
   public void testStdoutLongSequence(TestContext context) {
     Async async = context.async();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "StdoutLongSequence")).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "StdoutLongSequence")).startHandler(process -> {
       Buffer out = Buffer.buffer();
       process.stdout().handler(out::appendBuffer);
       process.exitHandler(code -> {
@@ -237,7 +249,7 @@ public class SpawnTest {
         context.assertEquals(expected.toString(), out.toString());
         async.complete();
       });
-    });
+    }).start();
   }
 
   @Test
@@ -245,10 +257,10 @@ public class SpawnTest {
     Async async = context.async();
     StringBuilder sb = new StringBuilder();
     AtomicReference<Process> p = new AtomicReference<>();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "Shutdown")).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "Shutdown")).startHandler(process -> {
       p.set(process);
       process.stdout().handler(sb::append);
-    });
+    }).start();
     long now = System.currentTimeMillis();
     while (sb.length() < 2) {
       context.assertTrue(System.currentTimeMillis() - now < 10000);
@@ -269,10 +281,10 @@ public class SpawnTest {
     Async async = context.async();
     StringBuilder sb = new StringBuilder();
     AtomicReference<Process> p = new AtomicReference<>();
-    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "Shutdown")).start(process -> {
+    Process.create(vertx, "/usr/bin/java", Arrays.asList("-cp", "target/test-classes", "Shutdown")).startHandler(process -> {
       p.set(process);
       process.stdout().handler(sb::append);
-    });
+    }).start();
     long now = System.currentTimeMillis();
     while (sb.length() < 2) {
       context.assertTrue(System.currentTimeMillis() - now < 10000);
@@ -290,12 +302,10 @@ public class SpawnTest {
 
   @Test
   public void testFoo(TestContext context) throws Exception {
-    Async async = context.async();
-    Process.create(vertx, "/does/not/exists").start(process -> {
-      process.exitHandler(code -> {
-        context.assertTrue(code < 0);
-        async.complete();
-      });
-    });
+    Process.create(vertx, "/does/not/exists").startHandler(process -> {
+      context.fail();
+    }).start().onComplete(context.asyncAssertFailure(err -> {
+
+    }));
   }
 }

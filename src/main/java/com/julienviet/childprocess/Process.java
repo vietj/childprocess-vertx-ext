@@ -17,16 +17,14 @@
 
 package com.julienviet.childprocess;
 
-import com.julienviet.childprocess.impl.ProcessImpl;
-import com.zaxxer.nuprocess.NuProcessBuilder;
+import com.julienviet.childprocess.impl.ProcessBuilderImpl;
 import io.vertx.codegen.annotations.CacheReturn;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.impl.ContextInternal;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -52,63 +50,13 @@ public interface Process {
   }
 
   /**
-   * Create and start a child process from this process.
-   *
-   * @param vertx the vertx instance
-   * @param command the command to run
-   * @return the process
-   */
-  static Process spawn(Vertx vertx, String command) {
-    return spawn(vertx, command, Collections.emptyList(), new ProcessOptions());
-  }
-
-  /**
-   * Create and start a child process from this process.
-   *
-   * @param vertx the vertx instance
-   * @param command the command to run
-   * @param args list of string arguments
-   * @return the process
-   */
-  static Process spawn(Vertx vertx, String command, List<String> args) {
-    return spawn(vertx, command, args, new ProcessOptions());
-  }
-
-  /**
-   * Create and start a child process from this process.
-   *
-   * @param vertx the vertx instance
-   * @param command the command to run
-   * @param options the options to run the command
-   * @return the process
-   */
-  static Process spawn(Vertx vertx, String command, ProcessOptions options) {
-    return spawn(vertx, command, Collections.emptyList(), new ProcessOptions());
-  }
-
-  /**
-   * Create and start a child process from this process.
-   *
-   * @param vertx the vertx instance
-   * @param command the command to run
-   * @param args list of string arguments
-   * @param options the options to run the command
-   * @return the process
-   */
-  static Process spawn(Vertx vertx, String command, List<String> args, ProcessOptions options) {
-    Process process = create(vertx, command, args, options);
-    process.start();
-    return process;
-  }
-
-  /**
    * Create a child process (not running) from this process, call {@link #start()} to start the process.
    *
    * @param vertx the vertx instance
    * @param command the command to run
    * @return the created child process
    */
-  static Process create(Vertx vertx, String command) {
+  static ProcessBuilder create(Vertx vertx, String command) {
     return create(vertx, command, Collections.emptyList(), new ProcessOptions());
   }
 
@@ -120,7 +68,7 @@ public interface Process {
    * @param args list of string arguments
    * @return the created child process
    */
-  static Process create(Vertx vertx, String command, List<String> args) {
+  static ProcessBuilder create(Vertx vertx, String command, List<String> args) {
     return create(vertx, command, args, new ProcessOptions());
   }
 
@@ -132,7 +80,7 @@ public interface Process {
    * @param options the options to run the command
    * @return the created child process
    */
-  static Process create(Vertx vertx, String command, ProcessOptions options) {
+  static ProcessBuilder create(Vertx vertx, String command, ProcessOptions options) {
     return create(vertx, command, Collections.emptyList(), new ProcessOptions());
   }
 
@@ -145,36 +93,9 @@ public interface Process {
    * @param options the options to run the command
    * @return the created child process
    */
-  static Process create(Vertx vertx, String command, List<String> args, ProcessOptions options) {
-    Map<String, String> env = new HashMap<>();
-    if (options.getEnv() != null) {
-      options.getEnv().entrySet().forEach(entry -> {
-        if (entry.getValue() != null) {
-          env.put(entry.getKey(), entry.getValue());
-        }
-      });
-    }
-    ArrayList<String> commands = new ArrayList<>();
-    commands.add(command);
-    commands.addAll(args);
-    NuProcessBuilder builder = new NuProcessBuilder(commands, env);
-    if (options.getCwd() != null) {
-      builder.setCwd(new File(options.getCwd()).toPath());
-    }
-    return new ProcessImpl(vertx.getOrCreateContext(), builder);
+  static ProcessBuilder create(Vertx vertx, String command, List<String> args, ProcessOptions options) {
+    return new ProcessBuilderImpl((ContextInternal) vertx.getOrCreateContext(), command, args, options);
   }
-
-  /**
-   * Start the process.
-   */
-  void start();
-
-  /**
-   * Start the process.
-   *
-   * @param handler the handler to be called when the process has started
-   */
-  void start(Handler<Process> handler);
 
   /**
    * Set the handler to be called when the process exits, the handler will be called with the

@@ -48,7 +48,7 @@ public interface StreamOutput extends WriteStream<Buffer> {
    */
   @Override
   default Future<Void> end() {
-    return close();
+    return close().mapEmpty();
   }
 
   /**
