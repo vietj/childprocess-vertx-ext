@@ -16,7 +16,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
  <groupId>com.julienviet</groupId>
  <artifactId>childprocess-vertx-ext</artifactId>
- <version>1.3.0</version>
+ <version>2.0.0-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -24,38 +24,42 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```java
 dependencies {
- compile 'com.julienviet:childprocess-vertx-ext:1.3.0'
+ compile 'com.julienviet:childprocess-vertx-ext:2.0.0-SNAPSHOT'
 }
 ```
 
 ## Spawning child processes
 
-You can spawn child processes with the [`Process.spawn`](../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-) method:
+You can spawn child processes with the [`Process.create`](../../apidocs/com/julienviet/childprocess/Process.html#create-io.vertx.core.Vertx-java.lang.String-) and  [`start`](../../apidocs/com/julienviet/childprocess/ProcessBuilder.html#start--) methods:
 
 ```java
-Process.spawn(vertx, "ls");
+ProcessBuilder processBuilder = Process.create(vertx, "ls");
+
+// Start the process
+Future<Void> fut = processBuilder.start();
 ```
+
+the future returned by `start` completes when the process has started or failed
 
 you can give arguments to child processes
 
 ```java
-Process.spawn(vertx, "ls", Arrays.asList("-lh", "/usr"));
+Process.create(vertx, "ls", Arrays.asList("-lh", "/usr")).start();
 ```
 
-by default child processes use the current process environment options, you can pass key-value pairs
-as new environment variables
+by default child processes use the current process environment options, you can pass key-value pairs as new environment variables
 
 ```java
 Map<String, String> env = new HashMap<>();
 env.put("MY_VAR", "whatever");
-Process.spawn(vertx, "ls", new ProcessOptions().setEnv(env));
+Process.create(vertx, "ls", new ProcessOptions().setEnv(env)).start();
 ```
 
 [`Process.env`](../../apidocs/com/julienviet/childprocess/Process.html#env--) gives you the current process environment key-value pairs
 
 ```java
 ProcessOptions options = new ProcessOptions().setEnv(Process.env());
-Process.spawn(vertx, "ls", options);
+Process.create(vertx, "ls", options).start();
 ```
 
 By default, the child processes uses the current process _current working directory_, the
@@ -63,7 +67,7 @@ By default, the child processes uses the current process _current working direct
 
 ```java
 ProcessOptions options = new ProcessOptions().setCwd("/some-dir");
-Process.spawn(vertx, "ls", options);
+Process.create(vertx, "ls", options).start();
 ```
 
 ## Interacting with child processes
@@ -75,44 +79,56 @@ The child process streams are available as
 * [`stderr`](../../apidocs/com/julienviet/childprocess/Process.html#stderr--)
 
 ```java
-Process process = Process.spawn(vertx, "cat");
+ProcessBuilder processBuilder = Process.create(vertx, "cat");
 
-process.stdout().handler(buff -> {
-  System.out.println(buff.toString());
+processBuilder.startHandler(process -> {
+  process.stdout().handler(buff -> {
+    System.out.println(buff.toString());
+  });
+
+  process.stdin().write(Buffer.buffer("Hello World"));
 });
 
-process.stdin().write(Buffer.buffer("Hello World"));
+processBuilder.start();
 ```
 
 Calling [`kill`](../../apidocs/com/julienviet/childprocess/Process.html#kill--) kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 ```java
-Process process = Process.spawn(vertx, "cat");
+Process
+  .create(vertx, "cat")
+  .startHandler(process -> {
 
-process.stdout().handler(buff -> {
-  System.out.println(buff.toString());
-});
+    process.stdout().handler(buff -> {
+      System.out.println(buff.toString());
+    });
 
-process.stdin().write(Buffer.buffer("Hello World"));
+    process.stdin().write(Buffer.buffer("Hello World"));
 
-// Kill the process
-process.kill();
+    // Kill the process
+    process.kill();
+  })
+  .start();
 ```
 
 Child processes can also be forcibly killed
 
 ```java
-Process process = Process.spawn(vertx, "cat");
+Process
+  .create(vertx, "cat")
+  .startHandler(process -> {
 
-process.stdout().handler(buff -> {
-  System.out.println(buff.toString());
-});
+    process.stdout().handler(buff -> {
+      System.out.println(buff.toString());
+    });
 
-process.stdin().write(Buffer.buffer("Hello World"));
+    process.stdin().write(Buffer.buffer("Hello World"));
 
-// Kill the process forcibly
-process.kill(true);
+    // Kill the process forcibly
+    process.kill(true);
+
+}).start();
 ```
 
 ## Child process lifecycle
@@ -120,28 +136,12 @@ process.kill(true);
 You can be aware of the child process termination
 
 ```java
-Process process = Process.spawn(vertx, "sleep", Arrays.asList("2"));
-
-process.exitHandler(code -> {
-  System.out.println("Child process exited with code: " + code);
-});
-```
-
-## Delayed start
-
-Calling [`Process.spawn`](../../apidocs/com/julienviet/childprocess/Process.html#spawn-io.vertx.core.Vertx-java.lang.String-) starts the process after the current event loop task
-execution, so you can set handlers on the process without a race condition.
-
-Sometimes you want to delay the start of the child process you've created, for instance you are creating a process
-from a non Vert.x thread:
-
-```java
-Process process = Process.create(vertx, "echo \"Hello World\"");
-
-process.stdout().handler(buff -> {
-  System.out.println(buff.toString());
-});
-
-// Start the process
-process.start();
+Process
+  .create(vertx, "sleep", Arrays.asList("2"))
+  .startHandler(process -> {
+    process.exitHandler(code -> {
+      System.out.println("Child process exited with code: " + code);
+    });
+  })
+  .start();
 ```
