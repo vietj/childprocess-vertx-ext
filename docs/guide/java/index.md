@@ -16,7 +16,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 <dependency>
  <groupId>com.julienviet</groupId>
  <artifactId>childprocess-vertx-ext</artifactId>
- <version>2.0.0-SNAPSHOT</version>
+ <version>2.0.0</version>
 </dependency>
 ```
 
@@ -24,7 +24,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```java
 dependencies {
- compile 'com.julienviet:childprocess-vertx-ext:2.0.0-SNAPSHOT'
+ compile 'com.julienviet:childprocess-vertx-ext:2.0.0'
 }
 ```
 
