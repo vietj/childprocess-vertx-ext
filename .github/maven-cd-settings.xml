@@ -20,7 +20,7 @@
 
   <servers>
     <server>
-      <id>sonatype-snapshots-repository</id>
+      <id>sonatype-nexus-snapshots</id>
       <username>${env.SONATYPE_NEXUS_USERNAME}</username>
       <password>${env.SONATYPE_NEXUS_PASSWORD}</password>
     </server>
