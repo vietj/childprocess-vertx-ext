@@ -33,8 +33,6 @@ import java.util.Map;
 /**
  * A process launched from this current process.
  * <p>
- * Call the static {@link #spawn(Vertx, String)} to spawn child processes from the current process.
- * <p>
  * Please see the user manual for more detailed usage information.
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
@@ -50,7 +48,7 @@ public interface Process {
   }
 
   /**
-   * Create a child process (not running) from this process, call {@link #start()} to start the process.
+   * Create a child process (not running) from this process, call {@link ProcessBuilder#start()} to start the process.
    *
    * @param vertx the vertx instance
    * @param command the command to run
@@ -61,7 +59,7 @@ public interface Process {
   }
 
   /**
-   * Create a child process (not running) from this process, call {@link #start()} to start the process.
+   * Create a child process (not running) from this process, call {@link ProcessBuilder#start()} to start the process.
    *
    * @param vertx the vertx instance
    * @param command the command to run
@@ -73,7 +71,7 @@ public interface Process {
   }
 
   /**
-   * Create a child process (not running) from this process, call {@link #start()} to start the process.
+   * Create a child process (not running) from this process, call {@link ProcessBuilder#start()} to start the process.
    *
    * @param vertx the vertx instance
    * @param command the command to run
@@ -85,7 +83,7 @@ public interface Process {
   }
 
   /**
-   * Create a child process (not running) from this process, call {@link #start()} to start the process.
+   * Create a child process (not running) from this process, call {@link ProcessBuilder#start()} to start the process.
    *
    * @param vertx the vertx instance
    * @param command the command to run

@@ -243,11 +243,6 @@
           <detectJavaApiLink />
           <links>
             <link>http://vertx.io/docs/apidocs/</link>
-            <link>http://reactivex.io/RxJava/1.x/javadoc/</link>
-            <link>http://reactivex.io/RxJava/javadoc/</link>
-            <link>http://fasterxml.github.com/jackson-annotations/javadoc/2.9/</link>
-            <link>http://fasterxml.github.io/jackson-core/javadoc/2.9/</link>
-            <link>http://fasterxml.github.io/jackson-databind/javadoc/2.9/</link>
           </links>
         </configuration>
       </plugin>
@@ -321,55 +316,6 @@
                 <goals>
                   <goal>javadoc</goal>
                 </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>de.saumya.mojo</groupId>
-            <artifactId>gem-maven-plugin</artifactId>
-            <version>1.1.4</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <phase>site</phase>
-                <configuration>
-                  <execArgs>${project.build.directory}/rubygems/bin/yardoc --no-private -m html -o ${project.basedir}/jekyll/yardoc ${project.build.outputDirectory}/**/*.rb</execArgs>
-                </configuration>
-              </execution>
-            </executions>
-            <dependencies>
-              <dependency>
-                <groupId>rubygems</groupId>
-                <artifactId>yard</artifactId>
-                <version>0.8.7.6</version>
-                <type>gem</type>
-              </dependency>
-              <dependency>
-                <groupId>rubygems</groupId>
-                <artifactId>asciidoctor</artifactId>
-                <version>1.5.6</version>
-                <type>gem</type>
-              </dependency>
-            </dependencies>
-          </plugin>
-          <plugin>
-            <groupId>com.phasebash.jsdoc</groupId>
-            <artifactId>jsdoc3-maven-plugin</artifactId>
-            <executions>
-              <execution>
-                <phase>site</phase>
-                <goals>
-                  <goal>jsdoc3</goal>
-                </goals>
-                <configuration>
-                  <recursive>true</recursive>
-                  <directoryRoots>
-                    <directoryRoot>${project.build.outputDirectory}</directoryRoot>
-                  </directoryRoots>
-                  <outputDirectory>${project.basedir}/jekyll/jsdoc</outputDirectory>
-                </configuration>
               </execution>
             </executions>
           </plugin>
