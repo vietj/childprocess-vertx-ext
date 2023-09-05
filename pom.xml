@@ -49,14 +49,14 @@
 
   <distributionManagement>
     <snapshotRepository>
-      <id>sonatype-snapshots-repository</id>
+      <id>sonatype-nexus-snapshots</id>
       <name>Sonatype Snapshots Repository</name>
       <url>${sonatype.snapshotRepository}</url>
     </snapshotRepository>
     <repository>
-      <id>sonatype-release-repository</id>
+      <id>sonatype-nexus-staging</id>
       <name>Sonatype Release Repository</name>
-      <url>${vertx.releaseRepository}</url>
+      <url>${sonatype.releaseRepository}</url>
     </repository>
   </distributionManagement>
 
