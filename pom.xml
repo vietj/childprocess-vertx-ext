@@ -19,12 +19,6 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-parent</artifactId>
-    <version>19</version>
-  </parent>
-
   <groupId>com.julienviet</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
   <version>2.0.1-SNAPSHOT</version>
@@ -68,12 +62,43 @@
   </developers>
 
   <properties>
-    <stack.version>4.5.13</stack.version>
+
+    <!-- Project settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <!-- Compiler plugin -->
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Plugin versions -->
+    <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+    <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <maven.resource.plugin.version>2.7</maven.resource.plugin.version>
+    <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
+    <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+    <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
+    <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
+    <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+    <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
+    <maven.assembly.plugin.version>3.1.0</maven.assembly.plugin.version>
+    <maven.site.plugin.version>3.4</maven.site.plugin.version>
+    <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
+    <maven.surefire.report.plugin.version>2.18.1</maven.surefire.report.plugin.version>
+    <maven.enforcer.plugin.version>1.4.1</maven.enforcer.plugin.version>
+    <maven.jacoco.plugin.version>0.7.6.201602180812</maven.jacoco.plugin.version>
+    <maven.dependency.versions.check.plugin.version>2.0.2</maven.dependency.versions.check.plugin.version>
+    <maven.asciidoctor.plugin.version>2.1.0</maven.asciidoctor.plugin.version>
+    <maven.build.helper.maven.plugin.version>3.0.0</maven.build.helper.maven.plugin.version>
+
+    <stack.version>4.5.13</stack.version>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
+
     <sonatype.releaseRepository>https://oss.sonatype.org/service/local/staging/deploy/maven2/</sonatype.releaseRepository>
     <sonatype.snapshotRepository>https://oss.sonatype.org/content/repositories/snapshots/</sonatype.snapshotRepository>
+
   </properties>
 
   <dependencyManagement>
@@ -128,10 +153,12 @@
   </dependencies>
 
   <build>
+
     <pluginManagement>
       <plugins>
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
           <executions>
             <execution>
               <id>default-clean</id>
@@ -147,6 +174,7 @@
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven.compiler.plugin.version}</version>
           <executions>
             <execution>
               <id>default-compile</id>
@@ -169,13 +197,72 @@
             </execution>
           </executions>
         </plugin>
+        <plugin>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven.surefire.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-report-plugin</artifactId>
+          <version>${maven.surefire.report.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${maven.site.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-gpg-plugin</artifactId>
+          <version>${maven.gpg.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven.resource.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>${maven.dependency.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>${maven.install.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>${maven.deploy.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>${maven.clean.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>${maven.enforcer.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>com.ning.maven.plugins</groupId>
+          <artifactId>maven-dependency-versions-check-plugin</artifactId>
+          <version>${maven.dependency.versions.check.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <version>${maven.build.helper.maven.plugin.version}</version>
+        </plugin>
       </plugins>
     </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.0.0</version>
         <executions>
           <execution>
             <id>add-source</id>
@@ -203,32 +290,8 @@
         </executions>
       </plugin>
       <plugin>
-        <artifactId>maven-failsafe-plugin</artifactId>
-        <version>2.21.0</version>
-        <executions>
-          <execution>
-            <id>env-test</id>
-            <goals>
-              <goal>integration-test</goal>
-            </goals>
-            <phase>integration-test</phase>
-            <configuration>
-              <includes>
-                <include>io/reactiverse/pgclient/it/EnvTest.java</include>
-              </includes>
-              <environmentVariables>
-                <PGHOSTADDR>test_host</PGHOSTADDR>
-                <PGDATABASE>test_database</PGDATABASE>
-                <PGPORT>1234</PGPORT>
-                <PGUSER>test_user</PGUSER>
-                <PGPASSWORD>test_password</PGPASSWORD>
-              </environmentVariables>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven.javadoc.plugin.version}</version>
         <configuration>
           <sourcepath>${project.build.sourceDirectory};${project.build.directory}/generated-sources/annotations</sourcepath>
           <sourceFileIncludes>
@@ -248,6 +311,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>${maven.assembly.plugin.version}</version>
         <executions>
           <execution>
             <id>package-sources</id>
@@ -266,6 +330,31 @@
                 <descriptor>src/assembly/sources.xml</descriptor>
               </descriptors>
             </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <goals>
+              <goal>jar-no-fork</goal>
+              <goal>test-jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-test-jar</id>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
