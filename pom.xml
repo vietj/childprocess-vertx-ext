@@ -41,19 +41,6 @@
     <url>git@github.com:vietj/childprocess-vertx-ext.git</url>
   </scm>
 
-  <distributionManagement>
-    <snapshotRepository>
-      <id>sonatype-nexus-snapshots</id>
-      <name>Sonatype Snapshots Repository</name>
-      <url>${sonatype.snapshotRepository}</url>
-    </snapshotRepository>
-    <repository>
-      <id>sonatype-nexus-staging</id>
-      <name>Sonatype Release Repository</name>
-      <url>${sonatype.releaseRepository}</url>
-    </repository>
-  </distributionManagement>
-
   <developers>
     <developer>
       <name>Julien Viet</name>
@@ -74,10 +61,11 @@
     <!-- Plugin versions -->
     <maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
     <maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
-    <maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+    <maven.source.plugin.version>3.3.1</maven.source.plugin.version>
     <maven.resource.plugin.version>2.7</maven.resource.plugin.version>
+    <maven.release.plugin.version>3.1.1</maven.release.plugin.version>
     <maven.javadoc.plugin.version>3.2.0</maven.javadoc.plugin.version>
-    <maven.gpg.plugin.version>1.6</maven.gpg.plugin.version>
+    <maven.gpg.plugin.version>3.2.7</maven.gpg.plugin.version>
     <maven.dependency.plugin.version>2.10</maven.dependency.plugin.version>
     <maven.clean.plugin.version>3.0.0</maven.clean.plugin.version>
     <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
@@ -91,6 +79,7 @@
     <maven.dependency.versions.check.plugin.version>2.0.2</maven.dependency.versions.check.plugin.version>
     <maven.asciidoctor.plugin.version>2.1.0</maven.asciidoctor.plugin.version>
     <maven.build.helper.maven.plugin.version>3.0.0</maven.build.helper.maven.plugin.version>
+    <maven.central.publishing.maven.plugin.version>0.7.0</maven.central.publishing.maven.plugin.version>
 
     <stack.version>4.5.13</stack.version>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
@@ -228,6 +217,11 @@
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
+          <version>${maven.source.plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-install-plugin</artifactId>
           <version>${maven.install.plugin.version}</version>
         </plugin>
@@ -308,28 +302,24 @@
             <link>http://vertx.io/docs/apidocs/</link>
           </links>
         </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <version>${maven.assembly.plugin.version}</version>
         <executions>
           <execution>
-            <id>package-sources</id>
-            <phase>package</phase>
+            <id>attach-javadocs</id>
             <goals>
-              <goal>single</goal>
+              <goal>jar</goal>
             </goals>
-            <configuration>
-              <attach>true</attach>
-              <archive>
-                <!-- Need a manifest to avoid empty archive -->
-                <manifest>
-                </manifest>
-              </archive>
-              <descriptors>
-                <descriptor>src/assembly/sources.xml</descriptor>
-              </descriptors>
-            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-test-jar</id>
+            <goals>
+              <goal>test-jar</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
@@ -348,15 +338,25 @@
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
+        <artifactId>maven-gpg-plugin</artifactId>
         <executions>
           <execution>
-            <id>attach-test-jar</id>
+            <id>sign-artifacts</id>
+            <phase>verify</phase>
             <goals>
-              <goal>test-jar</goal>
+              <goal>sign</goal>
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.sonatype.central</groupId>
+        <artifactId>central-publishing-maven-plugin</artifactId>
+        <version>${maven.central.publishing.maven.plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <publishingServerId>central</publishingServerId>
+        </configuration>
       </plugin>
     </plugins>
   </build>
