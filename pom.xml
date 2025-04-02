@@ -68,7 +68,7 @@
   </developers>
 
   <properties>
-    <stack.version>4.4.4</stack.version>
+    <stack.version>4.5.13</stack.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
