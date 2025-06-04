@@ -56,8 +56,8 @@ public class SpawnTest {
   }
 
   @After
-  public void after(TestContext context) {
-    vertx.close(context.asyncAssertSuccess());
+  public void after() {
+    vertx.close().await();
   }
 
   @Test

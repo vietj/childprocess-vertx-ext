@@ -25,11 +25,12 @@
     <version>1</version>
   </parent>
 
+  <groupId>io.reactiverse</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
   <version>2.0.2-SNAPSHOT</version>
 
   <name>Child Process extension for Vert.x</name>
-  <url>https://github.com/vietj/vertx-childprocess</url>
+  <url>https://github.com/reactiverse/childprocess-vertx-ext</url>
   <description>Spawn child processes from Vert.x</description>
 
   <licenses>
@@ -41,9 +42,9 @@
   </licenses>
 
   <scm>
-    <connection>scm:git:git@github.com:vietj/childprocess-vertx-ext.git</connection>
-    <developerConnection>scm:git:git@github.com:vietj/childprocess-vertx-ext.git</developerConnection>
-    <url>git@github.com:vietj/childprocess-vertx-ext.git</url>
+    <connection>scm:git:git@github.com:reactiverse/childprocess-vertx-ext.git</connection>
+    <developerConnection>scm:git:git@github.com:reactiverse/childprocess-vertx-ext.git</developerConnection>
+    <url>git@github.com:reactiverse/childprocess-vertx-ext.git</url>
   </scm>
 
   <developers>
@@ -54,11 +55,9 @@
   </developers>
 
   <properties>
-
-    <stack.version>4.5.13</stack.version>
+    <vertx.version>5.0.0</vertx.version>
     <generated.dir>${project.basedir}/src/main/generated</generated.dir>
     <docs.dir>${project.basedir}/src/main/docs</docs.dir>
-
   </properties>
 
   <dependencyManagement>
@@ -66,7 +65,7 @@
       <dependency>
         <groupId>io.vertx</groupId>
         <artifactId>vertx-dependencies</artifactId>
-        <version>${stack.version}</version>
+        <version>${vertx.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -85,13 +84,18 @@
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-codegen</artifactId>
-      <scope>provided</scope>
+      <artifactId>vertx-codegen-api</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-docgen</artifactId>
-      <scope>provided</scope>
+      <artifactId>vertx-codegen-json</artifactId>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-docgen-api</artifactId>
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>io.vertx</groupId>
@@ -117,33 +121,27 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>${maven.clean.plugin.version}</version>
-          <executions>
-            <execution>
-              <id>default-clean</id>
-              <configuration>
-                <filesets>
-                  <fileset>
-                    <directory>${generated.dir}</directory>
-                  </fileset>
-                </filesets>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
-        <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>${maven.compiler.plugin.version}</version>
           <executions>
             <execution>
               <id>default-compile</id>
               <configuration>
-                <annotationProcessors>
-                  <annotationProcessor>io.vertx.codegen.CodeGenProcessor</annotationProcessor>
-                  <annotationProcessor>io.vertx.docgen.JavaDocGenProcessor</annotationProcessor>
-                  <annotationProcessor>io.vertx.docgen.DocGenProcessor</annotationProcessor>
-                </annotationProcessors>
+                <generatedSourcesDirectory>${project.basedir/src/main/generated}</generatedSourcesDirectory>
+                <annotationProcessorPaths>
+                  <annotationProcessorPath>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-codegen</artifactId>
+                    <classifier>processor</classifier>
+                    <version>${vertx.version}</version>
+                  </annotationProcessorPath>
+                  <annotationProcessorPath>
+                    <groupId>io.vertx</groupId>
+                    <artifactId>vertx-docgen-processor</artifactId>
+                    <classifier>processor</classifier>
+                    <version>0.9.8</version>
+                  </annotationProcessorPath>
+                </annotationProcessorPaths>
                 <compilerArgs>
                   <arg>-Acodegen.output=${project.basedir}/src/main</arg>
                   <arg>-Adocgen.source=${docs.dir}/*.md</arg>
@@ -162,35 +160,6 @@
 
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${generated.dir}</source>
-              </sources>
-            </configuration>
-          </execution>
-          <execution>
-            <id>add-test-source</id>
-            <goals>
-              <goal>add-test-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>${project.basedir}/src/benchmark/java</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>${maven.javadoc.plugin.version}</version>
         <configuration>
@@ -199,7 +168,6 @@
             <sourceFileInclude>com/julienviet/**/*.java</sourceFileInclude>
           </sourceFileIncludes>
           <sourceFileExcludes>
-            <sourceFileExclude>com/julienviet/groovy/**/*.java</sourceFileExclude>
             <sourceFileExclude>**/package-info.java</sourceFileExclude>
             <sourceFileExclude>**/impl/**</sourceFileExclude>
           </sourceFileExcludes>

@@ -20,7 +20,7 @@ package com.julienviet.childprocess.impl;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import com.julienviet.childprocess.StreamInput;
-import io.vertx.core.impl.ContextInternal;
+import io.vertx.core.internal.ContextInternal;
 
 /**
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>

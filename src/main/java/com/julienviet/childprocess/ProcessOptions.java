@@ -18,6 +18,7 @@
 package com.julienviet.childprocess;
 
 import io.vertx.codegen.annotations.DataObject;
+import io.vertx.codegen.json.annotations.JsonGen;
 import io.vertx.core.json.JsonObject;
 
 import java.util.HashMap;
@@ -28,12 +29,9 @@ import java.util.Map;
  *
  * @author <a href="mailto:julien@julienviet.com">Julien Viet</a>
  */
-@DataObject(generateConverter = true)
+@DataObject
+@JsonGen(publicConverter = false)
 public class ProcessOptions {
-
-
-
-  
 
   /**
    * The default environment variables = the current process environment variables

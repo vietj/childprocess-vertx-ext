@@ -23,7 +23,7 @@ import com.zaxxer.nuprocess.NuProcess;
 import io.vertx.core.*;
 import io.vertx.core.buffer.Buffer;
 import com.julienviet.childprocess.Process;
-import io.vertx.core.impl.ContextInternal;
+import io.vertx.core.internal.ContextInternal;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
@@ -91,16 +91,6 @@ public class ProcessImpl implements Process, StreamOutput {
   @Override
   public StreamOutput exceptionHandler(Handler<Throwable> handler) {
     return this;
-  }
-
-  @Override
-  public void write(Buffer data, Handler<AsyncResult<Void>> handler) {
-    write(data).onComplete(handler);
-  }
-
-  @Override
-  public void end(Handler<AsyncResult<Void>> handler) {
-    end().onComplete(handler);
   }
 
   @Override
