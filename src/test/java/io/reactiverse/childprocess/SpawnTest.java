@@ -15,7 +15,7 @@
  *
  */
 
-package com.julienviet.childprocess;
+package io.reactiverse.childprocess;
 
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;

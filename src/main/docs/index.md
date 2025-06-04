@@ -30,7 +30,7 @@ dependencies {
 
 ## Spawning child processes
 
-You can spawn child processes with the {@link com.julienviet.childprocess.Process#create} and  {@link com.julienviet.childprocess.ProcessBuilder#start} methods:
+You can spawn child processes with the {@link io.reactiverse.childprocess.Process#create} and  {@link io.reactiverse.childprocess.ProcessBuilder#start} methods:
 
 ```$lang
 {@link examples.Examples#ex01}
@@ -50,14 +50,14 @@ by default child processes use the current process environment options, you can 
 {@link examples.Examples#ex03}
 ```
 
-{@link com.julienviet.childprocess.Process#env()} gives you the current process environment key-value pairs
+{@link io.reactiverse.childprocess.Process#env()} gives you the current process environment key-value pairs
 
 ```$lang
 {@link examples.Examples#ex04}
 ```
 
 By default, the child processes uses the current process _current working directory_, the
-{@link com.julienviet.childprocess.ProcessOptions#setCwd(java.lang.String)} option overrides it
+{@link io.reactiverse.childprocess.ProcessOptions#setCwd(java.lang.String)} option overrides it
 
 ```$lang
 {@link examples.Examples#ex05}
@@ -67,15 +67,15 @@ By default, the child processes uses the current process _current working direct
 
 The child process streams are available as
 
-* {@link com.julienviet.childprocess.Process#stdin()}
-* {@link com.julienviet.childprocess.Process#stdout()}
-* {@link com.julienviet.childprocess.Process#stderr()}
+* {@link io.reactiverse.childprocess.Process#stdin()}
+* {@link io.reactiverse.childprocess.Process#stdout()}
+* {@link io.reactiverse.childprocess.Process#stderr()}
 
 ```$lang
 {@link examples.Examples#ex10}
 ```
 
-Calling {@link com.julienviet.childprocess.Process#kill()} kills the child process, on POSIX it sends the
+Calling {@link io.reactiverse.childprocess.Process#kill()} kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 ```$lang

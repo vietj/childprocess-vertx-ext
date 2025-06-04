@@ -15,9 +15,9 @@
  *
  */
 
-package com.julienviet.childprocess;
+package io.reactiverse.childprocess;
 
-import com.julienviet.childprocess.impl.ProcessBuilderImpl;
+import io.reactiverse.childprocess.impl.ProcessBuilderImpl;
 import io.vertx.codegen.annotations.CacheReturn;
 import io.vertx.codegen.annotations.Fluent;
 import io.vertx.codegen.annotations.VertxGen;

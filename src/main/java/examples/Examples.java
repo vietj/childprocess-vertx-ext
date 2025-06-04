@@ -17,9 +17,9 @@
 
 package examples;
 
-import com.julienviet.childprocess.Process;
-import com.julienviet.childprocess.ProcessBuilder;
-import com.julienviet.childprocess.ProcessOptions;
+import io.reactiverse.childprocess.Process;
+import io.reactiverse.childprocess.ProcessBuilder;
+import io.reactiverse.childprocess.ProcessOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;

@@ -15,7 +15,7 @@
  *
  */
 
-package com.julienviet.childprocess;
+package io.reactiverse.childprocess;
 
 import io.vertx.codegen.annotations.DataObject;
 import io.vertx.codegen.json.annotations.JsonGen;

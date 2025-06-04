@@ -15,7 +15,7 @@
  *
  */
 
-@ModuleGen(name = "childprocess", groupPackage = "com.julienviet")
-package com.julienviet.childprocess;
+@ModuleGen(name = "childprocess", groupPackage = "io.reactiverse")
+package io.reactiverse.childprocess;
 
 import io.vertx.codegen.annotations.ModuleGen;

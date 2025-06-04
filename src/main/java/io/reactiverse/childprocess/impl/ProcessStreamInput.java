@@ -15,11 +15,11 @@
  *
  */
 
-package com.julienviet.childprocess.impl;
+package io.reactiverse.childprocess.impl;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
-import com.julienviet.childprocess.StreamInput;
+import io.reactiverse.childprocess.StreamInput;
 import io.vertx.core.internal.ContextInternal;
 
 /**
