@@ -8,7 +8,7 @@ Based on https://github.com/brettwooldridge/NuProcess _Low-overhead, non-blockin
 
 ## What for ?
 
-[Vert.x 4.x](http://vertx.io)
+[Vert.x 5](http://vertx.io)
 
 ## Using Child Process
 
@@ -18,7 +18,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```xml
 <dependency>
-  <groupId>com.julienviet</groupId>
+  <groupId>io.reactiverse</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
   <version>2.0.0</version>
 </dependency>
@@ -28,7 +28,7 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```groovy
 dependencies {
-  compile 'com.julienviet:childprocess-vertx-ext:2.0.0'
+  compile 'io.reactiverse:childprocess-vertx-ext:2.0.0'
 }
 ```
 
@@ -60,13 +60,13 @@ Use the dependency
 
 ```xml
 <dependency>
-  <groupId>com.julienviet</groupId>
+  <groupId>io.reactiverse</groupId>
   <artifactId>childprocess-vertx-ext</artifactId>
   <version>2.0.0</version>
 </dependency>
 ```
 
-Snapshots are deployed in Sonatype OSS repository: https://oss.sonatype.org/content/repositories/snapshots/com/julienviet/childprocess-vertx-ext/
+Snapshots are deployed in Sonatype OSS repository: TBD.
 
 ## License
 
