@@ -1,0 +1,37 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  schedule:
+    - cron: '0 5 * * *'
+jobs:
+  Test:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            jdk: 11
+          - os: ubuntu-latest
+            jdk: 21
+          - os: windows-latest
+            jdk: 11
+    #          - os: macos-latest
+    #            jdk: 11
+    name: Run tests
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.jdk }}
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.jdk }}
+          distribution: temurin
+      - name: Run tests
+        run: mvn -s .github/maven-ci-settings.xml -q clean verify -B

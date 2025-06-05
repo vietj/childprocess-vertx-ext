@@ -1,6 +1,6 @@
 ## Child Process extension for Vert.x
 
-[![childprocess-vertx-ext](https://github.com/vietj/childprocess-vertx-ext/actions/workflows/ci.yml/badge.svg)](https://github.com/vietj/childprocess-vertx-ext/actions/workflows/ci.yml)
+[![childprocess-vertx-ext](https://github.com/reactiverse/reactiverse-child-process/actions/workflows/ci.yml/badge.svg)](https://github.com/reactiverse/reactiverse-child-process/actions/workflows/ci.yml)
 
 Spawn child processes from Vert.x.
 
