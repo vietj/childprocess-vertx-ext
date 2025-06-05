@@ -17,10 +17,8 @@ jobs:
             jdk: 11
           - os: ubuntu-latest
             jdk: 21
-          - os: windows-latest
+          - os: macos-latest
             jdk: 11
-    #          - os: macos-latest
-    #            jdk: 11
     name: Run tests
     runs-on: ${{ matrix.os }}
     env:
