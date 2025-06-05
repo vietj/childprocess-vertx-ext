@@ -41,6 +41,7 @@ jobs:
     env:
       CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
       CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -50,8 +51,10 @@ jobs:
           java-version: 11
           distribution: temurin
           server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
-          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
       - name: Get project version
         run: echo "PROJECT_VERSION=$(mvn org.apache.maven.plugins:maven-help-plugin:evaluate -Dexpression=project.version -q -DforceStdout | grep -v '\[')" >> $GITHUB_ENV
       - name: Maven deploy
