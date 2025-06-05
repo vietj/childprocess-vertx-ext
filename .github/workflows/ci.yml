@@ -26,8 +26,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-        with:
-          ref: ${{ matrix.jdk }}
       - name: Install JDK
         uses: actions/setup-java@v4
         with:
