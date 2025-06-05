@@ -1,0 +1,66 @@
+name: Release
+on:
+  release:
+    types: [published]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  deploy-artifact:
+    if: ${{ github.repository_owner == 'reactiverse'}} && false
+    runs-on: ubuntu-latest
+    env:
+      CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+      CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+      MAVEN_GPG_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.release.tag_name }}
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: temurin
+          server-id: central
+          server-username: CENTRAL_USERNAME
+          server-password: CENTRAL_PASSWORD
+      - name: Maven deploy
+        run: mvn deploy -DskipTests -B -Dgpg.signer=bc
+  package-docs:
+    if: ${{ github.repository_owner == 'reactiverse'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.release.tag_name }}
+      - name: Install JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 11
+          distribution: temurin
+      - name: Build docs
+        run: mvn package site -DskipTests -B
+      - name: Build docs with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./docs/
+          destination: ./_site
+      - name: Upload docs as artifact
+        id: deployment
+        uses: actions/upload-pages-artifact@v3
+  deploy-docs:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: package-docs
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
