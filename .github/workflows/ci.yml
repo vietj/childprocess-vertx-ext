@@ -41,7 +41,6 @@ jobs:
     env:
       CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
       CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-    secrets: inherit
     steps:
       - name: Checkout
         uses: actions/checkout@v2
