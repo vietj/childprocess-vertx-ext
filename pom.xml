@@ -145,7 +145,7 @@
                 <compilerArgs>
                   <arg>-Acodegen.output=${project.basedir}/src/main</arg>
                   <arg>-Adocgen.source=${docs.dir}/*.md</arg>
-                  <arg>-Adocgen.output=${project.basedir}/jekyll/guide/$lang</arg>
+                  <arg>-Adocgen.output=${project.basedir}/docs/guide/$lang</arg>
                   <arg>-Adocgen.syntax=markdown</arg>
                   <arg>-Amaven.groupId=${project.groupId}</arg>
                   <arg>-Amaven.artifactId=${project.artifactId}</arg>
@@ -165,7 +165,7 @@
         <configuration>
           <sourcepath>${project.build.sourceDirectory};${project.build.directory}/generated-sources/annotations</sourcepath>
           <sourceFileIncludes>
-            <sourceFileInclude>com/julienviet/**/*.java</sourceFileInclude>
+            <sourceFileInclude>io/reactiverse/**/*.java</sourceFileInclude>
           </sourceFileIncludes>
           <sourceFileExcludes>
             <sourceFileExclude>**/package-info.java</sourceFileExclude>
@@ -220,7 +220,7 @@
                 <phase>site</phase>
                 <configuration>
                   <skip>false</skip>
-                  <reportOutputDirectory>${project.basedir}/jekyll</reportOutputDirectory>
+                  <reportOutputDirectory>${project.basedir}/docs</reportOutputDirectory>
                 </configuration>
                 <goals>
                   <goal>javadoc</goal>

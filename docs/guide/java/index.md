@@ -14,9 +14,9 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```xml
 <dependency>
- <groupId>com.julienviet</groupId>
- <artifactId>childprocess-vertx-ext</artifactId>
- <version>2.0.0</version>
+  <groupId>io.reactiverse</groupId>
+  <artifactId>childprocess-vertx-ext</artifactId>
+  <version>2.0.2-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -24,13 +24,13 @@ To use Child Process, add the following dependency to the _dependencies_ section
 
 ```java
 dependencies {
- compile 'com.julienviet:childprocess-vertx-ext:2.0.0'
+  compile 'io.reactiverse:childprocess-vertx-ext:2.0.2-SNAPSHOT'
 }
 ```
 
 ## Spawning child processes
 
-You can spawn child processes with the [`Process.create`](../../apidocs/com/julienviet/childprocess/Process.html#create-io.vertx.core.Vertx-java.lang.String-) and  [`start`](../../apidocs/com/julienviet/childprocess/ProcessBuilder.html#start--) methods:
+You can spawn child processes with the [`Process.create`](../../apidocs/io/reactiverse/childprocess/Process.html#create-io.vertx.core.Vertx-java.lang.String-) and  [`start`](../../apidocs/io/reactiverse/childprocess/ProcessBuilder.html#start--) methods:
 
 ```java
 ProcessBuilder processBuilder = Process.create(vertx, "ls");
@@ -55,7 +55,7 @@ env.put("MY_VAR", "whatever");
 Process.create(vertx, "ls", new ProcessOptions().setEnv(env)).start();
 ```
 
-[`Process.env`](../../apidocs/com/julienviet/childprocess/Process.html#env--) gives you the current process environment key-value pairs
+[`Process.env`](../../apidocs/io/reactiverse/childprocess/Process.html#env--) gives you the current process environment key-value pairs
 
 ```java
 ProcessOptions options = new ProcessOptions().setEnv(Process.env());
@@ -63,7 +63,7 @@ Process.create(vertx, "ls", options).start();
 ```
 
 By default, the child processes uses the current process _current working directory_, the
-[`setCwd`](../../apidocs/com/julienviet/childprocess/ProcessOptions.html#setCwd-java.lang.String-) option overrides it
+[`setCwd`](../../apidocs/io/reactiverse/childprocess/ProcessOptions.html#setCwd-java.lang.String-) option overrides it
 
 ```java
 ProcessOptions options = new ProcessOptions().setCwd("/some-dir");
@@ -74,9 +74,9 @@ Process.create(vertx, "ls", options).start();
 
 The child process streams are available as
 
-* [`stdin`](../../apidocs/com/julienviet/childprocess/Process.html#stdin--)
-* [`stdout`](../../apidocs/com/julienviet/childprocess/Process.html#stdout--)
-* [`stderr`](../../apidocs/com/julienviet/childprocess/Process.html#stderr--)
+* [`stdin`](../../apidocs/io/reactiverse/childprocess/Process.html#stdin--)
+* [`stdout`](../../apidocs/io/reactiverse/childprocess/Process.html#stdout--)
+* [`stderr`](../../apidocs/io/reactiverse/childprocess/Process.html#stderr--)
 
 ```java
 ProcessBuilder processBuilder = Process.create(vertx, "cat");
@@ -92,7 +92,7 @@ processBuilder.startHandler(process -> {
 processBuilder.start();
 ```
 
-Calling [`kill`](../../apidocs/com/julienviet/childprocess/Process.html#kill--) kills the child process, on POSIX it sends the
+Calling [`kill`](../../apidocs/io/reactiverse/childprocess/Process.html#kill--) kills the child process, on POSIX it sends the
 `SIGTERM` signal.
 
 ```java
