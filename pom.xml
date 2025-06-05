@@ -27,7 +27,7 @@
 
   <groupId>io.reactiverse</groupId>
   <artifactId>reactiverse-child-process</artifactId>
-  <version>3.0.0</version>
+  <version>3.0.1-SNAPSHOT</version>
 
   <name>Child Process extension for Vert.x</name>
   <url>https://github.com/reactiverse/childprocess-vertx-ext</url>
