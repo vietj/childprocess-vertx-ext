@@ -40,4 +40,4 @@ jobs:
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Run tests
-        run: mvn -Dgpg.skip -s .github/maven-ci-settings.xml -q clean verify -B
+        run: mvn -s .github/maven-ci-settings.xml -q clean verify -B -Dgpg.skip
