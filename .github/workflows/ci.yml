@@ -23,6 +23,9 @@ jobs:
     #            jdk: 11
     name: Run tests
     runs-on: ${{ matrix.os }}
+    env:
+      CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+      CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -31,5 +34,10 @@ jobs:
         with:
           java-version: ${{ matrix.jdk }}
           distribution: temurin
+          server-id: central
+          server-username: ${{ secrets.CENTRAL_USERNAME }}
+          server-password: ${{ secrets.CENTRAL_PASSWORD }}
+          gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: Run tests
         run: mvn -s .github/maven-ci-settings.xml -q clean verify -B
