@@ -42,7 +42,7 @@ jobs:
       CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
       CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
       MAVEN_GPG_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PRIVATE_KEY_PASSPHRASE }}
+      MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
